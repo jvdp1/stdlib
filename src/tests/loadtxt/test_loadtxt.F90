@@ -3,27 +3,16 @@ use iso_fortran_env, only: sp=>real32, dp=>real64 ,qp=>real128
 use stdlib_experimental_io, only: loadtxt
 implicit none
 
-real(sp), allocatable :: s(:, :)
-real(dp), allocatable :: d(:, :)
-real(qp), allocatable :: q(:, :)
+{% for type in ["sp", "dp", "qp"] -%}
+real({{type}}), allocatable :: array_{{type}}(:, :)
+{% endfor %}
 
-call loadtxt("array1.dat", s)
-call print_array(s)
-
-call loadtxt("array1.dat", d)
-call print_array(d)
-
-call loadtxt("array2.dat", d)
-call print_array(d)
-
-call loadtxt("array3.dat", d)
-call print_array(d)
-
-call loadtxt("array4.dat", d)
-call print_array(d)
-
-call loadtxt("array4.dat", q)
-call print_array(q)
+{% for type in ["sp", "dp", "qp"] -%}
+{% for example in ["1", "2", "3", "4"] -%}
+call loadtxt("array{{example}}.dat", array_{{type}})
+call print_array(array_{{type}})
+{% endfor %}
+{% endfor %}
 
 contains
 
