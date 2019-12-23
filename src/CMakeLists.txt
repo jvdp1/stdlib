@@ -1,5 +1,5 @@
 set(SRC
-    stdlib_experimental_io.f90
+    stdlib_experimental_io.F90
     stdlib_experimental_error.f90
 )
 
