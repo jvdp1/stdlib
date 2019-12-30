@@ -27,89 +27,62 @@ end interface
 contains
 
 #undef SUB_LOADTXT_
+#undef SUB_SAVETXT_
 #undef TYPE_
 #define SUB_LOADTXT_ i8loadtxt
-#define TYPE_ integer(int8)
-#include "loadtxt.inc"
-
-#undef SUB_LOADTXT_
-#undef TYPE_
-#define SUB_LOADTXT_ i16loadtxt
-#define TYPE_ integer(int16)
-#include "loadtxt.inc"
-
-#undef SUB_LOADTXT_
-#undef TYPE_
-#define SUB_LOADTXT_ i32loadtxt
-#define TYPE_ integer(int32)
-#include "loadtxt.inc"
-
-#undef SUB_LOADTXT_
-#undef TYPE_
-#define SUB_LOADTXT_ i64loadtxt
-#define TYPE_ integer(int64)
-#include "loadtxt.inc"
-
-#undef SUB_LOADTXT_
-#undef TYPE_
-#define SUB_LOADTXT_ sloadtxt
-#define TYPE_ real(sp)
-#include "loadtxt.inc"
-
-#undef SUB_LOADTXT_
-#undef TYPE_
-#define SUB_LOADTXT_ dloadtxt
-#define TYPE_ real(dp)
-#include "loadtxt.inc"
-
-#undef SUB_LOADTXT_
-#undef TYPE_
-#define SUB_LOADTXT_ qloadtxt
-#define TYPE_ real(qp)
-#include "loadtxt.inc"
-
-
-#undef SUB_SAVETXT_
-#undef TYPE_
 #define SUB_SAVETXT_ i8savetxt
 #define TYPE_ integer(int8)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
 
+#undef SUB_LOADTXT_
 #undef SUB_SAVETXT_
 #undef TYPE_
+#define SUB_LOADTXT_ i16loadtxt
 #define SUB_SAVETXT_ i16savetxt
 #define TYPE_ integer(int16)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
 
+#undef SUB_LOADTXT_
 #undef SUB_SAVETXT_
 #undef TYPE_
+#define SUB_LOADTXT_ i32loadtxt
 #define SUB_SAVETXT_ i32savetxt
 #define TYPE_ integer(int32)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
 
+#undef SUB_LOADTXT_
 #undef SUB_SAVETXT_
 #undef TYPE_
+#define SUB_LOADTXT_ i64loadtxt
 #define SUB_SAVETXT_ i64savetxt
 #define TYPE_ integer(int64)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
 
+
+#undef SUB_LOADTXT_
 #undef SUB_SAVETXT_
 #undef TYPE_
+#define SUB_LOADTXT_ sloadtxt
 #define SUB_SAVETXT_ ssavetxt
 #define TYPE_ real(sp)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
 
+#undef SUB_LOADTXT_
 #undef SUB_SAVETXT_
 #undef TYPE_
+#define SUB_LOADTXT_ dloadtxt
 #define SUB_SAVETXT_ dsavetxt
 #define TYPE_ real(dp)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
 
+#undef SUB_LOADTXT_
 #undef SUB_SAVETXT_
 #undef TYPE_
+#define SUB_LOADTXT_ qloadtxt
 #define SUB_SAVETXT_ qsavetxt
 #define TYPE_ real(qp)
-#include "savetxt.inc"
+#include "stdlib_experimental_io.inc"
+
 
 
 integer function number_of_columns(s)
