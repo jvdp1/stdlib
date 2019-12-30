@@ -1,5 +1,5 @@
 !Command line used to auto-generate the module:
-! jin2for --generate-for gfortran stdlib_experimental_io.F90
+! jin2for --generate-for gfortran stdlib_experimental_io.t90
 
 module stdlib_experimental_io
 use iso_fortran_env, only: sp=>real32, dp=>real64, qp=>real128
