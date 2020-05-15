@@ -138,11 +138,12 @@ contains
             , 'dp check 2')
         call check( abs(corr(x, 1, x == 1.) - 1._dp) < dptol, 'dp check 3')
         call check( abs(corr(x, 1, x < 5) - 1._dp) < dptol, 'dp check 4')
+        call check( ieee_is_nan(corr(x, 1, x < -999)), 'dp check 5')
 
         call check( any(ieee_is_nan(corr(x2, 1, mask = .false.)))&
-            , 'dp check 5')
-        call check( any(ieee_is_nan(corr(x2, 2, mask = .false.)))&
             , 'dp check 6')
+        call check( any(ieee_is_nan(corr(x2, 2, mask = .false.)))&
+            , 'dp check 7')
 
         call check( all( abs( corr(x2, 1) - reshape([&
             1._dp, 0.9994439103600_dp, -0.870544389237152_dp, 0.99944391036_dp,&
@@ -150,7 +151,7 @@ contains
             1._dp ]&
             ,[ size(x2, 2), size(x2, 2)])&
             ) < dptol)&
-            , 'dp check 7')
+            , 'dp check 8')
         call check( all( abs( corr(x2, 2) - reshape([&
              1._dp, 0.998742137866914_dp,  0.999846989517886_dp, -0.998337488459582_dp,&
              0.998742137866914_dp, 1._dp, 0.999466429486246_dp, -0.99419162560192020_dp,&
@@ -158,7 +159,7 @@ contains
              -0.998337488459582_dp, -0.994191625601920_dp, -0.997176464952738_dp, 1._dp]&
             ,[ size(x2, 1), size(x2, 1)])&
             ) < dptol)&
-            , 'dp check 8')
+            , 'dp check 9')
 !
 !        call check( any(ieee_is_nan(cov(x2, 1, mask = x2 < 10)))&
 !            , 'dp check 12')
