@@ -27,12 +27,12 @@ program test_corr
                             cmplx(0._dp, 6._dp)], [2, 3])
 
 
-!    call test_sp(real(d1, sp), real(d, sp))
+    call test_sp(real(d1, sp), real(d, sp))
 
     call test_dp(d1,d)
 
-!    call test_int32(int(d1, int32) ,int(d, int32))
-!
+    call test_int32(int(d1, int32) ,int(d, int32))
+
     call test_int64(int(d1, int64) ,int(d, int64))
 
     call test_csp(cmplx(cd1, kind = sp), cmplx(ds, kind = sp))
