@@ -33,7 +33,7 @@ program test_corr
 
 !    call test_int32(int(d1, int32) ,int(d, int32))
 !
-!    call test_int64(int(d1, int64) ,int(d, int64))
+    call test_int64(int(d1, int64) ,int(d, int64))
 !
 !    call test_csp(cmplx(cd1, kind = sp), cmplx(ds, kind = sp))
 !
@@ -136,7 +136,7 @@ contains
             , 'dp check 1')
         call check( ieee_is_nan(corr(x, 1, .false.))&
             , 'dp check 2')
-        call check( abs(corr(x, 1, x == 1.) - 1._dp) < dptol, 'dp check 3')
+        call check( ieee_is_nan(corr(x, 1, x == 1.)), 'dp check 3')
         call check( abs(corr(x, 1, x < 5) - 1._dp) < dptol, 'dp check 4')
         call check( ieee_is_nan(corr(x, 1, x < -999)), 'dp check 5')
 
@@ -160,22 +160,24 @@ contains
             ,[ size(x2, 1), size(x2, 1)])&
             ) < dptol)&
             , 'dp check 9')
-!
-!        call check( any(ieee_is_nan(cov(x2, 1, mask = x2 < 10)))&
-!            , 'dp check 12')
-!        call check( all( abs( cov(x2, 1, mask = x2 < 11) - reshape([&
-!             60._dp/9, 60._dp/9, 1._dp, 60._dp/9, 60._dp/9, 1._dp&
-!             , 1._dp, 1._dp, 0.5_dp]&
-!            ,[ size(x2, 2), size(x2, 2)])&
-!            ) < dptol)&
-!            , 'dp check 13')
-!        call check( all( abs( cov(x2, 2, mask = x2 < 11) - reshape([&
-!            19._dp, 16.5_dp, 0.5_dp, 0.5_dp, 16.5_dp&
-!            ,129._dp/9, 0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp&
-!            ,0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp]&
-!            ,[ size(x2, 1), size(x2, 1)])&
-!            ) < dptol)&
-!            , 'dp check 14')
+
+        call check( any(ieee_is_nan(corr(x2, 1, mask = x2 < 10)))&
+            , 'dp check 10')
+        call check( all( abs( corr(x2, 1, mask = x2 < 22) - reshape([&
+              1._dp, 0.981980506061965_dp, -1._dp&
+              ,0.981980506061965_dp, 1._dp, -0.862615766297428_dp&
+              ,-1._dp, -0.862615766297428_dp, 1._dp]&
+            ,[ size(x2, 2), size(x2, 2)])&
+            ) < dptol)&
+            , 'dp check 11')
+        call check( all( abs( corr(x2, 2, mask = x2 < 22) - reshape([&
+            1._dp, 0.998742137866914_dp, 0.999846989517886_dp, -1._dp&
+            ,0.998742137866914_dp, 1._dp, 0.999466429486246_dp, -1._dp&
+            ,0.999846989517886_dp, 0.999466429486246_dp, 1._dp, -1._dp&
+            ,-1._dp, -1._dp, -1._dp, 1._dp]&
+            ,[ size(x2, 1), size(x2, 1)])&
+            ) < dptol)&
+            , 'dp check 12')
 
     end subroutine test_dp
 
@@ -276,7 +278,7 @@ contains
             , 'int64 check 1')
         call check( ieee_is_nan(corr(x, 1, .false.))&
             , 'int64 check 2')
-        call check( abs(corr(x, 1, x == 1.) - 1._dp) < dptol, 'int64 check 3')
+        call check( ieee_is_nan(corr(x, 1, x == 1.)), 'int64 check 3')
         call check( abs(corr(x, 1, x < 5) - 1._dp) < dptol, 'int64 check 4')
         call check( ieee_is_nan(corr(x, 1, x < -999)), 'int64 check 5')
 
@@ -300,22 +302,24 @@ contains
             ,[ size(x2, 1), size(x2, 1)])&
             ) < dptol)&
             , 'int64 check 9')
-!
-!        call check( any(ieee_is_nan(cov(x2, 1, mask = x2 < 10)))&
-!            , 'dp check 12')
-!        call check( all( abs( cov(x2, 1, mask = x2 < 11) - reshape([&
-!             60._dp/9, 60._dp/9, 1._dp, 60._dp/9, 60._dp/9, 1._dp&
-!             , 1._dp, 1._dp, 0.5_dp]&
-!            ,[ size(x2, 2), size(x2, 2)])&
-!            ) < dptol)&
-!            , 'dp check 13')
-!        call check( all( abs( cov(x2, 2, mask = x2 < 11) - reshape([&
-!            19._dp, 16.5_dp, 0.5_dp, 0.5_dp, 16.5_dp&
-!            ,129._dp/9, 0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp&
-!            ,0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp, 0.5_dp]&
-!            ,[ size(x2, 1), size(x2, 1)])&
-!            ) < dptol)&
-!            , 'dp check 14')
+
+        call check( any(ieee_is_nan(corr(x2, 1, mask = x2 < 10)))&
+            , 'int64 check 10')
+        call check( all( abs( corr(x2, 1, mask = x2 < 22) - reshape([&
+              1._dp, 0.981980506061965_dp, -1._dp&
+              ,0.981980506061965_dp, 1._dp, -0.862615766297428_dp&
+              ,-1._dp, -0.862615766297428_dp, 1._dp]&
+            ,[ size(x2, 2), size(x2, 2)])&
+            ) < dptol)&
+            , 'int64 check 11')
+        call check( all( abs( corr(x2, 2, mask = x2 < 22) - reshape([&
+            1._dp, 0.998742137866914_dp, 0.999846989517886_dp, -1._dp&
+            ,0.998742137866914_dp, 1._dp, 0.999466429486246_dp, -1._dp&
+            ,0.999846989517886_dp, 0.999466429486246_dp, 1._dp, -1._dp&
+            ,-1._dp, -1._dp, -1._dp, 1._dp]&
+            ,[ size(x2, 1), size(x2, 1)])&
+            ) < dptol)&
+            , 'int64 check 12')
 
     end subroutine test_int64
 !
