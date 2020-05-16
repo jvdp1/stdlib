@@ -1,7 +1,7 @@
 program test_corr
     use stdlib_experimental_error, only: check
     use stdlib_experimental_kinds, only: sp, dp, int32, int64
-    use stdlib_experimental_stats, only: corr,cov
+    use stdlib_experimental_stats, only: corr
     use,intrinsic :: ieee_arithmetic, only : ieee_is_nan
     implicit none
 
@@ -37,7 +37,7 @@ program test_corr
 !
 !    call test_csp(cmplx(cd1, kind = sp), cmplx(ds, kind = sp))
 !
-!    call test_cdp(cd1, ds)
+    call test_cdp(cd1, ds)
 
 contains
 
@@ -439,47 +439,39 @@ contains
 !
 !    end subroutine test_csp
 !
-!    subroutine test_cdp(x, x2)
-!        complex(dp), intent(in) :: x(:)
-!        complex(dp), intent(in) :: x2(:, :)
-!
-!!        complex(dp), allocatable :: cd(:,:)
-!
-!        call check( abs(cov(x, dim=1) -&
-!                     (var(real(x),1) + var(aimag(x), 1)) ) < dptol&
-!            , 'cdp check 1')
-!        call check( abs(cov(x, 1, aimag(x) == 0) -&
-!                     var(real(x), 1, aimag(x) == 0)) < dptol&
-!            , 'cdp check 2')
-!
-!        call check( abs(cov(x, dim=1, corrected=.false.) -&
-!                     (var(real(x), dim=1, corrected=.false.) +&
-!                      var(aimag(x), dim=1, corrected=.false.))) <&
-!                      dptol&
-!            , 'cdp check 3')
-!
-!        call check( ieee_is_nan(real(cov(x, 1, .false., corrected=.false.)))&
-!            , 'cdp check 4')
-!
-!        call check( abs(cov(x, 1, aimag(x) == 0, corrected=.false.) -&
-!                      var(real(x), 1, aimag(x) == 0,&
-!                      corrected=.false.)) < dptol&
-!            , 'cdp check 5')
-!
-!
-!        call check( all( abs( cov(x2, 1) - reshape([&
-!            (2.5_dp,0._dp), (5.5_dp,-1._dp), (8.5_dp,-2._dp)&
-!            , (5.5_dp,1._dp),  (12.5_dp,0._dp), (19.5_dp,-1._dp)&
-!            , (8.5_dp,2._dp),  (19.5_dp,1._dp),  (30.5_dp,0._dp)]&
-!            ,[ size(x2, 2), size(x2, 2)])&
-!            ) < dptol)&
-!            , 'cdp check 6')
-!        call check( all( abs( cov(x2, 2) - reshape([&
-!            (4._dp,0._dp), (0._dp,4._dp),&
-!            (0._dp,-4._dp), (4._dp,0._dp)]&
-!            ,[ size(x2, 1), size(x2, 1)])&
-!            ) < dptol)&
-!            , 'cdp check 7')
+    subroutine test_cdp(x, x2)
+        complex(dp), intent(in) :: x(:)
+        complex(dp), intent(in) :: x2(:, :)
+
+!        complex(dp), allocatable :: cd(:,:)
+
+        call check( abs(corr(x, dim=1) - 1._dp)  < dptol&
+            , 'cdp check 1')
+        call check( abs(corr(x, 1, aimag(x) == 0) - 1._dp ) < dptol&
+            , 'cdp check 2')
+
+        call check( ieee_is_nan(corr(x, 1, aimag(x) == -99 )) &
+            , 'cdp check 3')
+
+        call check( ieee_is_nan(real(corr(x, 1, .false.)))&
+            , 'cdp check 4')
+
+        call check( all( abs( corr(x2, 1) - reshape([&
+               (1._dp,0._dp), (0.983869910099907_dp,-0.178885438199983_dp),&
+               (0.973417168333576_dp,-0.229039333725547_dp),&
+               (0.983869910099907_dp,0.178885438199983_dp), (1._dp,0._dp),&
+               (0.998687663476588_dp,-0.051214751973158_dp),&
+               (0.973417168333575_dp,0.229039333725547_dp),&
+               (0.998687663476588_dp,0.0512147519731583_dp), (1._dp,0._dp) ]&
+            ,[ size(x2, 2), size(x2, 2)])&
+            ) < dptol)&
+            , 'cdp check 6')
+        call check( all( abs( corr(x2, 2) - reshape([&
+            (1._dp,0._dp), (0._dp,1._dp),&
+            (0._dp,-1._dp), (1._dp,0._dp)]&
+            ,[ size(x2, 1), size(x2, 1)])&
+            ) < dptol)&
+            , 'cdp check 7')
 !
 !        call check( all( abs( cov(x2, 1, corrected=.false.) - reshape([&
 !            (2.5_dp,0._dp), (5.5_dp,-1._dp), (8.5_dp,-2._dp)&
@@ -524,6 +516,6 @@ contains
 !            ) < dptol)&
 !            , 'cdp check 12')
 !
-!    end subroutine test_cdp
-!
+    end subroutine test_cdp
+
 end program test_corr
