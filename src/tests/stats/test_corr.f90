@@ -442,50 +442,14 @@ contains
             ,[ size(x2, 1), size(x2, 1)])&
             ) < dptol)&
             , 'cdp check 7')
-!
-!        call check( all( abs( cov(x2, 1, corrected=.false.) - reshape([&
-!            (2.5_dp,0._dp), (5.5_dp,-1._dp), (8.5_dp,-2._dp)&
-!            , (5.5_dp,1._dp),  (12.5_dp,0._dp), (19.5_dp,-1._dp)&
-!            , (8.5_dp,2._dp),  (19.5_dp,1._dp),  (30.5_dp,0._dp)]&
-!            *(size(x2, 1)-1._dp)/size(x2, 1)&
-!            ,[ size(x2, 2), size(x2, 2)])&
-!            ) < dptol)&
-!            , 'cdp check 8')
-!        call check( all( abs( cov(x2, 2, corrected=.false.) - reshape([&
-!            (4._dp,0._dp), (0._dp,4._dp),&
-!            (0._dp,-4._dp), (4._dp,0._dp)]&
-!            *(size(x2, 2)-1._dp)/size(x2, 2)&
-!            ,[ size(x2, 1), size(x2, 1)])&
-!            ) < dptol)&
-!            , 'cdp check 9')
-!
-!! Issue with gfortran 7 and 8: do not extract cd(1:2, 1:2) correctly
-!!        allocate(cd, source = cov(x2, 1, mask = aimag(x2) < 6))
-!!
-!!        call check( all( abs( cd(1:2, 1:2) - reshape([&
-!!             (2.5_dp,0._dp), (5.5_dp,-1._dp)&
-!!             ,(5.5_dp,1._dp), (12.5_dp,0._dp)]&
-!!            ,[2, 2])&
-!!            ) < dptol)&
-!!            , 'cdp check 10')
-!!        call check( ieee_is_nan(real(cd(3,3)))&
-!!            , 'cdp check 10 bis')
-!
-!        call check( all( abs( cov(x2, 2, mask = aimag(x2) < 6) - reshape([&
-!             (4._dp,0._dp), (0._dp,2._dp)&
-!             ,(0._dp,-2._dp), (2._dp,0._dp)]&
-!            ,[ size(x2, 1), size(x2, 1)])&
-!            ) < dptol)&
-!            , 'cdp check 11')
-!
-!        call check( all( abs( cov(x2, 2, mask = aimag(x2) < 6, corrected = .false.) -&
-!            reshape([&
-!             (2.6666666666666666_dp,0._dp), (0._dp,1._dp)&
-!             ,(0._dp,-1._dp), (1._dp,0._dp)]&
-!            ,[ size(x2, 1), size(x2, 1)])&
-!            ) < dptol)&
-!            , 'cdp check 12')
-!
+
+        call check( all( abs( corr(x2, 2, mask = aimag(x2) < 6) - reshape([&
+             (1._dp,0._dp), (0._dp,-1._dp)&
+             ,(0._dp,1._dp), (1._dp,0._dp)]&
+            ,[ size(x2, 1), size(x2, 1)])&
+            ) < dptol)&
+            , 'cdp check 8')
+
     end subroutine test_cdp
 
 end program test_corr
