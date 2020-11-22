@@ -1,4 +1,4 @@
-program test_linalg
+module test_linalg
   
   use stdlib_error, only: check
   use stdlib_kinds, only: sp, dp, qp, int8, int16, int32, int64
@@ -12,49 +12,6 @@ program test_linalg
 
   logical :: warn
   
-  ! whether calls to check issue a warning
-  ! or stop execution
-  warn = .false.
-
-  !
-  ! eye
-  !
-  call test_eye
-
-  !
-  ! diag
-  !
-  call test_diag_rsp
-  call test_diag_rsp_k
-  call test_diag_rdp
-  call test_diag_rqp
-
-  call test_diag_csp
-  call test_diag_cdp
-  call test_diag_cqp
-
-  call test_diag_int8
-  call test_diag_int16
-  call test_diag_int32
-  call test_diag_int64
-
-  !
-  ! trace
-  !
-  call test_trace_rsp
-  call test_trace_rsp_nonsquare
-  call test_trace_rdp
-  call test_trace_rdp_nonsquare
-  call test_trace_rqp
-
-  call test_trace_csp
-  call test_trace_cdp
-  call test_trace_cqp
-
-  call test_trace_int8
-  call test_trace_int16
-  call test_trace_int32
-  call test_trace_int64
 
 
 contains
@@ -440,4 +397,51 @@ contains
     end if
   end function
 
+end module
+program tester
+  use test_linalg
+  implicit none
+  ! whether calls to check issue a warning
+  ! or stop execution
+  warn = .false.
+
+  !
+  ! eye
+  !
+  call test_eye
+
+  !
+  ! diag
+  !
+  call test_diag_rsp
+  call test_diag_rsp_k
+  call test_diag_rdp
+  call test_diag_rqp
+
+  call test_diag_csp
+  call test_diag_cdp
+  call test_diag_cqp
+
+  call test_diag_int8
+  call test_diag_int16
+  call test_diag_int32
+  call test_diag_int64
+
+  !
+  ! trace
+  !
+  call test_trace_rsp
+  call test_trace_rsp_nonsquare
+  call test_trace_rdp
+  call test_trace_rdp_nonsquare
+  call test_trace_rqp
+
+  call test_trace_csp
+  call test_trace_cdp
+  call test_trace_cqp
+
+  call test_trace_int8
+  call test_trace_int16
+  call test_trace_int32
+  call test_trace_int64
 end program

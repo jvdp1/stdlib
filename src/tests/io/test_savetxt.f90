@@ -1,4 +1,4 @@
-program test_savetxt
+module test_savetxt
 use stdlib_kinds, only: int32, sp, dp
 use stdlib_io, only: loadtxt, savetxt
 use stdlib_error, only: check
@@ -6,13 +6,6 @@ implicit none
 
 character(:), allocatable :: outpath
 
-outpath = get_outpath() // "/tmp.dat"
-
-call test_iint32(outpath)
-call test_rsp(outpath)
-call test_rdp(outpath)
-call test_csp(outpath)
-call test_cdp(outpath)
 
 contains
 
@@ -116,4 +109,15 @@ contains
     call check(all(abs(e-d2) < epsilon(1._dp)))
     end subroutine test_cdp
 
-end program test_savetxt
+end module test_savetxt
+program tester
+use test_savetxt
+implicit none
+outpath = get_outpath() // "/tmp.dat"
+
+call test_iint32(outpath)
+call test_rsp(outpath)
+call test_rdp(outpath)
+call test_csp(outpath)
+call test_cdp(outpath)
+end program
