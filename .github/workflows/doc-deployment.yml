@@ -25,7 +25,9 @@ jobs:
         with:
           fetch-depth: 0 # Full history to get tag and commit info
       - name: Install GFortran macOS
-        run: brew install gcc || brew upgrade gcc || true
+        run: |
+          brew install gcc || brew upgrade gcc || true
+          gfortran --version
       - name: Install Dependencies
         run: |
           pip3 install --prefer-binary --no-clean --disable-pip-version-check --progress-bar off lxml fypp
