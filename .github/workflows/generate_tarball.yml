@@ -24,7 +24,7 @@ jobs:
     - name: Generate f90 files
       run: |
           find src -name "*.fypp" -print | cut -f1 -d . | xargs -i{} fypp {}.fypp {}.f90 #Generate pre-proceessed files
-          rsync -av . stdlib/
+          rsync -av . stdlib
 
     - name: Upload tarball
       uses: actions/upload-artifact@v2
