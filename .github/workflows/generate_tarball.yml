@@ -1,4 +1,4 @@
-name: generate tarball
+name: Generate tarball
 
 on: [push, pull_request]
 
@@ -23,11 +23,11 @@ jobs:
 
     - name: Generate f90 files
       run: |
-          ls src/*.fypp |cut -f1 -d . | xargs -i{} fypp {}.fypp {}.f90 #Generate pre-proceessed files
+          ls src/*.fypp | cut -f1 -d . | xargs -i{} fypp {}.fypp {}.f90 #Generate pre-proceessed files
           tar -cvf stdlib.tar *
 
     - name: Upload tarball
       uses: actions/upload-artifact@v2
       with:
         name: tarball
-        path: ./tarball/
+        path: ./tarball/stdlib.tar
