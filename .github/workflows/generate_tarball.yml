@@ -1,0 +1,33 @@
+name: generate tarball
+
+on: [push, pull_request]
+
+env:
+  SRCDIR: src
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses actions.checkout@v2
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v1 # Use pip to install latest CMake, & FORD/Jin2For, etc.
+      with:
+        python-version: 3.x
+
+    - name: Install fypp
+      run: pip install --upgrade fypp
+
+    - name: Generate f90 files
+      run: |
+          ls src/*.fypp |cut -f1 -d . | xargs -i{} fypp {}.fypp {}.f90 #Generate pre-proceessed files
+          tar -cvf stdlib.tar *
+
+    - name: Upload tarball
+      uses: actions/upload-artifact@v2
+      with:
+        name: tarball
+        path: ./tarball/
