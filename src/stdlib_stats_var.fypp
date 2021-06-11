@@ -161,6 +161,10 @@ contains
         real(${k1}$) :: n
         ${t1}$ :: mean
 
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (var): shapes of x and mask are different")
+        end if
+
         n = real(count(mask, kind = int64), ${k1}$)
         mean = sum(x, mask) / n
 
@@ -187,6 +191,10 @@ contains
 
         real(dp) :: n, mean
 
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (var): shapes of x and mask are different")
+        end if
+
         n = real(count(mask, kind = int64), dp)
         mean = sum(real(x, dp), mask) / n
 
@@ -211,6 +219,10 @@ contains
         integer :: i
         real(${k1}$) :: n${reduced_shape('x', rank, 'dim')}$
         ${t1}$ :: mean${reduced_shape('x', rank, 'dim')}$
+
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (var): shapes of x and mask are different")
+        end if
 
         res = 0._${k1}$
         select case(dim)
@@ -251,6 +263,10 @@ contains
         integer :: i
         real(dp) :: n${reduced_shape('x', rank, 'dim')}$
         real(dp) :: mean${reduced_shape('x', rank, 'dim')}$
+
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (var): shapes of x and mask are different")
+        end if
 
         res = 0._dp
         select case(dim)
