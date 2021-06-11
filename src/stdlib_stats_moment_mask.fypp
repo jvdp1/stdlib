@@ -26,6 +26,10 @@ contains
         real(${k1}$) :: n${reduced_shape('x', rank, 'dim')}$
         ${t1}$, allocatable :: mean_${ranksuffix(rank-1)}$
 
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (moment): shapes of x and mask are different")
+        end if
+
         n = real(count(mask, dim), ${k1}$)
 
         res = 0
@@ -81,6 +85,10 @@ contains
         integer :: i
         real(dp) :: n${reduced_shape('x', rank, 'dim')}$
         real(dp), allocatable :: mean_${ranksuffix(rank-1)}$
+
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (moment): shapes of x and mask are different")
+        end if
 
         n = real(count(mask, dim), dp)
 

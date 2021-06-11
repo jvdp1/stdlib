@@ -75,6 +75,10 @@ contains
         logical, intent(in) :: mask${ranksuffix(rank)}$
         ${t1}$ :: res${reduced_shape('x', rank, 'dim')}$
 
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (moment): shapes of x and mask are different")
+        end if
+
         if (dim >= 1 .and. dim <= ${rank}$) then
           res = sum((x - center)**order, dim, mask) / count(mask, dim)
         else
@@ -96,6 +100,10 @@ contains
         real(dp), intent(in) :: center
         logical, intent(in) :: mask${ranksuffix(rank)}$
         real(dp) :: res${reduced_shape('x', rank, 'dim')}$
+
+        if (any(shape(x) .ne. shape(mask))) then
+          call error_stop("ERROR (moment): shapes of x and mask are different")
+        end if
 
         if (dim >= 1 .and. dim <= ${rank}$) then
           res = sum(( real(x, dp) - center)**order, dim, mask) / count(mask, dim)
