@@ -56,6 +56,10 @@ contains
       logical, intent(in) :: mask(:)
       real(${k1}$) :: res
 
+      if (size(x) .ne. size(mask)) then
+        call error_stop("ERROR (corr): dimensions of x and mask are different")
+      endif
+
       if (count(mask) < 2) then
         res = ieee_value(1._${k1}$, ieee_quiet_nan)
         return
@@ -74,6 +78,10 @@ contains
       integer, intent(in) :: dim
       logical, intent(in) :: mask(:)
       real(dp) :: res
+
+      if (size(x) .ne. size(mask)) then
+        call error_stop("ERROR (corr): dimensions of x and mask are different")
+      endif
 
       if (count(mask) < 2) then
         res = ieee_value(1._dp, ieee_quiet_nan)
@@ -198,6 +206,10 @@ contains
       ${t1}$ :: centerj_(merge(size(x, 2), size(x, 1), mask = 1<dim))
       logical :: mask_(merge(size(x, 2), size(x, 1), mask = 1<dim))
 
+      if (any(shape(x) .ne. shape(mask))) then
+        call error_stop("ERROR (corr): shapes of x and mask are different")
+      end if
+
       select case(dim)
         case(1)
           do i = 1, size(res, 2)
@@ -269,6 +281,10 @@ contains
       real(dp) :: centeri_(merge(size(x, 2), size(x, 1), mask = 1<dim))
       real(dp) :: centerj_(merge(size(x, 2), size(x, 1), mask = 1<dim))
       logical :: mask_(merge(size(x, 2), size(x, 1), mask = 1<dim))
+
+      if (any(shape(x) .ne. shape(mask))) then
+        call error_stop("ERROR (corr): shapes of x and mask are different")
+      end if
 
       select case(dim)
         case(1)
