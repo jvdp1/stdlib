@@ -47,7 +47,7 @@ contains
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
         testsuite = [ &
-            new_unittest("test_${k1}$_1dim", test_${k1}$_1dim) &
+            new_unittest("test_sp_1dim", test_sp_1dim) &
             #:for k1,t1 in IR_KINDS_TYPES
             , new_unittest("test_${k1}$_1dim", test_${k1}$_1dim) &
             , new_unittest("test_${k1}$_1dim_mask_nan", test_${k1}$_1dim_mask_nan) &
