@@ -4,6 +4,7 @@
 submodule (stdlib_stats) stdlib_stats_var
 
   use, intrinsic:: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
+  use, intrinsic:: iso_fortran_env, only: int64
   use stdlib_error, only: error_stop
   use stdlib_optval, only: optval
   implicit none
@@ -43,24 +44,24 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("var_all",rank, t1, k1, 'dp')
+      #:set RName = rname("var_all",rank, t1, k1, 'dop')
       module function ${RName}$(x, mask, corrected) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         logical, intent(in), optional :: mask
         logical, intent(in), optional :: corrected
-        real(dp) :: res
+        real(dop) :: res
 
-        real(dp) :: n, mean
+        real(dop) :: n, mean
 
         if (.not.optval(mask, .true.)) then
-          res = ieee_value(1._dp, ieee_quiet_nan)
+          res = ieee_value(1._dop, ieee_quiet_nan)
           return
         end if
 
-        n = real(size(x, kind = int64), dp)
-        mean = sum(real(x, dp)) / n
+        n = real(size(x, kind = int64), dop)
+        mean = sum(real(x, dop)) / n
 
-        res = sum((real(x, dp) - mean)**2) / (n - merge(1, 0, optval(corrected, .true.)))
+        res = sum((real(x, dop) - mean)**2) / (n - merge(1, 0, optval(corrected, .true.)))
 
       end function ${RName}$
     #:endfor
@@ -112,31 +113,31 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("var",rank, t1, k1, 'dp')
+      #:set RName = rname("var",rank, t1, k1, 'dop')
       module function ${RName}$(x, dim, mask, corrected) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: dim
         logical, intent(in), optional :: mask
         logical, intent(in), optional :: corrected
-        real(dp) :: res${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: res${reduced_shape('x', rank, 'dim')}$
 
         integer :: i
-        real(dp) :: n
-        real(dp) :: mean${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: n
+        real(dop) :: mean${reduced_shape('x', rank, 'dim')}$
 
         if (.not.optval(mask, .true.)) then
-          res = ieee_value(1._dp, ieee_quiet_nan)
+          res = ieee_value(1._dop, ieee_quiet_nan)
           return
         end if
 
-        res = 0._dp
+        res = 0._dop
         select case(dim)
           #:for fi in range(1, rank+1)
           case(${fi}$)
             n = size(x, dim)
-            mean = sum(real(x, dp), dim) / n
+            mean = sum(real(x, dop), dim) / n
             do i = 1, size(x, dim)
-              res = res + (real(x${select_subarray(rank, [(fi, 'i')])}$, dp) - mean)**2
+              res = res + (real(x${select_subarray(rank, [(fi, 'i')])}$, dop) - mean)**2
             end do
           #:endfor
           case default
@@ -178,19 +179,19 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("var_mask_all",rank, t1, k1, 'dp')
+      #:set RName = rname("var_mask_all",rank, t1, k1, 'dop')
       module function ${RName}$(x, mask, corrected) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         logical, intent(in) :: mask${ranksuffix(rank)}$
         logical, intent(in), optional :: corrected
-        real(dp) :: res
+        real(dop) :: res
 
-        real(dp) :: n, mean
+        real(dop) :: n, mean
 
-        n = real(count(mask, kind = int64), dp)
-        mean = sum(real(x, dp), mask) / n
+        n = real(count(mask, kind = int64), dop)
+        mean = sum(real(x, dop), mask) / n
 
-        res = sum((real(x, dp) - mean)**2, mask) / (n -&
+        res = sum((real(x, dop) - mean)**2, mask) / (n -&
               merge(1, 0, (optval(corrected, .true.) .and. n > 0)))
 
       end function ${RName}$
@@ -240,27 +241,27 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("var_mask",rank, t1, k1, 'dp')
+      #:set RName = rname("var_mask",rank, t1, k1, 'dop')
       module function ${RName}$(x, dim, mask, corrected) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: dim
         logical, intent(in) :: mask${ranksuffix(rank)}$
         logical, intent(in), optional :: corrected
-        real(dp) :: res${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: res${reduced_shape('x', rank, 'dim')}$
 
         integer :: i
-        real(dp) :: n${reduced_shape('x', rank, 'dim')}$
-        real(dp) :: mean${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: n${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: mean${reduced_shape('x', rank, 'dim')}$
 
-        res = 0._dp
+        res = 0._dop
         select case(dim)
           #:for fi in range(1, rank+1)
           case(${fi}$)
             n = count(mask, dim)
-            mean = sum(real(x, dp), dim, mask) / n
+            mean = sum(real(x, dop), dim, mask) / n
             do i = 1, size(x, dim)
-              res = res + merge((real(x${select_subarray(rank, [(fi, 'i')])}$, dp) - mean)**2,&
-                                  0._dp, mask${select_subarray(rank, [(fi, 'i')])}$)
+              res = res + merge((real(x${select_subarray(rank, [(fi, 'i')])}$, dop) - mean)**2,&
+                                  0._dop, mask${select_subarray(rank, [(fi, 'i')])}$)
             end do
           #:endfor
           case default

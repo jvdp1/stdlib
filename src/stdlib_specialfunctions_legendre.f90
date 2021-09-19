@@ -7,8 +7,8 @@ contains
     ! unspecified behaviour if n is negative
     pure elemental module function dlegendre_fp64(n,x) result(dleg)
         integer, intent(in) :: n
-        real(dp), intent(in) :: x
-        real(dp) :: dleg
+        real(dop), intent(in) :: x
+        real(dop) :: dleg
 
         select case(n)
             case(0)
@@ -17,8 +17,8 @@ contains
                 dleg = 1
             case default
                 block
-                    real(dp) :: leg_down1, leg_down2, leg
-                    real(dp) :: dleg_down1, dleg_down2
+                    real(dop) :: leg_down1, leg_down2, leg
+                    real(dop) :: dleg_down1, dleg_down2
                     integer :: i 
 
                     leg_down1  = x
@@ -43,8 +43,8 @@ contains
     ! unspecified behaviour if n is negative
     pure elemental module function legendre_fp64(n,x) result(leg)
         integer, intent(in) :: n
-        real(dp), intent(in) :: x
-        real(dp) :: leg
+        real(dop), intent(in) :: x
+        real(dop) :: leg
         select case(n)
             case(0)
                 leg  = 1
@@ -52,7 +52,7 @@ contains
                 leg  = x
             case default
                 block
-                    real(dp) :: leg_down1, leg_down2
+                    real(dop) :: leg_down1, leg_down2
                     integer :: i 
 
                     leg_down1  = x

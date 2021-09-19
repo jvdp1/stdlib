@@ -3,13 +3,15 @@
 #:set RC_KINDS_TYPES = REAL_KINDS_TYPES + CMPLX_KINDS_TYPES
 
 module stdlib_math
-    use stdlib_kinds, only: int8, int16, int32, int64, sp, dp, qp
+    use stdlib_kinds
     use stdlib_optval, only: optval
 
     implicit none
     private
     public :: clip, linspace, logspace
-    public :: EULERS_NUMBER_SP, EULERS_NUMBER_DP, EULERS_NUMBER_QP
+    #:for k1, t1 in REAL_KINDS_TYPES
+    public :: EULERS_NUMBER_${k1}$
+    #:endfor
     public :: DEFAULT_LINSPACE_LENGTH, DEFAULT_LOGSPACE_BASE, DEFAULT_LOGSPACE_LENGTH
     public :: arange
 
@@ -18,9 +20,9 @@ module stdlib_math
     integer, parameter :: DEFAULT_LOGSPACE_BASE = 10
 
     ! Useful constants for lnspace
-    real(sp), parameter :: EULERS_NUMBER_SP = exp(1.0_sp)
-    real(dp), parameter :: EULERS_NUMBER_DP = exp(1.0_dp)
-    real(qp), parameter :: EULERS_NUMBER_QP = exp(1.0_qp)
+    #:for k1, t1 in REAL_KINDS_TYPES
+    real(${k1}$), parameter :: EULERS_NUMBER_${k1}$ = exp(1.0_${k1}$)
+    #:endfor
 
     interface clip
     #:for k1, t1 in IR_KINDS_TYPES
@@ -59,16 +61,16 @@ module stdlib_math
 
     ! Add support for integer linspace
     !!
-    !! When dealing with integers as the `start` and `end` parameters, the return type is always a `real(dp)`.
+    !! When dealing with integers as the `start` and `end` parameters, the return type is always a `real(dop)`.
     #:for k1, t1 in INT_KINDS_TYPES
       #:set RName = rname("linspace_default", 1, t1, k1)
       #! The interface for INT_KINDS_TYPES cannot be combined with RC_KINDS_TYPES
-      #! because the output for integer types is always a real with dp.
+      #! because the output for integer types is always a real with dop.
       module function ${RName}$(start, end) result(res)
         ${t1}$, intent(in) :: start
         ${t1}$, intent(in) :: end
 
-        real(dp) :: res(DEFAULT_LINSPACE_LENGTH)
+        real(dop) :: res(DEFAULT_LINSPACE_LENGTH)
       end function ${RName}$
     #:endfor
 
@@ -79,7 +81,7 @@ module stdlib_math
         ${t1}$, intent(in) :: end
         integer, intent(in) :: n
 
-        real(dp) :: res(max(n, 0))
+        real(dop) :: res(max(n, 0))
       end function ${RName}$
     #:endfor
 
@@ -115,7 +117,7 @@ module stdlib_math
       integer, intent(in) :: start
       integer, intent(in) :: end
 
-      real(dp) :: res(DEFAULT_LOGSPACE_LENGTH)
+      real(dop) :: res(DEFAULT_LOGSPACE_LENGTH)
 
   end function ${RName}$
 
@@ -139,7 +141,7 @@ module stdlib_math
       integer, intent(in) :: end
       integer, intent(in) :: n
 
-      real(dp) :: res(n)
+      real(dop) :: res(n)
     end function ${RName}$
 
   #!=========================================================

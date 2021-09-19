@@ -69,20 +69,20 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("moment_mask",rank, t1, k1, 'dp')
+      #:set RName = rname("moment_mask",rank, t1, k1, 'dop')
       module function ${RName}$(x, order, dim, center, mask) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: order
         integer, intent(in) :: dim
-        real(dp), intent(in), optional :: center${reduced_shape('x', rank, 'dim')}$
+        real(dop), intent(in), optional :: center${reduced_shape('x', rank, 'dim')}$
         logical, intent(in) :: mask${ranksuffix(rank)}$
-        real(dp) :: res${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: res${reduced_shape('x', rank, 'dim')}$
 
         integer :: i
-        real(dp) :: n${reduced_shape('x', rank, 'dim')}$
-        real(dp), allocatable :: mean_${ranksuffix(rank-1)}$
+        real(dop) :: n${reduced_shape('x', rank, 'dim')}$
+        real(dop), allocatable :: mean_${ranksuffix(rank-1)}$
 
-        n = real(count(mask, dim), dp)
+        n = real(count(mask, dim), dop)
 
         res = 0
         select case(dim)
@@ -90,16 +90,16 @@ contains
           case(${fi}$)
             if (present(center)) then
               do i = 1, size(x, ${fi}$)
-                res = res + merge((real(x${select_subarray(rank, [(fi, 'i')])}$, dp) -&
+                res = res + merge((real(x${select_subarray(rank, [(fi, 'i')])}$, dop) -&
                                     center)**order,&
-                                    0._dp, mask${select_subarray(rank, [(fi, 'i')])}$)
+                                    0._dop, mask${select_subarray(rank, [(fi, 'i')])}$)
               end do
             else
               allocate(mean_, source = mean(x, ${fi}$, mask))
               do i = 1, size(x, ${fi}$)
-                res = res + merge((real(x${select_subarray(rank, [(fi, 'i')])}$, dp) - mean_)&
+                res = res + merge((real(x${select_subarray(rank, [(fi, 'i')])}$, dop) - mean_)&
                                     **order,&
-                                    0._dp, mask${select_subarray(rank, [(fi, 'i')])}$)
+                                    0._dop, mask${select_subarray(rank, [(fi, 'i')])}$)
               end do
               deallocate(mean_)
             end if

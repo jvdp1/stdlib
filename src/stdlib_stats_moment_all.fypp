@@ -5,6 +5,7 @@
 submodule (stdlib_stats) stdlib_stats_moment_all
 
   use, intrinsic:: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
+  use, intrinsic:: iso_fortran_env, only: int64
   use stdlib_error, only: error_stop
   use stdlib_optval, only: optval
   implicit none
@@ -43,27 +44,27 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("moment_all",rank, t1, k1, 'dp')
+      #:set RName = rname("moment_all",rank, t1, k1, 'dop')
       module function ${RName}$(x, order, center, mask) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: order
-        real(dp), intent(in), optional :: center
+        real(dop), intent(in), optional :: center
         logical, intent(in), optional :: mask
-        real(dp) :: res
+        real(dop) :: res
 
-        real(dp) :: n
+        real(dop) :: n
 
         if (.not.optval(mask, .true.)) then
-          res = ieee_value(1._dp, ieee_quiet_nan)
+          res = ieee_value(1._dop, ieee_quiet_nan)
           return
         end if
 
-        n = real(size(x, kind = int64), dp)
+        n = real(size(x, kind = int64), dop)
 
         if (present(center)) then
-         res = sum((real(x, dp) - center)**order) / n
+         res = sum((real(x, dop) - center)**order) / n
         else
-         res = sum((real(x, dp) - mean(x))**order) / n
+         res = sum((real(x, dop) - mean(x))**order) / n
         end if
 
       end function ${RName}$
@@ -98,22 +99,22 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in RANKS
-      #:set RName = rname("moment_mask_all",rank, t1, k1, 'dp')
+      #:set RName = rname("moment_mask_all",rank, t1, k1, 'dop')
       module function ${RName}$(x, order, center, mask) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: order
-        real(dp),intent(in), optional :: center
+        real(dop),intent(in), optional :: center
         logical, intent(in) :: mask${ranksuffix(rank)}$
-        real(dp) :: res
+        real(dop) :: res
 
-        real(dp) :: n
+        real(dop) :: n
 
-        n = real(count(mask, kind = int64), dp)
+        n = real(count(mask, kind = int64), dop)
 
         if (present(center)) then
-         res = sum((real(x, dp) - center)**order, mask) / n
+         res = sum((real(x, dop) - center)**order, mask) / n
         else
-         res = sum((real(x, dp) - mean(x,mask))**order, mask) / n
+         res = sum((real(x, dop) - mean(x,mask))**order, mask) / n
         end if
 
       end function ${RName}$

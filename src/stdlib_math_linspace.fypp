@@ -80,7 +80,7 @@ contains
       #:set RName = rname("linspace_default", 1, t1, k1)
       module procedure ${RName}$
 
-        res = linspace(real(start, kind=dp), real(end, kind=dp), DEFAULT_LINSPACE_LENGTH)
+        res = linspace(real(start, kind=dop), real(end, kind=dop), DEFAULT_LINSPACE_LENGTH)
 
       end procedure ${RName}$
     #:endfor
@@ -89,7 +89,7 @@ contains
       #:set RName = rname("linspace_n", 1, t1, k1)
       module procedure ${RName}$
 
-        res = linspace(real(start, kind=dp), real(end, kind=dp), n)
+        res = linspace(real(start, kind=dop), real(end, kind=dop), n)
 
       end procedure ${RName}$
     #:endfor

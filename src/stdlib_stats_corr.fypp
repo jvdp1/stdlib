@@ -30,15 +30,15 @@ contains
 
 
   #:for k1, t1 in INT_KINDS_TYPES
-    #:set RName = rname("corr",1, t1, k1, 'dp')
+    #:set RName = rname("corr",1, t1, k1, 'dop')
     module function ${RName}$(x, dim, mask) result(res)
       ${t1}$, intent(in) :: x(:)
       integer, intent(in) :: dim
       logical, intent(in), optional :: mask
-      real(dp) :: res
+      real(dop) :: res
 
       if (.not.optval(mask, .true.) .or. size(x) < 2) then
-        res = ieee_value(1._dp, ieee_quiet_nan)
+        res = ieee_value(1._dop, ieee_quiet_nan)
         return
       end if
 
@@ -68,15 +68,15 @@ contains
 
 
   #:for k1, t1 in INT_KINDS_TYPES
-    #:set RName = rname("corr_mask",1, t1, k1, 'dp')
+    #:set RName = rname("corr_mask",1, t1, k1, 'dop')
     module function ${RName}$(x, dim, mask) result(res)
       ${t1}$, intent(in) :: x(:)
       integer, intent(in) :: dim
       logical, intent(in) :: mask(:)
-      real(dp) :: res
+      real(dop) :: res
 
       if (count(mask) < 2) then
-        res = ieee_value(1._dp, ieee_quiet_nan)
+        res = ieee_value(1._dop, ieee_quiet_nan)
         return
       end if
 
@@ -140,20 +140,20 @@ contains
 
 
   #:for k1, t1 in INT_KINDS_TYPES
-    #:set RName = rname("corr",2, t1, k1, 'dp')
+    #:set RName = rname("corr",2, t1, k1, 'dop')
     module function ${RName}$(x, dim, mask) result(res)
       ${t1}$, intent(in) :: x(:, :)
       integer, intent(in) :: dim
       logical, intent(in), optional :: mask
-      real(dp) :: res(merge(size(x, 1), size(x, 2), mask = 1<dim)&
+      real(dop) :: res(merge(size(x, 1), size(x, 2), mask = 1<dim)&
                       , merge(size(x, 1), size(x, 2), mask = 1<dim))
 
       integer :: i, j
-      real(dp) :: mean_(merge(size(x, 1), size(x, 2), mask = 1<dim))
-      real(dp) :: center(size(x, 1),size(x, 2))
+      real(dop) :: mean_(merge(size(x, 1), size(x, 2), mask = 1<dim))
+      real(dop) :: center(size(x, 1),size(x, 2))
 
       if (.not.optval(mask, .true.) .or. size(x) < 2) then
-        res = ieee_value(1._dp, ieee_quiet_nan)
+        res = ieee_value(1._dop, ieee_quiet_nan)
         return
       end if
 
@@ -161,12 +161,12 @@ contains
       select case(dim)
         case(1)
           do i = 1, size(x, 1)
-            center(i, :) = real(x(i, :), dp) - mean_
+            center(i, :) = real(x(i, :), dop) - mean_
           end do
           res = matmul( transpose(center), center)
         case(2)
           do i = 1, size(x, 2)
-            center(:, i) = real(x(:, i), dp) - mean_
+            center(:, i) = real(x(:, i), dop) - mean_
           end do
           res = matmul( center, transpose(center))
         case default
@@ -257,17 +257,17 @@ contains
 
 
   #:for k1, t1 in INT_KINDS_TYPES
-    #:set RName = rname("corr_mask",2, t1, k1, 'dp')
+    #:set RName = rname("corr_mask",2, t1, k1, 'dop')
     module function ${RName}$(x, dim, mask) result(res)
       ${t1}$, intent(in) :: x(:, :)
       integer, intent(in) :: dim
       logical, intent(in) :: mask(:,:)
-      real(dp) :: res(merge(size(x, 1), size(x, 2), mask = 1<dim)&
+      real(dop) :: res(merge(size(x, 1), size(x, 2), mask = 1<dim)&
                           , merge(size(x, 1), size(x, 2), mask = 1<dim))
 
       integer :: i, j
-      real(dp) :: centeri_(merge(size(x, 2), size(x, 1), mask = 1<dim))
-      real(dp) :: centerj_(merge(size(x, 2), size(x, 1), mask = 1<dim))
+      real(dop) :: centeri_(merge(size(x, 2), size(x, 1), mask = 1<dim))
+      real(dop) :: centerj_(merge(size(x, 2), size(x, 1), mask = 1<dim))
       logical :: mask_(merge(size(x, 2), size(x, 1), mask = 1<dim))
 
       select case(dim)
@@ -276,9 +276,9 @@ contains
             do j = 1, size(res, 1)
              mask_ = merge(.true., .false., mask(:, i) .and. mask(:, j))
              centeri_ = merge( x(:, i) - mean(x(:, i), mask = mask_),&
-                0._dp, mask_)
+                0._dop, mask_)
              centerj_ = merge( x(:, j) - mean(x(:, j), mask = mask_),&
-                0._dp, mask_)
+                0._dop, mask_)
 
              res(j, i) = dot_product( centerj_, centeri_)&
                  /sqrt(dot_product( centeri_, centeri_)*&
@@ -291,9 +291,9 @@ contains
             do j = 1, size(res, 1)
              mask_ = merge(.true., .false., mask(i, :) .and. mask(j, :))
              centeri_ = merge( x(i, :) - mean(x(i, :), mask = mask_),&
-                0._dp, mask_)
+                0._dop, mask_)
              centerj_ = merge( x(j, :) - mean(x(j, :), mask = mask_),&
-                0._dp, mask_)
+                0._dop, mask_)
 
              res(j, i) = dot_product( centeri_, centerj_)&
                  /sqrt(dot_product( centeri_, centeri_)*&

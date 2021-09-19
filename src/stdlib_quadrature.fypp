@@ -1,7 +1,7 @@
 #:include "common.fypp"
 module stdlib_quadrature
     !! ([Specification](../page/specs/stdlib_quadrature.html#description))
-    use stdlib_kinds, only: sp, dp, qp
+    use stdlib_kinds
 
     implicit none
 
@@ -97,8 +97,8 @@ module stdlib_quadrature
         !!
         !! Computes Gauss-Legendre quadrature nodes and weights.
         pure module subroutine gauss_legendre_fp64 (x, w, interval)
-            real(dp), intent(out) :: x(:), w(:)
-            real(dp), intent(in), optional :: interval(2)
+            real(dop), intent(out) :: x(:), w(:)
+            real(dop), intent(in), optional :: interval(2)
         end subroutine
     end interface gauss_legendre
 
@@ -108,8 +108,8 @@ module stdlib_quadrature
         !!
         !! Computes Gauss-Legendre-Lobatto quadrature nodes and weights.
         pure module subroutine gauss_legendre_lobatto_fp64 (x, w, interval)
-            real(dp), intent(out) :: x(:), w(:)
-            real(dp), intent(in), optional :: interval(2)
+            real(dop), intent(out) :: x(:), w(:)
+            real(dop), intent(in), optional :: interval(2)
         end subroutine
     end interface gauss_legendre_lobatto
 

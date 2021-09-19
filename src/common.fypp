@@ -1,7 +1,5 @@
 #:mute
-
-#! Real kinds to be considered during templating
-#:set REAL_KINDS = ["sp", "dp", "qp"]
+#:include "common_gen.fypp"
 
 #! Real types to be considered during templating
 #:set REAL_TYPES = ["real({})".format(k) for k in REAL_KINDS]
@@ -10,16 +8,13 @@
 #:set REAL_KINDS_TYPES = list(zip(REAL_KINDS, REAL_TYPES))
 
 #! Complex kinds to be considered during templating
-#:set CMPLX_KINDS = ["sp", "dp", "qp"]
+#:set CMPLX_KINDS = REAL_KINDS
 
 #! Complex types to be considered during templating
 #:set CMPLX_TYPES = ["complex({})".format(k) for k in CMPLX_KINDS]
 
 #! Collected (kind, type) tuples for complex types
 #:set CMPLX_KINDS_TYPES = list(zip(CMPLX_KINDS, CMPLX_TYPES))
-
-#! Integer kinds to be considered during templating
-#:set INT_KINDS = ["int8", "int16", "int32", "int64"]
 
 #! Integer types to be considered during templating
 #:set INT_TYPES = ["integer({})".format(k) for k in INT_KINDS]

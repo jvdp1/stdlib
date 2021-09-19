@@ -39,22 +39,22 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in REDRANKS
-      #:set RName = rname("moment_scalar",rank, t1, k1, 'dp')
+      #:set RName = rname("moment_scalar",rank, t1, k1, 'dop')
       module function ${RName}$(x, order, dim, center, mask) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: order
         integer, intent(in) :: dim
-        real(dp),intent(in) :: center
+        real(dop),intent(in) :: center
         logical, intent(in), optional :: mask
-        real(dp) :: res${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: res${reduced_shape('x', rank, 'dim')}$
 
         if (.not.optval(mask, .true.)) then
-          res = ieee_value(1._dp, ieee_quiet_nan)
+          res = ieee_value(1._dop, ieee_quiet_nan)
           return
         end if
 
         if (dim >= 1 .and. dim <= ${rank}$) then
-          res = sum( (real(x, dp) - center)**order, dim) / size(x, dim)
+          res = sum( (real(x, dop) - center)**order, dim) / size(x, dim)
         else
           call error_stop("ERROR (moment): wrong dimension")
         end if
@@ -88,17 +88,17 @@ contains
 
   #:for k1, t1 in INT_KINDS_TYPES
     #:for rank in REDRANKS
-      #:set RName = rname("moment_mask_scalar",rank, t1, k1, 'dp')
+      #:set RName = rname("moment_mask_scalar",rank, t1, k1, 'dop')
       module function ${RName}$(x, order, dim, center, mask) result(res)
         ${t1}$, intent(in) :: x${ranksuffix(rank)}$
         integer, intent(in) :: order
         integer, intent(in) :: dim
-        real(dp), intent(in) :: center
+        real(dop), intent(in) :: center
         logical, intent(in) :: mask${ranksuffix(rank)}$
-        real(dp) :: res${reduced_shape('x', rank, 'dim')}$
+        real(dop) :: res${reduced_shape('x', rank, 'dim')}$
 
         if (dim >= 1 .and. dim <= ${rank}$) then
-          res = sum(( real(x, dp) - center)**order, dim, mask) / count(mask, dim)
+          res = sum(( real(x, dop) - center)**order, dim, mask) / count(mask, dim)
         else
           call error_stop("ERROR (moment): wrong dimension")
         end if

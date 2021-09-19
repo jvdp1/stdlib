@@ -1,5 +1,5 @@
 module stdlib_specialfunctions
-    use stdlib_kinds, only: sp, dp, qp
+    use stdlib_kinds
 
     implicit none
 
@@ -15,8 +15,8 @@ module stdlib_specialfunctions
         !! Legendre polynomial
         pure elemental module function legendre_fp64(n,x) result(leg)
             integer, intent(in) :: n
-            real(dp), intent(in) :: x
-            real(dp) :: leg
+            real(dop), intent(in) :: x
+            real(dop) :: leg
         end function
     end interface
 
@@ -26,8 +26,8 @@ module stdlib_specialfunctions
         !! First derivative Legendre polynomial
         pure elemental module function dlegendre_fp64(n,x) result(dleg)
             integer, intent(in) :: n
-            real(dp), intent(in) :: x
-            real(dp) :: dleg
+            real(dop), intent(in) :: x
+            real(dop) :: dleg
         end function
     end interface
 

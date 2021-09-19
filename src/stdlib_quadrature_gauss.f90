@@ -2,15 +2,15 @@ submodule (stdlib_quadrature) stdlib_quadrature_gauss
     use stdlib_specialfunctions, only: legendre, dlegendre
     implicit none
 
-    real(dp), parameter :: pi = acos(-1._dp)
-    real(dp), parameter :: tolerance = 4._dp * epsilon(1._dp)
+    real(dop), parameter :: pi = acos(-1._dop)
+    real(dop), parameter :: tolerance = 4._dop * epsilon(1._dop)
     integer, parameter :: newton_iters = 100
 
 contains
 
     pure module subroutine gauss_legendre_fp64 (x, w, interval)
-        real(dp), intent(out) :: x(:), w(:)
-        real(dp), intent(in), optional :: interval(2)
+        real(dop), intent(out) :: x(:), w(:)
+        real(dop), intent(in), optional :: interval(2)
 
         associate (n => size(x)-1 )
         select case (n)
@@ -18,17 +18,17 @@ contains
                 x = 0
                 w = 2
             case (1)
-                x(1) = -sqrt(1._dp/3._dp)
+                x(1) = -sqrt(1._dop/3._dop)
                 x(2) = -x(1)
                 w = 1
             case default
                 block
                 integer :: i,j
-                real(dp) :: leg, dleg, delta
+                real(dop) :: leg, dleg, delta
 
                 do i = 0, (n+1)/2 - 1
                     ! use Gauss-Chebyshev points as an initial guess
-                    x(i+1) = -cos((2*i+1)/(2._dp*n+2._dp) * pi)
+                    x(i+1) = -cos((2*i+1)/(2._dop*n+2._dop) * pi)
                     do j = 1, newton_iters
                         leg  = legendre(n+1,x(i+1))
                         dleg = dlegendre(n+1,x(i+1))
@@ -39,15 +39,15 @@ contains
                     x(n-i+1) = -x(i+1)
 
                     dleg = dlegendre(n+1,x(i+1))
-                    w(i+1)   = 2._dp/((1-x(i+1)**2)*dleg**2) 
+                    w(i+1)   = 2._dop/((1-x(i+1)**2)*dleg**2) 
                     w(n-i+1) = w(i+1)
                 end do
 
                 if (mod(n,2) == 0) then
                     x(n/2+1) = 0
 
-                    dleg = dlegendre(n+1, 0.0_dp)
-                    w(n/2+1) = 2._dp/(dleg**2) 
+                    dleg = dlegendre(n+1, 0.0_dop)
+                    w(n/2+1) = 2._dop/(dleg**2) 
                 end if
                 end block
         end select
@@ -55,17 +55,17 @@ contains
 
         if (present(interval)) then
             associate ( a => interval(1) , b => interval(2) )
-            x = 0.5_dp*(b-a)*x+0.5_dp*(b+a)
+            x = 0.5_dop*(b-a)*x+0.5_dop*(b+a)
             x(1)       = interval(1)
             x(size(x)) = interval(2)
-            w = 0.5_dp*(b-a)*w
+            w = 0.5_dop*(b-a)*w
             end associate
         end if
     end subroutine
 
     pure module subroutine gauss_legendre_lobatto_fp64 (x, w, interval)
-        real(dp), intent(out) :: x(:), w(:)
-        real(dp), intent(in), optional :: interval(2)
+        real(dop), intent(out) :: x(:), w(:)
+        real(dop), intent(in), optional :: interval(2)
 
         associate (n => size(x)-1)
         select case (n)
@@ -76,16 +76,16 @@ contains
             case default
                 block
                 integer :: i,j
-                real(dp) :: leg, dleg, delta
+                real(dop) :: leg, dleg, delta
 
-                x(1)   = -1._dp
-                x(n+1) =  1._dp
-                w(1)   =  2._dp/(n*(n+1._dp))
-                w(n+1) =  2._dp/(n*(n+1._dp))
+                x(1)   = -1._dop
+                x(n+1) =  1._dop
+                w(1)   =  2._dop/(n*(n+1._dop))
+                w(n+1) =  2._dop/(n*(n+1._dop))
 
                 do i = 1, (n+1)/2 - 1
                     ! initial guess from an approximate form given by SV Parter (1999)
-                    x(i+1) = -cos( (i+0.25_dp)*pi/n  - 3/(8*n*pi*(i+0.25_dp)))
+                    x(i+1) = -cos( (i+0.25_dop)*pi/n  - 3/(8*n*pi*(i+0.25_dop)))
                     do j = 1, newton_iters
                         leg  = legendre(n+1,x(i+1)) - legendre(n-1,x(i+1))
                         dleg = dlegendre(n+1,x(i+1)) - dlegendre(n-1,x(i+1))
@@ -96,15 +96,15 @@ contains
                     x(n-i+1) = -x(i+1)
 
                     leg = legendre(n, x(i+1))
-                    w(i+1)   = 2._dp/(n*(n+1._dp)*leg**2) 
+                    w(i+1)   = 2._dop/(n*(n+1._dop)*leg**2) 
                     w(n-i+1) = w(i+1)
                 end do
 
                 if (mod(n,2) == 0) then
                     x(n/2+1) = 0
 
-                    leg = legendre(n, 0.0_dp)
-                    w(n/2+1)   = 2._dp/(n*(n+1._dp)*leg**2) 
+                    leg = legendre(n, 0.0_dop)
+                    w(n/2+1)   = 2._dop/(n*(n+1._dop)*leg**2) 
                 end if
                 end block
         end select
@@ -112,10 +112,10 @@ contains
         
         if (present(interval)) then
             associate ( a => interval(1) , b => interval(2) )
-            x = 0.5_dp*(b-a)*x+0.5_dp*(b+a)
+            x = 0.5_dop*(b-a)*x+0.5_dop*(b+a)
             x(1)       = interval(1)
             x(size(x)) = interval(2)
-            w = 0.5_dp*(b-a)*w
+            w = 0.5_dop*(b-a)*w
             end associate
         end if
     end subroutine

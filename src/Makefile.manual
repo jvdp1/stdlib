@@ -68,11 +68,17 @@ clean:
 %.o: %.f90
 	$(FC) $(FFLAGS) -c $<
 
-$(SRCGEN): %.f90: %.fypp common.fypp
+$(SRCGEN): %.f90: %.fypp common_gen.fypp common.fypp
 	fypp $(FYPPFLAGS) $< $@
+
+common_gen.fypp: 
+	$(FC) harvest_kind.f90
+	./a.out
+	rm a.out
 
 # Fortran module dependencies
 f18estop.o: stdlib_error.o
+stdlib_kinds.o: common_gen.fypp
 stdlib_ascii.o: stdlib_kinds.o
 stdlib_bitsets.o: stdlib_kinds.o
 stdlib_bitsets_64.o: stdlib_bitsets.o

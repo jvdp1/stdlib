@@ -15,7 +15,7 @@
 module stdlib_string_type
     use stdlib_ascii, only: to_lower_ => to_lower, to_upper_ => to_upper, &
        & to_title_ => to_title, to_sentence_ => to_sentence, reverse_ => reverse
-    use stdlib_kinds, only : int8, int16, int32, int64, lk, c_bool
+    use stdlib_kinds
     implicit none
     private
 

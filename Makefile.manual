@@ -2,7 +2,7 @@
 
 FC = gfortran
 FFLAGS = -Wall -Wextra -Wimplicit-interface -fPIC -g -fcheck=all
-FYPPFLAGS=
+FYPPFLAGS="-DMAXRANK=4"
 
 export FC
 export FFLAGS
