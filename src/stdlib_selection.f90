@@ -2946,7 +2946,7 @@ contains
               !! We want the k-th smallest entry. E.G. `k=1` leads to
               !! `kth_smallest=min(a)`, and `k=size(a)` leads to
               !! `kth_smallest=max(a)`
-          character(len=len(a)), intent(out) :: kth_smallest
+          character(len(a)), intent(out) :: kth_smallest
               !! On output contains the k-th smallest value of `a(:)`
           integer(int8), intent(in), optional :: left, right
               !! If we know that:
@@ -2993,7 +2993,7 @@ contains
           contains
               subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
-                  character(len=len(a)) :: tmp
+                  character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
@@ -3010,7 +3010,7 @@ contains
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
                   integer(int8) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(left)
                   lo = left
@@ -3047,7 +3047,7 @@ contains
               !! We want the k-th smallest entry. E.G. `k=1` leads to
               !! `kth_smallest=min(a)`, and `k=size(a)` leads to
               !! `kth_smallest=max(a)`
-          character(len=len(a)), intent(out) :: kth_smallest
+          character(len(a)), intent(out) :: kth_smallest
               !! On output contains the k-th smallest value of `a(:)`
           integer(int16), intent(in), optional :: left, right
               !! If we know that:
@@ -3094,7 +3094,7 @@ contains
           contains
               subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
-                  character(len=len(a)) :: tmp
+                  character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
@@ -3111,7 +3111,7 @@ contains
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
                   integer(int16) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(left)
                   lo = left
@@ -3148,7 +3148,7 @@ contains
               !! We want the k-th smallest entry. E.G. `k=1` leads to
               !! `kth_smallest=min(a)`, and `k=size(a)` leads to
               !! `kth_smallest=max(a)`
-          character(len=len(a)), intent(out) :: kth_smallest
+          character(len(a)), intent(out) :: kth_smallest
               !! On output contains the k-th smallest value of `a(:)`
           integer(int32), intent(in), optional :: left, right
               !! If we know that:
@@ -3195,7 +3195,7 @@ contains
           contains
               subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
-                  character(len=len(a)) :: tmp
+                  character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
@@ -3212,7 +3212,7 @@ contains
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
                   integer(int32) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(left)
                   lo = left
@@ -3249,7 +3249,7 @@ contains
               !! We want the k-th smallest entry. E.G. `k=1` leads to
               !! `kth_smallest=min(a)`, and `k=size(a)` leads to
               !! `kth_smallest=max(a)`
-          character(len=len(a)), intent(out) :: kth_smallest
+          character(len(a)), intent(out) :: kth_smallest
               !! On output contains the k-th smallest value of `a(:)`
           integer(int64), intent(in), optional :: left, right
               !! If we know that:
@@ -3296,7 +3296,7 @@ contains
           contains
               subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
-                  character(len=len(a)) :: tmp
+                  character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
@@ -3313,7 +3313,7 @@ contains
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
                   integer(int64) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(left)
                   lo = left
@@ -6938,7 +6938,7 @@ contains
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
                   integer(int8) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(indx(left))
                   lo = left
@@ -7049,7 +7049,7 @@ contains
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
                   integer(int16) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(indx(left))
                   lo = left
@@ -7160,7 +7160,7 @@ contains
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
                   integer(int32) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(indx(left))
                   lo = left
@@ -7271,7 +7271,7 @@ contains
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
                   integer(int64) :: lo,hi
-                  character(len=len(a)) :: pivot
+                  character(len(a)) :: pivot
 
                   pivot = a(indx(left))
                   lo = left
