@@ -163,13 +163,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int8), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -177,7 +177,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int8), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -264,13 +264,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int8), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -278,7 +278,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int8), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -365,13 +365,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int8), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -379,7 +379,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int8), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -466,13 +466,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int8), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -480,7 +480,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int8), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -567,13 +567,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int16), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -581,7 +581,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int16), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -668,13 +668,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int16), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -682,7 +682,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int16), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -769,13 +769,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int16), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -783,7 +783,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int16), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -870,13 +870,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int16), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -884,7 +884,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int16), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -971,13 +971,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int32), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -985,7 +985,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int32), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -1072,13 +1072,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int32), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1086,7 +1086,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int32), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -1173,13 +1173,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int32), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1187,7 +1187,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int32), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -1274,13 +1274,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int32), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1288,7 +1288,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int32), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -1375,13 +1375,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int64), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1389,7 +1389,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int64), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -1476,13 +1476,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int64), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1490,7 +1490,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int64), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -1577,13 +1577,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int64), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1591,7 +1591,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int64), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -1678,13 +1678,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   integer(int64), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1692,7 +1692,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   integer(int64), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -1779,13 +1779,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(sp), intent(inout) :: a, b
                   real(sp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(sp), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1793,7 +1793,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(sp), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -1880,13 +1880,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(sp), intent(inout) :: a, b
                   real(sp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(sp), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1894,7 +1894,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(sp), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -1981,13 +1981,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(sp), intent(inout) :: a, b
                   real(sp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(sp), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -1995,7 +1995,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(sp), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -2082,13 +2082,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(sp), intent(inout) :: a, b
                   real(sp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(sp), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2096,7 +2096,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(sp), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -2183,13 +2183,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(dp), intent(inout) :: a, b
                   real(dp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(dp), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2197,7 +2197,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(dp), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -2284,13 +2284,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(dp), intent(inout) :: a, b
                   real(dp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(dp), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2298,7 +2298,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(dp), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -2385,13 +2385,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(dp), intent(inout) :: a, b
                   real(dp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(dp), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2399,7 +2399,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(dp), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -2486,13 +2486,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(dp), intent(inout) :: a, b
                   real(dp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(dp), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2500,7 +2500,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(dp), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -2587,13 +2587,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(qp), intent(inout) :: a, b
                   real(qp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(qp), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2601,7 +2601,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(qp), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -2688,13 +2688,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(qp), intent(inout) :: a, b
                   real(qp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(qp), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2702,7 +2702,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(qp), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -2789,13 +2789,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(qp), intent(inout) :: a, b
                   real(qp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(qp), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2803,7 +2803,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(qp), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -2890,13 +2890,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   real(qp), intent(inout) :: a, b
                   real(qp) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   real(qp), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -2904,7 +2904,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   real(qp), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -2991,13 +2991,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
                   character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   character(len=*), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3005,7 +3005,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   character(len=*), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -3092,13 +3092,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
                   character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   character(len=*), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3106,7 +3106,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   character(len=*), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -3193,13 +3193,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
                   character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   character(len=*), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3207,7 +3207,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   character(len=*), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -3294,13 +3294,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   character(len=*), intent(inout) :: a, b
                   character(len(a)) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   character(len=*), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3308,7 +3308,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   character(len=*), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -3395,13 +3395,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   type(string_type), intent(inout) :: a, b
                   type(string_type) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   type(string_type), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3409,7 +3409,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   type(string_type), intent(inout) :: a(:)
                   integer(int8), intent(in) :: left, right
                   integer(int8), intent(out) :: iPivot 
@@ -3496,13 +3496,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   type(string_type), intent(inout) :: a, b
                   type(string_type) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   type(string_type), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3510,7 +3510,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   type(string_type), intent(inout) :: a(:)
                   integer(int16), intent(in) :: left, right
                   integer(int16), intent(out) :: iPivot 
@@ -3597,13 +3597,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   type(string_type), intent(inout) :: a, b
                   type(string_type) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   type(string_type), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3611,7 +3611,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   type(string_type), intent(inout) :: a(:)
                   integer(int32), intent(in) :: left, right
                   integer(int32), intent(out) :: iPivot 
@@ -3698,13 +3698,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   type(string_type), intent(inout) :: a, b
                   type(string_type) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine medianOf3(a, left, mid, right)
+              pure subroutine medianOf3(a, left, mid, right)
                   type(string_type), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, mid, right 
                   if(a(right) < a(left)) call swap(a(right), a(left))
@@ -3712,7 +3712,7 @@ contains
                   if(a(right) < a(mid) ) call swap(a(mid)  , a(right))
               end subroutine
 
-              subroutine partition(a,left,right,iPivot)
+              pure subroutine partition(a,left,right,iPivot)
                   type(string_type), intent(inout) :: a(:)
                   integer(int64), intent(in) :: left, right
                   integer(int64), intent(out) :: iPivot 
@@ -3809,13 +3809,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int8), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -3824,7 +3824,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int8), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -3920,13 +3920,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int8), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -3935,7 +3935,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int8), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -4031,13 +4031,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int8), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -4046,7 +4046,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int8), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -4142,13 +4142,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int8), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -4157,7 +4157,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int8), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -4253,13 +4253,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int16), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -4268,7 +4268,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int16), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -4364,13 +4364,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int16), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -4379,7 +4379,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int16), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -4475,13 +4475,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int16), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -4490,7 +4490,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int16), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -4586,13 +4586,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int16), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -4601,7 +4601,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int16), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -4697,13 +4697,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int32), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -4712,7 +4712,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int32), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -4808,13 +4808,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int32), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -4823,7 +4823,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int32), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -4919,13 +4919,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int32), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -4934,7 +4934,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int32), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -5030,13 +5030,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int32), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -5045,7 +5045,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int32), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -5141,13 +5141,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int64), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -5156,7 +5156,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int64), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -5252,13 +5252,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int64), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -5267,7 +5267,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int64), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -5363,13 +5363,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int64), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -5378,7 +5378,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int64), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -5474,13 +5474,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   integer(int64), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -5489,7 +5489,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   integer(int64), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -5585,13 +5585,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(sp), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -5600,7 +5600,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(sp), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -5696,13 +5696,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(sp), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -5711,7 +5711,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(sp), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -5807,13 +5807,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(sp), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -5822,7 +5822,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(sp), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -5918,13 +5918,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(sp), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -5933,7 +5933,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(sp), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -6029,13 +6029,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(dp), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -6044,7 +6044,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(dp), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -6140,13 +6140,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(dp), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -6155,7 +6155,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(dp), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -6251,13 +6251,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(dp), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -6266,7 +6266,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(dp), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -6362,13 +6362,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(dp), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -6377,7 +6377,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(dp), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -6473,13 +6473,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(qp), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -6488,7 +6488,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(qp), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -6584,13 +6584,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(qp), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -6599,7 +6599,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(qp), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -6695,13 +6695,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(qp), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -6710,7 +6710,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(qp), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -6806,13 +6806,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   real(qp), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -6821,7 +6821,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   real(qp), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -6917,13 +6917,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   character(len=*), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -6932,7 +6932,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   character(len=*), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -7028,13 +7028,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   character(len=*), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -7043,7 +7043,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   character(len=*), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -7139,13 +7139,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   character(len=*), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -7154,7 +7154,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   character(len=*), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -7250,13 +7250,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   character(len=*), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -7265,7 +7265,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   character(len=*), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
@@ -7361,13 +7361,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int8), intent(inout) :: a, b
                   integer(int8) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   type(string_type), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, mid, right 
@@ -7376,7 +7376,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   type(string_type), intent(in) :: a(:)
                   integer(int8), intent(inout) :: indx(:)
                   integer(int8), intent(in) :: left, right
@@ -7472,13 +7472,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int16), intent(inout) :: a, b
                   integer(int16) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   type(string_type), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, mid, right 
@@ -7487,7 +7487,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   type(string_type), intent(in) :: a(:)
                   integer(int16), intent(inout) :: indx(:)
                   integer(int16), intent(in) :: left, right
@@ -7583,13 +7583,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int32), intent(inout) :: a, b
                   integer(int32) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   type(string_type), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, mid, right 
@@ -7598,7 +7598,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   type(string_type), intent(in) :: a(:)
                   integer(int32), intent(inout) :: indx(:)
                   integer(int32), intent(in) :: left, right
@@ -7694,13 +7694,13 @@ contains
           end do
 
           contains
-              subroutine swap(a, b)
+              pure subroutine swap(a, b)
                   integer(int64), intent(inout) :: a, b
                   integer(int64) :: tmp
                   tmp = a; a = b; b = tmp
               end subroutine
 
-              subroutine arg_medianOf3(a, indx, left, mid, right)
+              pure subroutine arg_medianOf3(a, indx, left, mid, right)
                   type(string_type), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, mid, right 
@@ -7709,7 +7709,7 @@ contains
                   if(a(indx(right)) < a(indx(mid)) ) call swap(indx(mid)  , indx(right))
               end subroutine
 
-              subroutine arg_partition(a, indx, left,right,iPivot)
+              pure subroutine arg_partition(a, indx, left,right,iPivot)
                   type(string_type), intent(in) :: a(:)
                   integer(int64), intent(inout) :: indx(:)
                   integer(int64), intent(in) :: left, right
