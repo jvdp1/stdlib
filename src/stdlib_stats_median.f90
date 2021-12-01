@@ -32,7 +32,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -63,7 +63,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -94,7 +94,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -125,7 +125,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -156,7 +156,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -187,7 +187,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -218,7 +218,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -249,7 +249,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -280,7 +280,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -311,7 +311,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -342,7 +342,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -373,7 +373,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -404,7 +404,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -435,7 +435,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -466,7 +466,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -497,7 +497,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + &
                    real(val1, kind=dp)) / 2._dp
         else
@@ -532,7 +532,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else
             res = val
@@ -566,7 +566,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else
             res = val
@@ -600,7 +600,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else
             res = val
@@ -634,7 +634,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else
             res = val
@@ -668,7 +668,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else
             res = val
@@ -702,7 +702,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else
             res = val
@@ -736,7 +736,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else
             res = val
@@ -770,7 +770,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else
             res = val
@@ -807,7 +807,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -850,7 +850,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -866,7 +866,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -912,7 +912,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -930,7 +930,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -948,7 +948,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -998,7 +998,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1018,7 +1018,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1038,7 +1038,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1058,7 +1058,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1101,7 +1101,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1144,7 +1144,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1160,7 +1160,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1206,7 +1206,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1224,7 +1224,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1242,7 +1242,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1292,7 +1292,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1312,7 +1312,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1332,7 +1332,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1352,7 +1352,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1395,7 +1395,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1438,7 +1438,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1454,7 +1454,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1500,7 +1500,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1518,7 +1518,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1536,7 +1536,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1586,7 +1586,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1606,7 +1606,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1626,7 +1626,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1646,7 +1646,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1689,7 +1689,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1732,7 +1732,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1748,7 +1748,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1794,7 +1794,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1812,7 +1812,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1830,7 +1830,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1880,7 +1880,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1900,7 +1900,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1920,7 +1920,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1940,7 +1940,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else
@@ -1988,7 +1988,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (val + val1) / 2._sp
                 else
@@ -2036,7 +2036,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (val + val1) / 2._sp
                 else
@@ -2057,7 +2057,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (val + val1) / 2._sp
                 else
@@ -2108,7 +2108,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (val + val1) / 2._sp
                 else
@@ -2131,7 +2131,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (val + val1) / 2._sp
                 else
@@ -2154,7 +2154,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (val + val1) / 2._sp
                 else
@@ -2209,7 +2209,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (val + val1) / 2._sp
                 else
@@ -2234,7 +2234,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (val + val1) / 2._sp
                 else
@@ -2259,7 +2259,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (val + val1) / 2._sp
                 else
@@ -2284,7 +2284,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (val + val1) / 2._sp
                 else
@@ -2332,7 +2332,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (val + val1) / 2._dp
                 else
@@ -2380,7 +2380,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (val + val1) / 2._dp
                 else
@@ -2401,7 +2401,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (val + val1) / 2._dp
                 else
@@ -2452,7 +2452,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (val + val1) / 2._dp
                 else
@@ -2475,7 +2475,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (val + val1) / 2._dp
                 else
@@ -2498,7 +2498,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (val + val1) / 2._dp
                 else
@@ -2553,7 +2553,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (val + val1) / 2._dp
                 else
@@ -2578,7 +2578,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (val + val1) / 2._dp
                 else
@@ -2603,7 +2603,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (val + val1) / 2._dp
                 else
@@ -2628,7 +2628,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (val + val1) / 2._dp
                 else
@@ -2672,7 +2672,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2707,7 +2707,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2742,7 +2742,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2777,7 +2777,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2812,7 +2812,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2847,7 +2847,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2882,7 +2882,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2917,7 +2917,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2952,7 +2952,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -2987,7 +2987,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3022,7 +3022,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3057,7 +3057,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3092,7 +3092,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3127,7 +3127,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3162,7 +3162,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3197,7 +3197,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3236,7 +3236,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3275,7 +3275,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3314,7 +3314,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3353,7 +3353,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._sp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3392,7 +3392,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3431,7 +3431,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3470,7 +3470,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3509,7 +3509,7 @@ contains
         call select(x_tmp, c, val)
 
         if (mod(n, 2_int64) == 0) then
-          call select(x_tmp, c+1, val1)
+          call select(x_tmp, c+1, val1, left = c)
             res = (val + val1) / 2._dp
         else if (mod(n, 2_int64) == 1) then
             res = val
@@ -3551,7 +3551,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3601,7 +3601,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3630,7 +3630,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3683,7 +3683,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3714,7 +3714,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3745,7 +3745,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3802,7 +3802,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3835,7 +3835,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3868,7 +3868,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3901,7 +3901,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -3951,7 +3951,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4001,7 +4001,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4030,7 +4030,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4083,7 +4083,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4114,7 +4114,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4145,7 +4145,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4202,7 +4202,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4235,7 +4235,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4268,7 +4268,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4301,7 +4301,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4351,7 +4351,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4401,7 +4401,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4430,7 +4430,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4483,7 +4483,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4514,7 +4514,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4545,7 +4545,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4602,7 +4602,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4635,7 +4635,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4668,7 +4668,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4701,7 +4701,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4751,7 +4751,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4801,7 +4801,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4830,7 +4830,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4883,7 +4883,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4914,7 +4914,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -4945,7 +4945,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5002,7 +5002,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5035,7 +5035,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5068,7 +5068,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5101,7 +5101,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (real(val, kind=dp) + real(val1, kind=dp)) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5156,7 +5156,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5211,7 +5211,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5245,7 +5245,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5303,7 +5303,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5339,7 +5339,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5375,7 +5375,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5437,7 +5437,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5475,7 +5475,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5513,7 +5513,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5551,7 +5551,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (val + val1) / 2._sp
                 else if (mod(n, 2_int64) == 1) then
@@ -5606,7 +5606,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5661,7 +5661,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5695,7 +5695,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5753,7 +5753,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5789,7 +5789,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5825,7 +5825,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5887,7 +5887,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j2, j3, j4) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5925,7 +5925,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j3, j4) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -5963,7 +5963,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j4) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
@@ -6001,7 +6001,7 @@ contains
                 call select(x_tmp, c, val)
 
                 if (mod(n, 2_int64) == 0) then
-                    call select(x_tmp, c+1, val1)
+                    call select(x_tmp, c+1, val1, left = c)
                     res(j1, j2, j3) = &
                         (val + val1) / 2._dp
                 else if (mod(n, 2_int64) == 1) then
