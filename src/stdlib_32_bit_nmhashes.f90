@@ -751,7 +751,7 @@ contains
     end function int64_nmhash32
 
 
-    pure module function character_nmhash32( key, seed ) result(hash_code)
+    elemental module function character_nmhash32( key, seed ) result(hash_code)
 !! NMHASH32 hash function for default character keys
         character(*), intent(in)   :: key
         integer(int32), intent(in) :: seed
@@ -796,7 +796,7 @@ contains
     end function int64_nmhash32x
 
 
-    pure module function character_nmhash32x( key, seed ) result(hash_code)
+    elemental module function character_nmhash32x( key, seed ) result(hash_code)
 !! NMHASH32X hash function for default character keys
         character(*), intent(in)   :: key
         integer(int32), intent(in) :: seed

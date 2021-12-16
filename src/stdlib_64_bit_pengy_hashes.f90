@@ -136,7 +136,8 @@ contains
     end function int64_pengy_hash
 
 
-    pure module function character_pengy_hash( key, seed ) result(hash_code)
+    elemental module function character_pengy_hash( key, seed ) &
+        result(hash_code)
 !! PENGY_HASH hash function for default character keys
         character(*), intent(in)   :: key
         integer(int32), intent(in) :: seed

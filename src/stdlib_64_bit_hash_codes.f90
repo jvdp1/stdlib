@@ -110,7 +110,7 @@ module stdlib_64_bit_hash_codes
               integer(int_hash)              :: hash_code
           end function int64_fnv_1
 
-        pure module function character_fnv_1( key ) result(hash_code)
+        elemental module function character_fnv_1( key ) result(hash_code)
 !! FNV_1 hash function for character strings
             character(*), intent(in)   :: key
             integer(int_hash)             :: hash_code
@@ -142,57 +142,13 @@ module stdlib_64_bit_hash_codes
               integer(int_hash)           :: hash_code
           end function int64_fnv_1a
 
-        pure module function character_fnv_1a( key ) result(hash_code)
+        elemental module function character_fnv_1a( key ) result(hash_code)
 !! FNV_1A hash function for character strings
             character(*), intent(in)   :: key
              integer(int_hash)         :: hash_code
         end function character_fnv_1a
 
     end interface fnv_1a_hash
-
-
-    interface murmur2_hash
-!!  MURMUR2_HASHES interfaces
-
-          pure module function int8_murmur2_hash( key, seed ) &
-              result(hash_code)
-!! MURMUR2 hash function for rank 1 arrays of kind int8
-              integer(int8), intent(in) :: key(0:)
-              integer(int_hash), intent(in)  :: seed
-              integer(int_hash) :: hash_code
-          end function int8_murmur2_hash
-          pure module function int16_murmur2_hash( key, seed ) &
-              result(hash_code)
-!! MURMUR2 hash function for rank 1 arrays of kind int16
-              integer(int16), intent(in) :: key(0:)
-              integer(int_hash), intent(in)  :: seed
-              integer(int_hash) :: hash_code
-          end function int16_murmur2_hash
-          pure module function int32_murmur2_hash( key, seed ) &
-              result(hash_code)
-!! MURMUR2 hash function for rank 1 arrays of kind int32
-              integer(int32), intent(in) :: key(0:)
-              integer(int_hash), intent(in)  :: seed
-              integer(int_hash) :: hash_code
-          end function int32_murmur2_hash
-          pure module function int64_murmur2_hash( key, seed ) &
-              result(hash_code)
-!! MURMUR2 hash function for rank 1 arrays of kind int64
-              integer(int64), intent(in) :: key(0:)
-              integer(int_hash), intent(in)  :: seed
-              integer(int_hash) :: hash_code
-          end function int64_murmur2_hash
-
-        pure module function character_murmur2_hash( key, seed ) &
-            result(hash_code)
-!! MURMUR2 hash function for character strings
-            character(*), intent(in)    :: key
-            integer(int_hash), intent(in)  :: seed
-            integer(int_hash) :: hash_code
-        end function character_murmur2_hash
-
-    end interface murmur2_hash
-
 
     interface spooky_hash
 !! SPOOKY_HASH interfaces
@@ -312,7 +268,7 @@ interface
         integer(int64)           :: hash_code
     end function int64_pengy_hash
 
-        pure module function character_pengy_hash( key, seed ) &
+        elemental module function character_pengy_hash( key, seed ) &
             result(hash_code)
 !! MIR HASH STRICT function for character strings
             character(*), intent(in)      :: key
@@ -333,7 +289,7 @@ interface
 
 contains
 
-    pure function fibonacci_hash( key, nbits ) result( sample )
+    elemental function fibonacci_hash( key, nbits ) result( sample )
 !! Maps the 64 bit integer KEY to an unsigned integer value with only NBITS
 !! bits where NBITS is less than 64
         integer(int64), intent(in) :: key
@@ -344,7 +300,7 @@ contains
 
     end function fibonacci_hash
 
-    pure function universal_mult_hash( key, seed, nbits ) result( sample )
+    elemental function universal_mult_hash( key, seed, nbits ) result( sample )
 !! Uses the "random" odd 64 bit integer SEED to map the 64 bit integer KEY to
 !! an unsigned integer value with only NBITS bits where NBITS is less than 64.
         integer(int64), intent(in) :: key

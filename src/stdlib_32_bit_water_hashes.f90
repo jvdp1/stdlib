@@ -266,7 +266,8 @@ contains
     end function int64_water_hash
 
 
-    pure module function character_water_hash( key, seed ) result(hash_code)
+    elemental module function character_water_hash( key, seed ) &
+        result(hash_code)
         character(*), intent(in)   :: key
         integer(int64), intent(in) :: seed
         integer(int_hash)          :: hash_code

@@ -78,7 +78,7 @@ contains
     end function int64_fnv_1
 
 
-    pure module function character_fnv_1( key ) result(hash_code)
+    elemental module function character_fnv_1( key ) result(hash_code)
         character(*), intent(in)      :: key
         integer(int_hash)             :: hash_code
 
@@ -146,7 +146,7 @@ contains
     end function int64_fnv_1a
 
 
-    pure module function character_fnv_1a( key ) result(hash_code)
+    elemental module function character_fnv_1a( key ) result(hash_code)
         character(*), intent(in)      :: key
         integer(int_hash)             :: hash_code
 

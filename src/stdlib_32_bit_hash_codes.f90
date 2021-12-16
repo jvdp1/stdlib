@@ -95,7 +95,7 @@ module stdlib_32_bit_hash_codes
           end function int64_fnv_1
 
 
-        pure module function character_fnv_1( key ) result(hash_code)
+        elemental module function character_fnv_1( key ) result(hash_code)
 !! FNV_1 hash function for default character string keys
             character(*), intent(in)      :: key
             integer(int_hash)             :: hash_code
@@ -130,7 +130,7 @@ module stdlib_32_bit_hash_codes
           end function int64_fnv_1a
 
 
-        pure module function character_fnv_1a( key ) result(hash_value)
+        elemental module function character_fnv_1a( key ) result(hash_value)
 !! FNV_1A hash function for default character string keys
             character(*), intent(in)      :: key
             integer(int_hash)             :: hash_value
@@ -174,7 +174,7 @@ module stdlib_32_bit_hash_codes
           end function int64_nmhash32
 
 
-        pure module function character_nmhash32( key, seed ) &
+        elemental module function character_nmhash32( key, seed ) &
             result(hash_value)
 !! NMHASH32 hash function for default character string keys
             character(*), intent(in)      :: key
@@ -220,7 +220,7 @@ module stdlib_32_bit_hash_codes
           end function int64_nmhash32x
 
 
-        pure module function character_nmhash32x( key, seed ) &
+        elemental module function character_nmhash32x( key, seed ) &
             result(hash_value)
 !! NMHASH32 hash function for default character string keys
             character(*), intent(in)      :: key
@@ -262,7 +262,7 @@ module stdlib_32_bit_hash_codes
               integer(int_hash)           :: hash_code
           end function int64_water_hash
 
-        pure module function character_water_hash( key, seed ) &
+        elemental module function character_water_hash( key, seed ) &
             result(hash_code)
 !! WATER hash function for default character string keys
             character(*), intent(in)   :: key
@@ -298,7 +298,7 @@ module stdlib_32_bit_hash_codes
 
 contains
 
-    pure function fibonacci_hash( key, nbits ) result( sample )
+    elemental function fibonacci_hash( key, nbits ) result( sample )
 !! Maps the 32 bit integer KEY to an unsigned integer value with only NBITS
 !! bits where NBITS is less than 32
         integer(int32), intent(in) :: key
@@ -309,7 +309,7 @@ contains
 
     end function fibonacci_hash
 
-    pure function universal_mult_hash( key, seed, nbits ) result( sample )
+    elemental function universal_mult_hash( key, seed, nbits ) result( sample )
 !! Uses the "random" odd 32 bit integer SEED to map the 32 bit integer KEY to
 !! an unsigned integer value with only NBITS bits where NBITS is less than 32
         integer(int32), intent(in) :: key
