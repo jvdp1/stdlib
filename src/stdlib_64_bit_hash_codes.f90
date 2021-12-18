@@ -87,8 +87,10 @@ module stdlib_64_bit_hash_codes
     end type spooky_subhash
 
     interface fnv_1_hash
+!! Version: experimental
+!!
 !! FNV_1 interfaces
-
+!! ([Specification](../page/specs/stdlib_hash_procedures.html#fnv_1-calculates-a-hash-code-from-a-key))
           pure module function int8_fnv_1( key ) result(hash_code)
 !! FNV_1 hash function for rank 1 arrays of kind int8
               integer(int8), intent(in) :: key(:)
@@ -120,7 +122,10 @@ module stdlib_64_bit_hash_codes
 
 
     interface fnv_1a_hash
+!! Version: experimental
+!!
 !! FNV_1A interfaces
+!! ([Specification](../page/specs/stdlib_hash_procedures.html#fnv_1a-calculates-a-hash-code-from-a-key))
           pure module function int8_fnv_1a( key ) result(hash_code)
 !! FNV_1A hash function for rank 1 arrays of kind int8
               integer(int8), intent(in) :: key(:)
@@ -151,8 +156,10 @@ module stdlib_64_bit_hash_codes
     end interface fnv_1a_hash
 
     interface spooky_hash
+!! Version: experimental
+!!
 !! SPOOKY_HASH interfaces
-
+!!([Specification](../page/specs/stdlib_hash_procedures.html#spooky_hash-maps-a-character-string-or-integer-vector-to-an-integer))
            module function int8_spooky_hash( key, seed ) &
               result(hash_code)
 !! SPOOKY HASH function for rank 1 arrays of kind int8
@@ -195,6 +202,8 @@ module stdlib_64_bit_hash_codes
     interface
 
          module subroutine spookyHash_128( key, hash_inout )
+!! Version: experimental
+!!
             integer(int8), intent(in), target :: key(0:)
             integer(int_hash), intent(inout)  :: hash_inout(2)
         end subroutine spookyHash_128
@@ -203,6 +212,8 @@ module stdlib_64_bit_hash_codes
 
 
     interface spooky_init
+!! Version: experimental
+!!
 
          pure module subroutine spookysubhash_init( self, seed )
             type(spooky_subhash), intent(out) :: self
@@ -215,6 +226,8 @@ module stdlib_64_bit_hash_codes
     interface spooky_update
 
          module subroutine spookyhash_update( spooky, key )
+!! Version: experimental
+!!
             type(spooky_subhash), intent(inout) :: spooky
             integer(int8), intent(in)         :: key(0:)
         end subroutine spookyhash_update
@@ -225,6 +238,8 @@ module stdlib_64_bit_hash_codes
     interface spooky_final
 
          module subroutine spookyhash_final(spooky, hash_code)
+!! Version: experimental
+!!
             type(spooky_subhash), intent(inout) :: spooky
             integer(int_hash), intent(inout)    :: hash_code(2)
         end subroutine spookyhash_final
@@ -234,15 +249,19 @@ module stdlib_64_bit_hash_codes
 interface
 
         module subroutine new_spooky_hash_seed( seed )
-! Random SEED generator for
+!! Version: experimental
+!!
+!! Random SEED generator for
             integer(int64), intent(inout) :: seed(2)
         end subroutine new_spooky_hash_seed
 
     end interface
 
     interface pengy_hash
+!! Version: experimental
+!!
 !! PENGY_HASH interfaces
-
+!! ([Specification](../page/specs/stdlib_hash_procedures.html#pengy_hash-maps-a-character-string-or-integer-vector-to-an-integer))
     pure module function int8_pengy_hash( key, seed ) result(hash_code)
 !! PENGY_HASH hash function for rank 1 array keys of kind int8
         integer(int8), intent(in) :: key(:)
@@ -281,7 +300,9 @@ interface
     interface
 
         module subroutine new_pengy_hash_seed( seed )
-! Random SEED generator for MIR_HASH_STRICT
+!! Version: experimental
+!!
+!! Random SEED generator for MIR_HASH_STRICT
             integer(int32), intent(inout) :: seed
         end subroutine new_pengy_hash_seed
 
@@ -290,8 +311,12 @@ interface
 contains
 
     elemental function fibonacci_hash( key, nbits ) result( sample )
+!! Version: experimental
+!!
 !! Maps the 64 bit integer KEY to an unsigned integer value with only NBITS
 !! bits where NBITS is less than 64
+!! ([Specification](../page/specs/stdlib_hash_procedures.html#fibonacci_hash-maps-an-integer-to-a-smaller-number-of-bits_1))
+
         integer(int64), intent(in) :: key
         integer, intent(in)        :: nbits
         integer(int64)             :: sample
@@ -301,8 +326,12 @@ contains
     end function fibonacci_hash
 
     elemental function universal_mult_hash( key, seed, nbits ) result( sample )
+!! Version: experimental
+!!
 !! Uses the "random" odd 64 bit integer SEED to map the 64 bit integer KEY to
 !! an unsigned integer value with only NBITS bits where NBITS is less than 64.
+!! ([Specification](../page/specs/stdlib_hash_procedures.html#universal_mult_hash-maps-an-integer-to-a-smaller-number-of-bits_1))
+
         integer(int64), intent(in) :: key
         integer(int64), intent(in) :: seed
         integer, intent(in)        :: nbits
@@ -313,8 +342,12 @@ contains
     end function universal_mult_hash
 
     subroutine odd_random_integer( harvest )
+!! Version: experimental
+!!
 !! Returns a 64 bit pseudo random integer, HARVEST, distributed uniformly over
 !! the odd integers of the 64 bit kind.
+!! ([Specification](../page/specs/stdlib_hash_procedures.html#odd_random_integer-returns-odd-integer))
+
         integer(int64), intent(out) :: harvest
         real(dp) :: sample(2)
         integer(int32) :: part(2)
@@ -327,6 +360,8 @@ contains
     end subroutine odd_random_integer
 
     subroutine random_integer( harvest )
+!! Version: experimental
+!!
 !! Returns a 64 bit pseudo random integer, HARVEST, distributed uniformly over
 !! the values of the 64 bit kind.
         integer(int64), intent(out) :: harvest
