@@ -251,7 +251,7 @@ interface
         module subroutine new_spooky_hash_seed( seed )
 !! Version: experimental
 !!
-!! Random seed generator for SPOOKY_HASH
+!! Random SEED generator for
             integer(int64), intent(inout) :: seed(2)
         end subroutine new_spooky_hash_seed
 
@@ -302,7 +302,7 @@ interface
         module subroutine new_pengy_hash_seed( seed )
 !! Version: experimental
 !!
-!! Random seed generator for MIR_HASH_STRICT
+!! Random SEED generator for MIR_HASH_STRICT
             integer(int32), intent(inout) :: seed
         end subroutine new_pengy_hash_seed
 
@@ -313,8 +313,8 @@ contains
     elemental function fibonacci_hash( key, nbits ) result( sample )
 !! Version: experimental
 !!
-!! Maps the 64 bit integer `key` to an unsigned integer value with only `nbits`
-!! bits where `nbits` is less than 64
+!! Maps the 64 bit integer KEY to an unsigned integer value with only NBITS
+!! bits where NBITS is less than 64
 !! ([Specification](../page/specs/stdlib_hash_procedures.html#fibonacci_hash-maps-an-integer-to-a-smaller-number-of-bits_1))
 
         integer(int64), intent(in) :: key
@@ -328,8 +328,8 @@ contains
     elemental function universal_mult_hash( key, seed, nbits ) result( sample )
 !! Version: experimental
 !!
-!! Uses the "random" odd 64 bit integer `seed` to map the 64 bit integer `key` to
-!! an unsigned integer value with only `nbits` bits where `nbits` is less than 64.
+!! Uses the "random" odd 64 bit integer SEED to map the 64 bit integer KEY to
+!! an unsigned integer value with only NBITS bits where NBITS is less than 64.
 !! ([Specification](../page/specs/stdlib_hash_procedures.html#universal_mult_hash-maps-an-integer-to-a-smaller-number-of-bits_1))
 
         integer(int64), intent(in) :: key
@@ -344,7 +344,7 @@ contains
     subroutine odd_random_integer( harvest )
 !! Version: experimental
 !!
-!! Returns a 64 bit pseudo random integer, `harvest`, distributed uniformly over
+!! Returns a 64 bit pseudo random integer, HARVEST, distributed uniformly over
 !! the odd integers of the 64 bit kind.
 !! ([Specification](../page/specs/stdlib_hash_procedures.html#odd_random_integer-returns-odd-integer))
 
@@ -362,7 +362,7 @@ contains
     subroutine random_integer( harvest )
 !! Version: experimental
 !!
-!! Returns a 64 bit pseudo random integer, `harvest`, distributed uniformly over
+!! Returns a 64 bit pseudo random integer, HARVEST, distributed uniformly over
 !! the values of the 64 bit kind.
         integer(int64), intent(out) :: harvest
         real(dp) :: sample(2)
