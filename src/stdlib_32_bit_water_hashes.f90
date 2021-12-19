@@ -72,7 +72,7 @@
 !!------------------------------------------------------------------------------
 
 
-submodule(stdlib_32_bit_hash_codes) stdlib_32_bit_water_hashes
+submodule(stdlib_hash_32bit) stdlib_32_bit_water_hashes
     implicit none
 
 contains

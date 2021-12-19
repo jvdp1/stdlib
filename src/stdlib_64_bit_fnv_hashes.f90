@@ -10,7 +10,7 @@
 !!------------------------------------------------------------------------------
 
 
-submodule(stdlib_64_bit_hash_codes) stdlib_64_bit_fnv_hashes
+submodule(stdlib_hash_64bit) stdlib_64_bit_fnv_hashes
 ! An implementation of the FNV hashes 1 and 1a of Glenn Fowler, Landon Curt
 ! Noll, and Kiem-Phong-Vo,
 ! https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function

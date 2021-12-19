@@ -1,5 +1,5 @@
 
-module stdlib_32_bit_hash_codes
+module stdlib_hash_32bit
 
     use, intrinsic :: iso_fortran_env, only : &
         character_storage_size
@@ -320,8 +320,8 @@ contains
     elemental function fibonacci_hash( key, nbits ) result( sample )
 !! Version: experimental
 !!
-!! Maps the 32 bit integer KEY to an unsigned integer value with only NBITS
-!! bits where NBITS is less than 32
+!! Maps the 32 bit integer `key` to an unsigned integer value with only `nbits`
+!! bits where `nbits` is less than 32
 !! ([Specification](../page/specs/stdlib_hash_procedures.html#fibonacci_hash-maps-an-integer-to-a-smaller-number-of-bits))
 
         integer(int32), intent(in) :: key
@@ -335,8 +335,8 @@ contains
     elemental function universal_mult_hash( key, seed, nbits ) result( sample )
 !! Version: experimental
 !!
-!! Uses the "random" odd 32 bit integer SEED to map the 32 bit integer KEY to
-!! an unsigned integer value with only NBITS bits where NBITS is less than 32
+!! Uses the "random" odd 32 bit integer `seed` to map the 32 bit integer `key` to
+!! an unsigned integer value with only `nbits` bits where `nbits` is less than 32
 !! ([Specification](../page/specs/stdlib_hash_procedures.html#universal_mult_hash-maps-an-integer-to-a-smaller-number-of-bits))
         integer(int32), intent(in) :: key
         integer(int32), intent(in) :: seed
@@ -350,8 +350,8 @@ contains
     subroutine odd_random_integer( harvest )
 !! Version: experimental
 !!
-!! Returns a 32 bit pseudo random integer, HARVEST, distributed uniformly over
-!! the odd integers of the INT32 kind.
+!! Returns a 32 bit pseudo random integer, `harvest`, distributed uniformly over
+!! the odd integers of the `int32` kind.
 !! ([Specification](../page/specs/stdlib_hash_procedures.html#odd_random_integer-returns-an-odd-integer))
         integer(int32), intent(out) :: harvest
         real(dp) :: sample
@@ -363,4 +363,4 @@ contains
 
     end subroutine odd_random_integer
 
-end module stdlib_32_bit_hash_codes
+end module stdlib_hash_32bit

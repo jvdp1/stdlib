@@ -38,7 +38,7 @@
 !!------------------------------------------------------------------------------
 
 
-submodule(stdlib_64_bit_hash_codes) stdlib_64_bit_pengy_hashes
+submodule(stdlib_hash_64bit) stdlib_64_bit_pengy_hashes
 
     implicit none
 

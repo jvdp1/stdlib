@@ -11,7 +11,7 @@
 !!------------------------------------------------------------------------------
 
 
-submodule(stdlib_64_bit_hash_codes) stdlib_64_bit_spookyv2_hashes
+submodule(stdlib_hash_64bit) stdlib_64_bit_spookyv2_hashes
 
 ! I have tried to make this portable while retaining efficiency. I assume
 ! processors with two's complement integers from 8, 16, 32, and 64 bits.

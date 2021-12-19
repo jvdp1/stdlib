@@ -42,7 +42,7 @@
 !!------------------------------------------------------------------------------
 
 
-submodule(stdlib_32_bit_hash_codes) stdlib_32_bit_nmhashes
+submodule(stdlib_hash_32bit) stdlib_32_bit_nmhashes
 
     implicit none
 
