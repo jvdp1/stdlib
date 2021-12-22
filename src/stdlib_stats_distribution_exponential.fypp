@@ -20,7 +20,7 @@ module stdlib_stats_distribution_exponential
 
 
     interface rvs_exp
-    !! Version experimental
+    !! Version: experimental
     !!
     !! Exponential Distribution Random Variates
     !! ([Specification](../page/specs/stdlib_stats_distribution_exponential.html#
@@ -40,7 +40,7 @@ module stdlib_stats_distribution_exponential
 
 
     interface pdf_exp
-    !! Version experimental
+    !! Version: experimental
     !!
     !! Exponential Distribution Probability Density Function
     !! ([Specification](../page/specs/stdlib_stats_distribution_exponential.html#
@@ -54,7 +54,7 @@ module stdlib_stats_distribution_exponential
 
 
     interface cdf_exp
-    !! Version experimental
+    !! Version: experimental
     !!
     !! Exponential Distribution Cumulative Distribution Function
     !! ([Specification](../page/specs/stdlib_stats_distribution_exponential.html#
@@ -75,7 +75,7 @@ contains
     ! Marsaglia & Tsang generator for random normals & random exponentials.
     ! Translated from C by Alan Miller (amiller@bigpond.net.au)
     !
-    ! Marsaglia, G. & Tsang, W.W. (2000) `The ziggurat method for generating
+    ! Marsaglia, G. & Tsang, W.W. (2000) 'The ziggurat method for generating
     ! random variables', J. Statist. Software, v5(8).
     !
     ! This is an electronic journal which can be downloaded from:
