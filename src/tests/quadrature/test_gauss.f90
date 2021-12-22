@@ -41,7 +41,8 @@ contains
                 call gauss_legendre(x,w)
                 numeric = sum(x**2 * w)
                 !print *, i, numeric
-                call check(error, abs(numeric-analytic) < 2*epsilon(analytic))
+                print*,abs(numeric-analytic), 2*epsilon(analytic)
+                call check(error, abs(numeric-analytic) <= 2*epsilon(analytic))
                 if (allocated(error)) return
             end block
         end do
