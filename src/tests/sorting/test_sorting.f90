@@ -379,7 +379,7 @@ contains
         call check(error, ltest)
         if (allocated(error)) return
 
-        call test_string_ord_sort( string_rand, "String Random" , ltest)
+        call test_string_ord_sort( string_rand, "String Random" , ltest )
         call check(error, ltest)
 
     end subroutine test_string_ord_sorts
@@ -1008,7 +1008,10 @@ program tester
 
     do is = 1, size(testsuites)
         write(error_unit, fmt) "Testing:", testsuites(is)%name
-        call run_testsuite(testsuites(is)%collect, error_unit, stat)
+        ! The module test_sorting is not thread-safed. So, compiling testdrive.F90
+        ! with the OpenMP flag, and the argument `parallel = .true.` might result
+        ! in Segmentation Fault.
+        call run_testsuite(testsuites(is)%collect, error_unit, stat, parallel = .false.)
     end do
 
     if (stat > 0) then
