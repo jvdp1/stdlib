@@ -44,6 +44,27 @@ contains
         result = [(start_ + (i - 1)*step_, i=1, size(result), 1)]
 
     end function arange_r_dp
+    !> `arange` creates a vector of the `real(qp)` type 
+    !>  with evenly spaced values within a given interval.
+    pure module function arange_r_qp(start, end, step) result(result)
+
+        real(qp), intent(in) :: start
+        real(qp), intent(in), optional :: end, step
+        real(qp), allocatable :: result(:)
+        
+        real(qp) :: start_, end_, step_
+        integer :: i
+
+        start_ = merge(start, 1.0_qp, present(end))
+        end_   = optval(end, start)
+        step_  = optval(step, 1.0_qp)
+        step_  = sign(merge(step_, 1.0_qp, step_ /= 0.0_qp), end_ - start_)
+
+        allocate(result(floor((end_ - start_)/step_) + 1))
+
+        result = [(start_ + (i - 1)*step_, i=1, size(result), 1)]
+
+    end function arange_r_qp
 
     !> `arange` creates a vector of the `integer(int8)` type 
     !>  with evenly spaced values within a given interval.
@@ -61,7 +82,7 @@ contains
         step_  = optval(step, 1_int8)
         step_  = sign(merge(step_, 1_int8, step_ /= 0_int8), end_ - start_)
 
-        allocate(result((end_ - start_)/step_ + 1_int8))
+        allocate(result((end_ - start_)/step_ + 1))
 
         result = [(i, i=start_, end_, step_)]
 
@@ -82,7 +103,7 @@ contains
         step_  = optval(step, 1_int16)
         step_  = sign(merge(step_, 1_int16, step_ /= 0_int16), end_ - start_)
 
-        allocate(result((end_ - start_)/step_ + 1_int16))
+        allocate(result((end_ - start_)/step_ + 1))
 
         result = [(i, i=start_, end_, step_)]
 
@@ -103,7 +124,7 @@ contains
         step_  = optval(step, 1_int32)
         step_  = sign(merge(step_, 1_int32, step_ /= 0_int32), end_ - start_)
 
-        allocate(result((end_ - start_)/step_ + 1_int32))
+        allocate(result((end_ - start_)/step_ + 1))
 
         result = [(i, i=start_, end_, step_)]
 
@@ -124,7 +145,7 @@ contains
         step_  = optval(step, 1_int64)
         step_  = sign(merge(step_, 1_int64, step_ /= 0_int64), end_ - start_)
 
-        allocate(result((end_ - start_)/step_ + 1_int64))
+        allocate(result((end_ - start_)/step_ + 1))
 
         result = [(i, i=start_, end_, step_)]
 
