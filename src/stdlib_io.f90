@@ -4,18 +4,42 @@ module stdlib_io
   !! Provides a support for file handling
   !! ([Specification](../page/specs/stdlib_io.html))
 
-  use stdlib_kinds, only: sp, dp, qp, &
+  use, intrinsic :: iso_fortran_env, only : input_unit
+  use stdlib_kinds, only: sp, dp, xdp, qp, &
       int8, int16, int32, int64
   use stdlib_error, only: error_stop
   use stdlib_optval, only: optval
   use stdlib_ascii, only: is_blank
+  use stdlib_string_type, only : string_type
   implicit none
   private
   ! Public API
-  public :: loadtxt, savetxt, open
+  public :: loadtxt, savetxt, open, getline
 
   ! Private API that is exposed so that we can test it in tests
   public :: parse_mode
+
+  ! Format strings with edit descriptors for each type and kind
+  character(*), parameter :: &
+    FMT_INT = '(*(i0,1x))', &
+    FMT_REAL_SP = '(*(es15.8e2,1x))', &
+    FMT_REAL_DP = '(*(es24.16e3,1x))', &
+    FMT_REAL_XDP = '(*(es26.18e3,1x))', &
+    FMT_REAL_QP = '(*(es44.35e4,1x))', &
+    FMT_COMPLEX_SP = '(*(es15.8e2,1x,es15.8e2))', &
+    FMT_COMPLEX_DP = '(*(es24.16e3,1x,es24.16e3))', &
+    FMT_COMPLEX_XDP = '(*(es26.18e3,1x,es26.18e3))', &
+    FMT_COMPLEX_QP = '(*(es44.35e4,1x,es44.35e4))'
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from a formatted unit into a string variable
+  interface getline
+    module procedure :: getline_char
+    module procedure :: getline_string
+    module procedure :: getline_input_char
+    module procedure :: getline_input_string
+  end interface getline
 
   interface loadtxt
     !! version: experimental
@@ -24,14 +48,12 @@ module stdlib_io
     !! ([Specification](../page/specs/stdlib_io.html#description))
       module procedure loadtxt_rsp
       module procedure loadtxt_rdp
-      module procedure loadtxt_rqp
       module procedure loadtxt_iint8
       module procedure loadtxt_iint16
       module procedure loadtxt_iint32
       module procedure loadtxt_iint64
       module procedure loadtxt_csp
       module procedure loadtxt_cdp
-      module procedure loadtxt_cqp
   end interface loadtxt
 
   interface savetxt
@@ -41,14 +63,12 @@ module stdlib_io
     !! ([Specification](../page/specs/stdlib_io.html#description_2))
       module procedure savetxt_rsp
       module procedure savetxt_rdp
-      module procedure savetxt_rqp
       module procedure savetxt_iint8
       module procedure savetxt_iint16
       module procedure savetxt_iint32
       module procedure savetxt_iint64
       module procedure savetxt_csp
       module procedure savetxt_cdp
-      module procedure savetxt_cqp
   end interface
 
 contains
@@ -91,11 +111,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_REAL_sp) d(i, :)
       end do
       close(s)
 
@@ -138,62 +158,15 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_REAL_dp) d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_rdp
-    subroutine  loadtxt_rqp(filename, d)
-      !! version: experimental
-      !!
-      !! Loads a 2D array from a text file.
-      !!
-      !! Arguments
-      !! ---------
-      !!
-      !! Filename to load the array from
-      character(len=*), intent(in) :: filename
-      !! The array 'd' will be automatically allocated with the correct dimensions
-      real(qp), allocatable, intent(out) :: d(:,:)
-      !!
-      !! Example
-      !! -------
-      !!
-      !!```fortran
-      !! real(qp), allocatable :: data(:, :)
-      !! call loadtxt("log.txt", data)  ! 'data' will be automatically allocated
-      !!```
-      !!
-      !! Where 'log.txt' contains for example::
-      !!
-      !!     1 2 3
-      !!     2 4 6
-      !!     8 9 10
-      !!     11 12 13
-      !!     ...
-      !!
-      integer :: s
-      integer :: nrow, ncol, i
-
-      s = open(filename)
-
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
-      ! determine number or rows
-      nrow = number_of_rows_numeric(s)
-
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
-        read(s, *) d(i, :)
-      end do
-      close(s)
-
-    end subroutine loadtxt_rqp
     subroutine  loadtxt_iint8(filename, d)
       !! version: experimental
       !!
@@ -232,11 +205,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -279,11 +252,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -326,11 +299,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -373,11 +346,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -418,13 +391,14 @@ contains
 
       ! determine number of columns
       ncol = number_of_columns(s)
+      ncol = ncol / 2
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_COMPLEX_sp) d(i, :)
       end do
       close(s)
 
@@ -465,64 +439,18 @@ contains
 
       ! determine number of columns
       ncol = number_of_columns(s)
+      ncol = ncol / 2
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_COMPLEX_dp) d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_cdp
-    subroutine  loadtxt_cqp(filename, d)
-      !! version: experimental
-      !!
-      !! Loads a 2D array from a text file.
-      !!
-      !! Arguments
-      !! ---------
-      !!
-      !! Filename to load the array from
-      character(len=*), intent(in) :: filename
-      !! The array 'd' will be automatically allocated with the correct dimensions
-      complex(qp), allocatable, intent(out) :: d(:,:)
-      !!
-      !! Example
-      !! -------
-      !!
-      !!```fortran
-      !! complex(qp), allocatable :: data(:, :)
-      !! call loadtxt("log.txt", data)  ! 'data' will be automatically allocated
-      !!```
-      !!
-      !! Where 'log.txt' contains for example::
-      !!
-      !!     1 2 3
-      !!     2 4 6
-      !!     8 9 10
-      !!     11 12 13
-      !!     ...
-      !!
-      integer :: s
-      integer :: nrow, ncol, i
-
-      s = open(filename)
-
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
-      ! determine number or rows
-      nrow = number_of_rows_numeric(s)
-
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
-        read(s, *) d(i, :)
-      end do
-      close(s)
-
-    end subroutine loadtxt_cqp
 
 
     subroutine savetxt_rsp(filename, d)
@@ -548,7 +476,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_REAL_sp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_rsp
@@ -575,37 +503,10 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_REAL_dp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_rdp
-    subroutine savetxt_rqp(filename, d)
-      !! version: experimental
-      !!
-      !! Saves a 2D array into a text file.
-      !!
-      !! Arguments
-      !! ---------
-      !!
-      character(len=*), intent(in) :: filename  ! File to save the array to
-      real(qp), intent(in) :: d(:,:)           ! The 2D array to save
-      !!
-      !! Example
-      !! -------
-      !!
-      !!```fortran
-      !! real(qp) :: data(3, 2)
-      !! call savetxt("log.txt", data)
-      !!```
-      !!
-
-      integer :: s, i
-      s = open(filename, "w")
-      do i = 1, size(d, 1)
-        write(s, *) d(i, :)
-      end do
-      close(s)
-    end subroutine savetxt_rqp
     subroutine savetxt_iint8(filename, d)
       !! version: experimental
       !!
@@ -629,7 +530,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint8
@@ -656,7 +557,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint16
@@ -683,7 +584,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint32
@@ -710,7 +611,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint64
@@ -737,7 +638,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_COMPLEX_sp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_csp
@@ -764,37 +665,10 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_COMPLEX_dp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_cdp
-    subroutine savetxt_cqp(filename, d)
-      !! version: experimental
-      !!
-      !! Saves a 2D array into a text file.
-      !!
-      !! Arguments
-      !! ---------
-      !!
-      character(len=*), intent(in) :: filename  ! File to save the array to
-      complex(qp), intent(in) :: d(:,:)           ! The 2D array to save
-      !!
-      !! Example
-      !! -------
-      !!
-      !!```fortran
-      !! complex(qp) :: data(3, 2)
-      !! call savetxt("log.txt", data)
-      !!```
-      !!
-
-      integer :: s, i
-      s = open(filename, "w")
-      do i = 1, size(d, 1)
-        write(s, *) d(i, :)
-      end do
-      close(s)
-    end subroutine savetxt_cqp
 
 
   integer function number_of_columns(s)
@@ -821,36 +695,24 @@ contains
   end function number_of_columns
 
 
-  integer function number_of_rows_numeric(s) result(nrows)
+  integer function number_of_rows(s) result(nrows)
     !! version: experimental
     !!
-    !! determine number or rows
-    integer,intent(in)::s
+    !! Determine the number or rows in a file
+    integer, intent(in)::s
     integer :: ios
-
-    real :: r
-    complex :: z
 
     rewind(s)
     nrows = 0
     do
-      read(s, *, iostat=ios) r
+      read(s, *, iostat=ios)
       if (ios /= 0) exit
       nrows = nrows + 1
     end do
 
     rewind(s)
 
-    ! If there are no rows of real numbers, it may be that they are complex
-    if( nrows == 0) then
-      do
-        read(s, *, iostat=ios) z
-        if (ios /= 0) exit
-        nrows = nrows + 1
-      end do
-      rewind(s)
-    end if
-  end function number_of_rows_numeric
+  end function number_of_rows
 
 
   integer function open(filename, mode, iostat) result(u)
@@ -988,4 +850,98 @@ contains
 
   end function parse_mode
 
-end module
+  !> Version: experimental
+  !>
+  !> Read a whole line from a formatted unit into a deferred length character variable
+  subroutine getline_char(unit, line, iostat, iomsg)
+    !> Formatted IO unit
+    integer, intent(in) :: unit
+    !> Line to read
+    character(len=:), allocatable, intent(out) :: line
+    !> Status of operation
+    integer, intent(out), optional :: iostat
+    !> Error message
+    character(len=:), allocatable, optional :: iomsg
+
+    integer, parameter :: bufsize = 4096
+    character(len=bufsize) :: buffer, msg
+    integer :: chunk, stat
+    logical :: opened
+
+    if (unit /= -1) then
+      inquire(unit=unit, opened=opened)
+    else
+      opened = .false.
+    end if
+
+    if (opened) then
+      open(unit=unit, pad="yes", iostat=stat, iomsg=msg)
+    else
+      stat = 1
+      msg = "Unit is not connected"
+    end if
+
+    line = ""
+    do while (stat == 0)
+      read(unit, '(a)', advance='no', iostat=stat, iomsg=msg, size=chunk) buffer
+      if (stat > 0) exit
+      line = line // buffer(:chunk)
+    end do
+    if (is_iostat_eor(stat)) stat = 0
+
+    if (stat /= 0 .and. present(iomsg)) iomsg = trim(msg)
+    if (present(iostat)) then
+      iostat = stat
+    else if (stat /= 0) then
+      call error_stop(trim(msg))
+    end if
+  end subroutine getline_char
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from a formatted unit into a string variable
+  subroutine getline_string(unit, line, iostat, iomsg)
+    !> Formatted IO unit
+    integer, intent(in) :: unit
+    !> Line to read
+    type(string_type), intent(out) :: line
+    !> Status of operation
+    integer, intent(out), optional :: iostat
+    !> Error message
+    character(len=:), allocatable, optional :: iomsg
+
+    character(len=:), allocatable :: buffer
+
+    call getline(unit, buffer, iostat, iomsg)
+    line = string_type(buffer)
+  end subroutine getline_string
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from the standard input into a deferred length character variable
+  subroutine getline_input_char(line, iostat, iomsg)
+    !> Line to read
+    character(len=:), allocatable, intent(out) :: line
+    !> Status of operation
+    integer, intent(out), optional :: iostat
+    !> Error message
+    character(len=:), allocatable, optional :: iomsg
+
+    call getline(input_unit, line, iostat, iomsg)
+  end subroutine getline_input_char
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from the standard input into a string variable
+  subroutine getline_input_string(line, iostat, iomsg)
+    !> Line to read
+    type(string_type), intent(out) :: line
+    !> Status of operation
+    integer, intent(out), optional :: iostat
+    !> Error message
+    character(len=:), allocatable, optional :: iomsg
+
+    call getline(input_unit, line, iostat, iomsg)
+  end subroutine getline_input_string
+
+end module stdlib_io
