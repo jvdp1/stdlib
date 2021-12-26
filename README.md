@@ -256,3 +256,24 @@ Some discussions and prototypes of proposed APIs along with a list of popular op
 * [Proposals for the Fortran Standard Committee](https://github.com/j3-fortran/fortran_proposals/)
 * [US Fortran Standards Committee](https://j3-fortran.org/)
 * [International Fortran Standard Committee](https://wg5-fortran.org/)
+
+## Credits
+
+If you use any of the Fortran-lang projects, such as stdlib, for your publications,
+please cite this paper as follows:
+
+```bibtex
+@article{curcic2021toward,
+  title={Toward Modern Fortran Tooling and a Thriving Developer Community},
+  author={Curcic, Milan and
+          {\v{C}}ert{\'\i}k, Ond{\v{r}}ej and
+          Richardson, Brad and
+          Ehlert, Sebastian and
+          Kedward, Laurence and
+          Markus, Arjen and
+          Pribec, Ivan and
+          Vandenplas, J{\'e}r{\'e}mie},
+  journal={arXiv preprint arXiv:2109.07382},
+  year={2021}
+}
+```
