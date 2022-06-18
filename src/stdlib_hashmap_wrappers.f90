@@ -110,9 +110,7 @@ contains
     pure subroutine copy_key( old_key, new_key )
 !! Version: Experimental
 !!
-!! Copies the contents of the key, old_key, to the key, new_key
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#copy_key-returns-a-copy-of-the-key))
-!!
+!! Copies the contents of the key, old_key, to the key, out_key
 !! Arguments:
 !!     old_key - the input key
 !!     new_key - the output copy of old_key
@@ -128,8 +126,6 @@ contains
 !! Version: Experimental
 !!
 !! Copies the other data, other_in, to the variable, other_out
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#copy_other-returns-a-copy-of-the-other-data))
-!!
 !! Arguments:
 !!     other_in  - the input data
 !!     other_out - the output data
@@ -145,8 +141,6 @@ contains
 !! Version: Experimental
 !!
 !! Compares two keys for equality
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#operator(==)-compares-two-keys-for-equality))
-!!
 !! Arguments:
 !!     key1 - the first key
 !!     key2 - the second key
@@ -173,8 +167,6 @@ contains
 !! Version: Experimental
 !!
 !! Frees the memory in a key
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#free_key-frees-the-memory-associated-with-a-key))
-!!
 !! Arguments:
 !!     key  - the key
         type(key_type), intent(inout) :: key
@@ -188,8 +180,6 @@ contains
 !! Version: Experimental
 !!
 !! Frees the memory in the other data
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#free_other-frees-the-memory-associated-with-other-data))
-!!
 !! Arguments:
 !!     other  - the other data
         type(other_type), intent(inout) :: other
@@ -340,8 +330,6 @@ contains
 !! Version: Experimental
 !!
 !! Hashes a key with the FNV_1a algorithm
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#fnv_1a_hasher-calculates-a-hash-code-from-a-key))
-!!
 !! Arguments:
 !!     key  - the key to be hashed
         type(key_type), intent(in)    :: key
@@ -356,8 +344,6 @@ contains
 !! Version: Experimental
 !!
 !! Hashes a key with the NMHASH32 hash algorithm
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#seeded_nmhash32_hasher-calculates-a-hash-code-from-a-key))
-!!
 !! Arguments:
 !!     key  - the key to be hashed
 !!     seed - the seed (unused) for the hashing algorithm
@@ -374,7 +360,6 @@ contains
 !! Version: Experimental
 !!
 !! Hashes a key with the NMHASH32X hash algorithm
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#seeded_nmhash32x_hasher-calculates-a-hash-code-from-a-key))
 !! Arguments:
 !!     key  - the key to be hashed
 !!     seed - the seed (unused) for the hashing algorithm
@@ -391,8 +376,6 @@ contains
 !! Version: Experimental
 !!
 !! Hashes a key with the waterhash algorithm
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#seeded_water_hasher-calculates-a-hash-code-from-a-key))
-!!
 !! Arguments:
 !!     key  - the key to be hashed
         type(key_type), intent(in)  :: key
