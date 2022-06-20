@@ -19,17 +19,32 @@ module stdlib_io
   ! Private API that is exposed so that we can test it in tests
   public :: parse_mode
 
-  ! Format strings with edit descriptors for each type and kind
+  !> Version: experimental
+  !>
+  !> Format strings with edit descriptors for each type and kind
+  !> ([Specification](../page/specs/stdlib_io.html))
   character(*), parameter :: &
-    FMT_INT = '(*(i0,1x))', &
-    FMT_REAL_SP = '(*(es15.8e2,1x))', &
-    FMT_REAL_DP = '(*(es24.16e3,1x))', &
-    FMT_REAL_XDP = '(*(es26.18e3,1x))', &
-    FMT_REAL_QP = '(*(es44.35e4,1x))', &
-    FMT_COMPLEX_SP = '(*(es15.8e2,1x,es15.8e2))', &
-    FMT_COMPLEX_DP = '(*(es24.16e3,1x,es24.16e3))', &
-    FMT_COMPLEX_XDP = '(*(es26.18e3,1x,es26.18e3))', &
-    FMT_COMPLEX_QP = '(*(es44.35e4,1x,es44.35e4))'
+    !> Format string for integers
+    FMT_INT = '(i0)', &
+    !> Format string for single precision real numbers
+    FMT_REAL_SP = '(es15.8e2)', &
+    !> Format string for souble precision real numbers
+    FMT_REAL_DP = '(es24.16e3)', &
+    !> Format string for extended double precision real numbers
+    FMT_REAL_XDP = '(es26.18e3)', &
+    !> Format string for quadruple precision real numbers
+    FMT_REAL_QP = '(es44.35e4)', &
+    !> Format string for single precision complex numbers
+    FMT_COMPLEX_SP = '(es15.8e2,1x,es15.8e2)', &
+    !> Format string for double precision complex numbers
+    FMT_COMPLEX_DP = '(es24.16e3,1x,es24.16e3)', &
+    !> Format string for extended double precision complex numbers
+    FMT_COMPLEX_XDP = '(es26.18e3,1x,es26.18e3)', &
+    !> Format string for quadruple precision complex numbers
+    FMT_COMPLEX_QP = '(es44.35e4,1x,es44.35e4)'
+
+  public :: FMT_INT, FMT_REAL_SP, FMT_REAL_DP, FMT_REAL_XDP, FMT_REAL_QP
+  public :: FMT_COMPLEX_SP, FMT_COMPLEX_DP, FMT_COMPLEX_XDP, FMT_COMPLEX_QP
 
   !> Version: experimental
   !>
@@ -73,7 +88,7 @@ module stdlib_io
 
 contains
 
-    subroutine  loadtxt_rsp(filename, d)
+    subroutine  loadtxt_rsp(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -85,6 +100,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       real(sp), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -103,24 +125,35 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
-          read(s, FMT_REAL_sp) d(i, :)
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
+          read(s, "(*"//FMT_REAL_sp(1:len(FMT_REAL_sp)-1)//",1x))") d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_rsp
-    subroutine  loadtxt_rdp(filename, d)
+    subroutine  loadtxt_rdp(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -132,6 +165,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       real(dp), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -150,24 +190,35 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
-          read(s, FMT_REAL_dp) d(i, :)
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
+          read(s, "(*"//FMT_REAL_dp(1:len(FMT_REAL_dp)-1)//",1x))") d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_rdp
-    subroutine  loadtxt_iint8(filename, d)
+    subroutine  loadtxt_iint8(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -179,6 +230,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       integer(int8), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -197,24 +255,35 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
           read(s, *) d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_iint8
-    subroutine  loadtxt_iint16(filename, d)
+    subroutine  loadtxt_iint16(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -226,6 +295,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       integer(int16), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -244,24 +320,35 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
           read(s, *) d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_iint16
-    subroutine  loadtxt_iint32(filename, d)
+    subroutine  loadtxt_iint32(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -273,6 +360,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       integer(int32), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -291,24 +385,35 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
           read(s, *) d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_iint32
-    subroutine  loadtxt_iint64(filename, d)
+    subroutine  loadtxt_iint64(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -320,6 +425,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       integer(int64), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -338,24 +450,35 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
           read(s, *) d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_iint64
-    subroutine  loadtxt_csp(filename, d)
+    subroutine  loadtxt_csp(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -367,6 +490,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       complex(sp), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -385,25 +515,36 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-      ncol = ncol / 2
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
-          read(s, FMT_COMPLEX_sp) d(i, :)
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      ncol = ncol / 2
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
+          read(s, "(*"//FMT_COMPLEX_sp(1:len(FMT_COMPLEX_sp)-1)//",1x))") d(i, :)
       end do
       close(s)
 
     end subroutine loadtxt_csp
-    subroutine  loadtxt_cdp(filename, d)
+    subroutine  loadtxt_cdp(filename, d, skiprows, max_rows)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -415,6 +556,13 @@ contains
       character(len=*), intent(in) :: filename
       !! The array 'd' will be automatically allocated with the correct dimensions
       complex(dp), allocatable, intent(out) :: d(:,:)
+      !! Skip the first `skiprows` lines. If skipping more rows than present, a 0-sized array will be returned. The default is 0.
+      integer, intent(in), optional :: skiprows
+      !! Read `max_rows` lines of content after `skiprows` lines.
+      !! A negative value results in reading all lines.
+      !! A value of zero results in no lines to be read.
+      !! The default value is -1.
+      integer, intent(in), optional :: max_rows
       !!
       !! Example
       !! -------
@@ -433,20 +581,31 @@ contains
       !!     ...
       !!
       integer :: s
-      integer :: nrow, ncol, i
+      integer :: nrow, ncol, i, skiprows_, max_rows_
+
+      skiprows_ = max(optval(skiprows, 0), 0)
+      max_rows_ = optval(max_rows, -1)
 
       s = open(filename)
 
-      ! determine number of columns
-      ncol = number_of_columns(s)
-      ncol = ncol / 2
-
       ! determine number or rows
       nrow = number_of_rows(s)
+      skiprows_ = min(skiprows_, nrow)
+      if ( max_rows_ < 0 .or. max_rows_ > (nrow - skiprows_) ) max_rows_ = nrow - skiprows_
 
-      allocate(d(nrow, ncol))
-      do i = 1, nrow
-          read(s, FMT_COMPLEX_dp) d(i, :)
+      ! determine number of columns
+      ncol = 0
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      ncol = ncol / 2
+
+      allocate(d(max_rows_, ncol))
+
+      do i = 1, skiprows_
+        read(s, *)
+      end do
+
+      do i = 1, max_rows_
+          read(s, "(*"//FMT_COMPLEX_dp(1:len(FMT_COMPLEX_dp)-1)//",1x))") d(i, :)
       end do
       close(s)
 
@@ -476,7 +635,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_REAL_sp) d(i, :)
+          write(s, "(*"//FMT_REAL_sp(1:len(FMT_REAL_sp)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_rsp
@@ -503,7 +662,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_REAL_dp) d(i, :)
+          write(s, "(*"//FMT_REAL_dp(1:len(FMT_REAL_dp)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_rdp
@@ -530,7 +689,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_INT) d(i, :)
+          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint8
@@ -557,7 +716,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_INT) d(i, :)
+          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint16
@@ -584,7 +743,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_INT) d(i, :)
+          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint32
@@ -611,7 +770,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_INT) d(i, :)
+          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint64
@@ -638,7 +797,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_COMPLEX_sp) d(i, :)
+          write(s, "(*"//FMT_COMPLEX_sp(1:len(FMT_COMPLEX_sp)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_csp
@@ -665,23 +824,31 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, FMT_COMPLEX_dp) d(i, :)
+          write(s, "(*"//FMT_COMPLEX_dp(1:len(FMT_COMPLEX_dp)-1)//",1x))") d(i, :)
       end do
       close(s)
     end subroutine savetxt_cdp
 
 
-  integer function number_of_columns(s)
+  integer function number_of_columns(s, skiprows)
     !! version: experimental
     !!
     !! determine number of columns
     integer,intent(in) :: s
+    integer, intent(in), optional :: skiprows
 
-    integer :: ios
+    integer :: ios, skiprows_, i
     character :: c
     logical :: lastblank
 
+    skiprows_ = optval(skiprows, 0)
+
     rewind(s)
+
+    do i = 1, skiprows_
+      read(s, *)
+    end do
+
     number_of_columns = 0
     lastblank = .true.
     do
