@@ -15,7 +15,12 @@ module stdlib_hashmap_wrappers
         int16,               &
         int32,               &
         int64,               &
-        dp
+        sp,                  &
+        dp,                  &
+        xdp,                 &
+        qp,                  &
+        lk,                  &
+        c_bool
 
     implicit none
 
@@ -31,6 +36,7 @@ module stdlib_hashmap_wrappers
         free_key,                &
         free_other,              &
         get,                     &
+        get_other_scalar,        &
         hasher_fun,              &
         operator(==),            &
         seeded_nmhash32_hasher,  &
@@ -87,8 +93,8 @@ module stdlib_hashmap_wrappers
     interface get
 
         module procedure get_char_key,   &
-                         get_int8_key,   &
-                         get_other
+                         get_other, &
+                         get_int8_key
 
     end interface get
 
@@ -261,6 +267,106 @@ contains
 
     end subroutine get_other
 
+    
+    subroutine get_other_scalar(other, value_char &
+                                , value_int8    &
+                                , value_int16    &
+                                , value_int32    &
+                                , value_int64    &
+                                , value_sp    &
+                                , value_dp    &
+                                , value_lk    &
+                                , value_c_bool    &
+                                , value_csp   &
+                                , value_cdp   &
+                                , exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+        class(other_type), intent(in) :: other
+        character(len=:), allocatable, intent(out), optional :: value_char
+        integer(int8), intent(out), optional :: value_int8
+        integer(int16), intent(out), optional :: value_int16
+        integer(int32), intent(out), optional :: value_int32
+        integer(int64), intent(out), optional :: value_int64
+        real(sp), intent(out), optional :: value_sp
+        real(dp), intent(out), optional :: value_dp
+        logical(lk), intent(out), optional :: value_lk
+        logical(c_bool), intent(out), optional :: value_c_bool
+        complex(sp), intent(out), optional :: value_csp
+        complex(dp), intent(out), optional :: value_cdp
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( character(*) )
+                if (present(value_char)) then
+                   value_char = d
+                   exists_ = .true.
+                end if
+            type is ( integer(int8) )
+                if (present(value_int8)) then
+                   value_int8 = d
+                   exists_ = .true.
+                end if
+            type is ( integer(int16) )
+                if (present(value_int16)) then
+                   value_int16 = d
+                   exists_ = .true.
+                end if
+            type is ( integer(int32) )
+                if (present(value_int32)) then
+                   value_int32 = d
+                   exists_ = .true.
+                end if
+            type is ( integer(int64) )
+                if (present(value_int64)) then
+                   value_int64 = d
+                   exists_ = .true.
+                end if
+            type is ( real(sp) )
+                if (present(value_sp)) then
+                   value_sp = d
+                   exists_ = .true.
+                end if
+            type is ( real(dp) )
+                if (present(value_dp)) then
+                   value_dp = d
+                   exists_ = .true.
+                end if
+            type is ( logical(lk) )
+                if (present(value_lk)) then
+                   value_lk = d
+                   exists_ = .true.
+                end if
+            type is ( logical(c_bool) )
+                if (present(value_c_bool)) then
+                   value_c_bool = d
+                   exists_ = .true.
+                end if
+            type is ( complex(sp) )
+                if (present(value_csp)) then
+                   value_csp = d
+                   exists_ = .true.
+                end if
+            type is ( complex(dp) )
+                if (present(value_cdp)) then
+                   value_cdp = d
+                   exists_ = .true.
+                end if
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
 
     subroutine get_int8_key( key, value )
 !! Version: Experimental
