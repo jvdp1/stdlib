@@ -283,6 +283,7 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         character(len=:), allocatable, intent(out), optional :: value_char
         integer(int8), intent(out), optional :: value_int8
