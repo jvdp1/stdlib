@@ -36,7 +36,6 @@ module stdlib_hashmap_wrappers
         free_key,                &
         free_other,              &
         get,                     &
-        get_other_scalar,        &
         hasher_fun,              &
         operator(==),            &
         seeded_nmhash32_hasher,  &
@@ -93,12 +92,8 @@ module stdlib_hashmap_wrappers
     interface get
 
         module procedure get_char_key,   &
-                         get_other, &
-                         get_int8_key
-
-    end interface get
-
-    interface get_other_scalar
+                         get_int8_key,   &
+                         get_other
 
         module procedure get_other_scalar_char
         module procedure get_other_scalar_iint8
@@ -112,7 +107,7 @@ module stdlib_hashmap_wrappers
         module procedure get_other_scalar_csp
         module procedure get_other_scalar_cdp
 
-    end interface get_other_scalar
+    end interface get
 
 
     interface operator(==)
@@ -286,8 +281,7 @@ contains
     subroutine get_other_scalar_char(other, value, exists)
 !! Version: Experimental
 !!
-!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+!! Gets the content of the other as a scalar of a type character(*)
         class(other_type), intent(in) :: other
         character(len=:), allocatable, intent(out) :: value
         logical, intent(out), optional :: exists
@@ -315,7 +309,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         integer(int8), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -342,7 +335,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         integer(int16), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -369,7 +361,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         integer(int32), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -396,7 +387,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         integer(int64), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -423,7 +413,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         real(sp), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -450,7 +439,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         real(dp), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -477,7 +465,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         logical(lk), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -504,7 +491,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         logical(c_bool), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -531,7 +517,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         complex(sp), intent(out) :: value
         logical, intent(out), optional :: exists
@@ -558,7 +543,6 @@ contains
 !! Version: Experimental
 !!
 !! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
-!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
         class(other_type), intent(in) :: other
         complex(dp), intent(out) :: value
         logical, intent(out), optional :: exists
