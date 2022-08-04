@@ -15,7 +15,12 @@ module stdlib_hashmap_wrappers
         int16,               &
         int32,               &
         int64,               &
-        dp
+        sp,                  &
+        dp,                  &
+        xdp,                 &
+        qp,                  &
+        lk,                  &
+        c_bool
 
     implicit none
 
@@ -31,6 +36,7 @@ module stdlib_hashmap_wrappers
         free_key,                &
         free_other,              &
         get,                     &
+        get_other_scalar,        &
         hasher_fun,              &
         operator(==),            &
         seeded_nmhash32_hasher,  &
@@ -87,10 +93,26 @@ module stdlib_hashmap_wrappers
     interface get
 
         module procedure get_char_key,   &
-                         get_int8_key,   &
-                         get_other
+                         get_other, &
+                         get_int8_key
 
     end interface get
+
+    interface get_other_scalar
+
+        module procedure get_other_scalar_char
+        module procedure get_other_scalar_iint8
+        module procedure get_other_scalar_iint16
+        module procedure get_other_scalar_iint32
+        module procedure get_other_scalar_iint64
+        module procedure get_other_scalar_rsp
+        module procedure get_other_scalar_rdp
+        module procedure get_other_scalar_llk
+        module procedure get_other_scalar_lc_bool
+        module procedure get_other_scalar_csp
+        module procedure get_other_scalar_cdp
+
+    end interface get_other_scalar
 
 
     interface operator(==)
@@ -261,6 +283,304 @@ contains
 
     end subroutine get_other
 
+    subroutine get_other_scalar_char(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        character(len=:), allocatable, intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( character(*) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+
+    subroutine get_other_scalar_iint8(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        integer(int8), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( integer(int8) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_iint16(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        integer(int16), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( integer(int16) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_iint32(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        integer(int32), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( integer(int32) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_iint64(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        integer(int64), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( integer(int64) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_rsp(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        real(sp), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( real(sp) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_rdp(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        real(dp), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( real(dp) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_llk(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        logical(lk), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( logical(lk) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_lc_bool(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        logical(c_bool), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( logical(c_bool) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_csp(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        complex(sp), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( complex(sp) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
+    subroutine get_other_scalar_cdp(other, value, exists)
+!! Version: Experimental
+!!
+!! Gets the content of the other as a scalar of a kind provided by stdlib_kinds
+!! ([Specifications](../page/specs/stdlib_hashmaps.html#get_other_scalar-extracts-a-scalar-value-from-a-derived-type))
+        class(other_type), intent(in) :: other
+        complex(dp), intent(out) :: value
+        logical, intent(out), optional :: exists
+
+        logical :: exists_
+
+        exists_ = .false.
+
+        if (.not.allocated(other % value)) then
+            if (present(exists)) exists = exists_
+            return
+        end if
+        
+        select type(d => other % value)
+            type is ( complex(dp) )
+                value = d
+                exists_ = .true.
+        end select
+
+        if (present(exists)) exists = exists_
+
+    end subroutine
 
     subroutine get_int8_key( key, value )
 !! Version: Experimental
