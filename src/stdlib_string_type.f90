@@ -687,18 +687,9 @@ contains
     !> No output
     elemental subroutine move_string_string(from, to)
         type(string_type), intent(inout) :: from
-        type(string_type), intent(inout) :: to
+        type(string_type), intent(out) :: to
 
-        if(.not.allocated(from%raw))then
-         if(allocated(to%raw))deallocate(to%raw)
-         return
-        endif
-
-        if(from%raw .eq. to%raw)then
-         deallocate(from%raw)
-        else
-         call move_alloc(from%raw, to%raw)
-        endif
+        call move_alloc(from%raw, to%raw)
 
     end subroutine move_string_string
 
