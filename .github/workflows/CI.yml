@@ -98,9 +98,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        fc: [ifort]
-        cc: [icc]
-        cxx: [icpc]
+        fc: [ifx]
+        cc: [icx]
+        cxx: [icpx]
     env:
       MACOS_HPCKIT_URL: >-
         https://registrationcenter-download.intel.com/akdlm/irc_nas/18242/m_HPCKit_p_2021.4.0.3389_offline.dmg
