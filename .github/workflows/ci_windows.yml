@@ -63,7 +63,7 @@ jobs:
       run: pip install fypp
 
     - name: test pacman
-      run:  echo $PATH
+      run:  export PATH=$PATH:/mingw64/bin/
 
     - name: test pacman
       run:  whereis gcc
