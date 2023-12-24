@@ -82,10 +82,10 @@ jobs:
         CXX: g++
 
     - name: CMake build
-      run: cmake --build build --parallel
+      run: PATH=$PATH:/mingw64/bin/ cmake --build build --parallel
 
     - name: catch build fail
-      run: cmake --build build --verbose --parallel 1
+      run: PATH=$PATH:/mingw64/bin/ cmake --build build --verbose --parallel 1
       if: failure()
 
     - name: CTest
