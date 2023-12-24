@@ -59,11 +59,11 @@ jobs:
     - name: Install fypp
       run: pip install fypp
 
-    - name: test pacman
-      run: echo "/mingw64/bin/" >> $GITHUB_PATH
-
+#    - name: Set GITHUB PATH
+#      run: echo "/mingw64/bin/" >> $GITHUB_PATH
+#
     - run: >-
-        cmake
+        PATH=$PATH:/mingw64/bin/ cmake
         -Wdev
         -B build
         -DCMAKE_BUILD_TYPE=Debug
@@ -76,14 +76,14 @@ jobs:
         CXX: g++
 
     - name: CMake build
-      run: cmake --build build --parallel
+      run: PATH=$PATH:/mingw64/bin/ cmake --build build --parallel
 
-    - name: catch build fail
+    - name:PATH=$PATH:/mingw64/bin/  catch build fail
       run: cmake --build build --verbose --parallel 1
       if: failure()
 
     - name: CTest
-      run: ctest --test-dir build --output-on-failure --parallel -V -LE quadruple_precision
+      run: PATH=$PATH:/mingw64/bin/ ctest --test-dir build --output-on-failure --parallel -V -LE quadruple_precision
 
     - uses: actions/upload-artifact@v1
       if: failure()
@@ -92,4 +92,4 @@ jobs:
         path: build/Testing/Temporary/LastTest.log
 
     - name: Install project
-      run: cmake --install build
+      run: PATH=$PATH:/mingw64/bin/ cmake --install build
