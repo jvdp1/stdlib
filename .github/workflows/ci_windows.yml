@@ -47,7 +47,7 @@ jobs:
         update: false
         install: >-
           git
-          gcc
+          mingw-w64-x86_64-gcc
           mingw-w64-x86_64-gcc-fortran
           python
           python-pip
