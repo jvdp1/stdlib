@@ -58,7 +58,7 @@ jobs:
       run: pip install fypp
 
     - name: test pacman
-      run:  gcc-fortran --version
+      run:  gfortran --version
 
     - run: >-
         cmake
