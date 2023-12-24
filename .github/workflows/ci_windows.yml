@@ -48,12 +48,11 @@ jobs:
         install: >-
           git
           gcc
+          mingw64/mingw-w64-x86_64-gcc-fortran 
           python
           python-pip
           cmake
           ninja
-          mingw64/mingw-w64-x86_64-gcc-fortran 
-          gcc-fortran
 
     - name: Install fypp
       run: pip install fypp
