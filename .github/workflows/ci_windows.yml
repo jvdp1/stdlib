@@ -53,14 +53,12 @@ jobs:
           python-pip
           cmake
           ninja
-#          mingw64/mingw-w64-x86_64-gcc
-#          mingw64/mingw-w64-x86_64-gcc-fortran 
 
     - name: Install fypp
       run: pip install fypp
 
-    - name: Set GITHUB PATH
-      run: echo "/mingw64/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+#    - name: Set GITHUB PATH
+#      run: echo "/mingw64/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 #      run: echo "/mingw64/bin/" >> $GITHUB_PATH
 
     - run: >-
