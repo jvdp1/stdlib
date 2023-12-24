@@ -47,12 +47,12 @@ jobs:
         update: false
         install: >-
           git
+          gcc
           python
           python-pip
-          gcc
+          cmake
+          ninja
 #          gcc-fortran
-#          cmake
-#          ninja
 
     - name: Install fypp
       run: pip install fypp
