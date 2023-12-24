@@ -48,11 +48,11 @@ jobs:
         install: >-
           git
           gcc
-          gcc-fortran
-          python
-          python-pip
-          cmake
-          ninja
+#          gcc-fortran
+#          python
+#          python-pip
+#          cmake
+#          ninja
 
     - name: Install fypp
       run: pip install fypp
