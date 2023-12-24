@@ -66,6 +66,12 @@ jobs:
       run:  ls /*
 
     - name: test pacman
+      run:  ls /*/*/*
+
+    - name: find
+      run:  find / -name "*gfortran*" -print
+
+    - name: test pacman
       run:  export PATH=$PATH:/mingw64/bin/
 
     - name: test pacman
