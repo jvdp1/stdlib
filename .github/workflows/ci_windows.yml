@@ -47,30 +47,20 @@ jobs:
         update: false
         install: >-
           git
+          gcc
+          mingw-w64-x86_64-gcc-fortran
           python
           python-pip
           cmake
           ninja
-          mingw-w64-x86_64-gcc
-          mingw-w64-x86_64-gcc-fortran 
-#          gcc
 #          mingw64/mingw-w64-x86_64-gcc
 #          mingw64/mingw-w64-x86_64-gcc-fortran 
-
-
 
     - name: Install fypp
       run: pip install fypp
 
     - name: test pacman
-      run:  export PATH=$PATH:/mingw64/bin/
-
-
-    - name: test pacman
       run: echo "/mingw64/bin/" >> $GITHUB_PATH
-
-    - name: test pacman
-      run:  whereis gcc
 
     - run: >-
         cmake
