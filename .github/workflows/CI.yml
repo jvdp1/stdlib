@@ -102,9 +102,6 @@ jobs:
         cc: [icx]
         cxx: [icpx]
     env:
-      MACOS_HPCKIT_URL: >-
-        https://registrationcenter-download.intel.com/akdlm/irc_nas/18242/m_HPCKit_p_2021.4.0.3389_offline.dmg
-      MACOS_FORTRAN_COMPONENTS: all
       FC: ${{ matrix.fc }}
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
@@ -145,9 +142,6 @@ jobs:
         fi
         hdiutil detach /Volumes/"$(basename "$URL" .dmg)" -quiet
         exit $installer_exit_code
-      env:
-        URL: ${{ env.MACOS_HPCKIT_URL }}
-        COMPONENTS: ${{ env.MACOS_FORTRAN_COMPONENTS }}
 
     - name: Setup Intel oneAPI environment
       run: |
