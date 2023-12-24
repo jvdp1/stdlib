@@ -73,7 +73,7 @@ jobs:
       run:  whereis gcc
 
     - run: >-
-        PATH=$PATH:/mingw64/bin/ cmake
+        cmake
         -Wdev
         -B build
         -DCMAKE_BUILD_TYPE=Debug
@@ -86,10 +86,10 @@ jobs:
         CXX: g++
 
     - name: CMake build
-      run: PATH=$PATH:/mingw64/bin/ cmake --build build --parallel
+      run: cmake --build build --parallel
 
     - name: catch build fail
-      run: PATH=$PATH:/mingw64/bin/ cmake --build build --verbose --parallel 1
+      run: cmake --build build --verbose --parallel 1
       if: failure()
 
     - name: CTest
