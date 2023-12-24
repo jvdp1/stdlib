@@ -68,9 +68,8 @@ jobs:
     - name: test pacman
       run:  whereis gcc
 
-    - run: |
-        export PATH=$PATH:/mingw64/bin/
-        cmake
+    - run: >-
+        PATH=$PATH:/mingw64/bin/ cmake
         -Wdev
         -B build
         -DCMAKE_BUILD_TYPE=Debug
