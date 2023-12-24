@@ -62,7 +62,7 @@ jobs:
 #      run: echo "/mingw64/bin/" >> $GITHUB_PATH
 
     - run: >-
-        cmake
+        PATH=$PATH:/mingw64/bin/ cmake
         -Wdev
         -B build
         -DCMAKE_BUILD_TYPE=Debug
