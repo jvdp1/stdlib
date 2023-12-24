@@ -53,7 +53,7 @@ jobs:
           cmake
           ninja
           mingw64/mingw-w64-x86_64-gcc-fortran 
-#          gcc-fortran
+          gcc-fortran
 
     - name: Install fypp
       run: pip install fypp
