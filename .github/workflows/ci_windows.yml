@@ -47,10 +47,10 @@ jobs:
         update: false
         install: >-
           git
+          python
+          python-pip
           gcc
 #          gcc-fortran
-#          python
-#          python-pip
 #          cmake
 #          ninja
 
