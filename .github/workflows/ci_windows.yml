@@ -65,6 +65,10 @@ jobs:
     - name: test pacman
       run:  export PATH=$PATH:/mingw64/bin/
 
+
+    - name: test pacman
+      run: echo "/mingw64/bin/" >> $GITHUB_PATH
+
     - name: test pacman
       run:  whereis gcc
 
