@@ -47,15 +47,17 @@ jobs:
         update: false
         install: >-
           git
-#          gcc
-          mingw-w64-x86_64-gcc
-          mingw-w64-x86_64-gcc-fortran 
-#          mingw64/mingw-w64-x86_64-gcc
-#          mingw64/mingw-w64-x86_64-gcc-fortran 
           python
           python-pip
           cmake
           ninja
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-gcc-fortran 
+#          gcc
+#          mingw64/mingw-w64-x86_64-gcc
+#          mingw64/mingw-w64-x86_64-gcc-fortran 
+
+
 
     - name: Install fypp
       run: pip install fypp
