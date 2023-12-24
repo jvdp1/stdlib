@@ -63,6 +63,9 @@ jobs:
       run: pip install fypp
 
     - name: test pacman
+      run:  ls /*
+
+    - name: test pacman
       run:  export PATH=$PATH:/mingw64/bin/
 
     - name: test pacman
