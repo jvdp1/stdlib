@@ -78,8 +78,8 @@ jobs:
     - name: CMake build
       run: PATH=$PATH:/mingw64/bin/ cmake --build build --parallel
 
-    - name:PATH=$PATH:/mingw64/bin/  catch build fail
-      run: cmake --build build --verbose --parallel 1
+    - name: catch build fail
+      run: PATH=$PATH:/mingw64/bin/ cmake --build build --verbose --parallel 1
       if: failure()
 
     - name: CTest
