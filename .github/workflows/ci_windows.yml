@@ -55,9 +55,10 @@ jobs:
 #          gcc-fortran
 
     - name: Install fypp
-      run: >-
-          pip install fypp
-          pacman -Ss gcc-fortran
+      run: pip install fypp
+
+    - name: test pacman
+      run:  pacman -Ss gcc-fortran
 
     - run: >-
         cmake
