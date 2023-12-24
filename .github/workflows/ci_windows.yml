@@ -63,7 +63,10 @@ jobs:
       run: pip install fypp
 
     - name: test pacman
-      run:  export PATH=$PATH:/c/msys64/mingw64/bin
+      run:  echo $PATH
+
+    - name: test pacman
+      run:  whereis gcc
 
     - run: >-
         cmake
