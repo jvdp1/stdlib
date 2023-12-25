@@ -88,3 +88,23 @@ jobs:
 
     - name: Install project
       run: cmake --install build
+
+
+  intel-build-classic:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+          - {compiler: intel-classic, version: '2021.10'}
+
+    steps:
+      - uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: ${{ matrix.toolchain.compiler }}
+          version: ${{ matrix.toolchain.version }}
+
+      - run: |
+          echo "it runs"
+
