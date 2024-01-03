@@ -203,6 +203,18 @@ module stdlib_stats
                             , merge(size(x, 1), size(x, 2), mask = 1<dim))
       end function ${RName}$
     #:endfor
+
+    #:for k1, t1 in RC_KINDS_TYPES
+      #:set RName = rname("cov2",2, t1, k1)
+      module function ${RName}$(x, y, maskx, masky, corrected) result(res)
+        ${t1}$, intent(in) :: x(:, :)
+        ${t1}$, intent(in) :: y(:, :)
+        logical, intent(in), optional :: maskx
+        logical, intent(in), optional :: masky
+        logical, intent(in), optional :: corrected
+        ${t1}$ :: res(size(x, 2), size(y, 2))
+      end function ${RName}$
+    #:endfor
   end interface cov
 
 
