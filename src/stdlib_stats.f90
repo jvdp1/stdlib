@@ -486,6 +486,39 @@ module stdlib_stats
         real(dp) :: res(merge(size(x, 1), size(x, 2), mask = 1<dim)&
                             , merge(size(x, 1), size(x, 2), mask = 1<dim))
       end function cov_mask_2_iint64_dp
+
+      module function cov2_2_rsp_rsp(x, y, maskx, masky, corrected) result(res)
+        real(sp), intent(in) :: x(:, :)
+        real(sp), intent(in) :: y(:, :)
+        logical, intent(in), optional :: maskx
+        logical, intent(in), optional :: masky
+        logical, intent(in), optional :: corrected
+        real(sp) :: res(size(x, 2), size(y, 2))
+      end function cov2_2_rsp_rsp
+      module function cov2_2_rdp_rdp(x, y, maskx, masky, corrected) result(res)
+        real(dp), intent(in) :: x(:, :)
+        real(dp), intent(in) :: y(:, :)
+        logical, intent(in), optional :: maskx
+        logical, intent(in), optional :: masky
+        logical, intent(in), optional :: corrected
+        real(dp) :: res(size(x, 2), size(y, 2))
+      end function cov2_2_rdp_rdp
+      module function cov2_2_csp_csp(x, y, maskx, masky, corrected) result(res)
+        complex(sp), intent(in) :: x(:, :)
+        complex(sp), intent(in) :: y(:, :)
+        logical, intent(in), optional :: maskx
+        logical, intent(in), optional :: masky
+        logical, intent(in), optional :: corrected
+        complex(sp) :: res(size(x, 2), size(y, 2))
+      end function cov2_2_csp_csp
+      module function cov2_2_cdp_cdp(x, y, maskx, masky, corrected) result(res)
+        complex(dp), intent(in) :: x(:, :)
+        complex(dp), intent(in) :: y(:, :)
+        logical, intent(in), optional :: maskx
+        logical, intent(in), optional :: masky
+        logical, intent(in), optional :: corrected
+        complex(dp) :: res(size(x, 2), size(y, 2))
+      end function cov2_2_cdp_cdp
   end interface cov
 
 
