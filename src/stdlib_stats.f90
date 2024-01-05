@@ -15,6 +15,7 @@ module stdlib_stats
     !!
     !! Mean of array elements
     !! ([Specification](../page/specs/stdlib_stats.html#center-center-of-array-elements))
+
       module function center_all_1_rsp_rsp (x, mask) result(res)
         real(sp), intent(in) :: x(:)
         logical, intent(in), optional :: mask
@@ -730,8 +731,6 @@ module stdlib_stats
         logical, intent(in) :: mask(:,:,:,:)
         real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
       end function center_mask_4_iint64_dp
-
-
   end interface center
 
 
