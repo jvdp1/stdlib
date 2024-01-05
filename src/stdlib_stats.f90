@@ -10,6 +10,731 @@ module stdlib_stats
   public :: corr, cov, mean, median, moment, var
 
 
+  interface center
+    !! version: experimental
+    !!
+    !! Mean of array elements
+    !! ([Specification](../page/specs/stdlib_stats.html#center-center-of-array-elements))
+      module function center_all_1_rsp_rsp (x, mask) result(res)
+        real(sp), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1))
+      end function center_all_1_rsp_rsp
+      module function center_all_2_rsp_rsp (x, mask) result(res)
+        real(sp), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_rsp_rsp
+      module function center_all_3_rsp_rsp (x, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_rsp_rsp
+      module function center_all_4_rsp_rsp (x, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_rsp_rsp
+      module function center_all_1_rdp_rdp (x, mask) result(res)
+        real(dp), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_all_1_rdp_rdp
+      module function center_all_2_rdp_rdp (x, mask) result(res)
+        real(dp), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_rdp_rdp
+      module function center_all_3_rdp_rdp (x, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_rdp_rdp
+      module function center_all_4_rdp_rdp (x, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_rdp_rdp
+      module function center_all_1_csp_csp (x, mask) result(res)
+        complex(sp), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1))
+      end function center_all_1_csp_csp
+      module function center_all_2_csp_csp (x, mask) result(res)
+        complex(sp), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_csp_csp
+      module function center_all_3_csp_csp (x, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_csp_csp
+      module function center_all_4_csp_csp (x, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_csp_csp
+      module function center_all_1_cdp_cdp (x, mask) result(res)
+        complex(dp), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1))
+      end function center_all_1_cdp_cdp
+      module function center_all_2_cdp_cdp (x, mask) result(res)
+        complex(dp), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_cdp_cdp
+      module function center_all_3_cdp_cdp (x, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_cdp_cdp
+      module function center_all_4_cdp_cdp (x, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_cdp_cdp
+
+      module function center_all_1_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_all_1_iint8_dp
+      module function center_all_2_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_iint8_dp
+      module function center_all_3_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_iint8_dp
+      module function center_all_4_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_iint8_dp
+      module function center_all_1_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_all_1_iint16_dp
+      module function center_all_2_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_iint16_dp
+      module function center_all_3_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_iint16_dp
+      module function center_all_4_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_iint16_dp
+      module function center_all_1_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_all_1_iint32_dp
+      module function center_all_2_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_iint32_dp
+      module function center_all_3_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_iint32_dp
+      module function center_all_4_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_iint32_dp
+      module function center_all_1_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_all_1_iint64_dp
+      module function center_all_2_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_all_2_iint64_dp
+      module function center_all_3_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_all_3_iint64_dp
+      module function center_all_4_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:,:)
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_all_4_iint64_dp
+
+
+      module function center_1_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1))
+      end function center_1_rsp_rsp
+      module function center_2_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1), size(x, 2))
+      end function center_2_rsp_rsp
+      module function center_3_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_rsp_rsp
+      module function center_4_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_rsp_rsp
+      module function center_1_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_1_rdp_rdp
+      module function center_2_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_2_rdp_rdp
+      module function center_3_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_rdp_rdp
+      module function center_4_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_rdp_rdp
+      module function center_1_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1))
+      end function center_1_csp_csp
+      module function center_2_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1), size(x, 2))
+      end function center_2_csp_csp
+      module function center_3_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_csp_csp
+      module function center_4_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_csp_csp
+      module function center_1_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1))
+      end function center_1_cdp_cdp
+      module function center_2_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1), size(x, 2))
+      end function center_2_cdp_cdp
+      module function center_3_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_cdp_cdp
+      module function center_4_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_cdp_cdp
+
+
+      module function center_1_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_1_iint8_dp
+      module function center_2_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_2_iint8_dp
+      module function center_3_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_iint8_dp
+      module function center_4_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_iint8_dp
+      module function center_1_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_1_iint16_dp
+      module function center_2_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_2_iint16_dp
+      module function center_3_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_iint16_dp
+      module function center_4_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_iint16_dp
+      module function center_1_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_1_iint32_dp
+      module function center_2_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_2_iint32_dp
+      module function center_3_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_iint32_dp
+      module function center_4_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_iint32_dp
+      module function center_1_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1))
+      end function center_1_iint64_dp
+      module function center_2_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_2_iint64_dp
+      module function center_3_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_3_iint64_dp
+      module function center_4_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_4_iint64_dp
+
+      module function center_mask_all_1_rsp_rsp(x, mask) result(res)
+        real(sp), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        real(sp) :: res(size(x, 1))
+      end function center_mask_all_1_rsp_rsp
+      module function center_mask_all_2_rsp_rsp(x, mask) result(res)
+        real(sp), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        real(sp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_rsp_rsp
+      module function center_mask_all_3_rsp_rsp(x, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_rsp_rsp
+      module function center_mask_all_4_rsp_rsp(x, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_rsp_rsp
+      module function center_mask_all_1_rdp_rdp(x, mask) result(res)
+        real(dp), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_all_1_rdp_rdp
+      module function center_mask_all_2_rdp_rdp(x, mask) result(res)
+        real(dp), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_rdp_rdp
+      module function center_mask_all_3_rdp_rdp(x, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_rdp_rdp
+      module function center_mask_all_4_rdp_rdp(x, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_rdp_rdp
+      module function center_mask_all_1_csp_csp(x, mask) result(res)
+        complex(sp), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        complex(sp) :: res(size(x, 1))
+      end function center_mask_all_1_csp_csp
+      module function center_mask_all_2_csp_csp(x, mask) result(res)
+        complex(sp), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        complex(sp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_csp_csp
+      module function center_mask_all_3_csp_csp(x, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_csp_csp
+      module function center_mask_all_4_csp_csp(x, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_csp_csp
+      module function center_mask_all_1_cdp_cdp(x, mask) result(res)
+        complex(dp), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        complex(dp) :: res(size(x, 1))
+      end function center_mask_all_1_cdp_cdp
+      module function center_mask_all_2_cdp_cdp(x, mask) result(res)
+        complex(dp), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        complex(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_cdp_cdp
+      module function center_mask_all_3_cdp_cdp(x, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_cdp_cdp
+      module function center_mask_all_4_cdp_cdp(x, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_cdp_cdp
+
+
+      module function center_mask_all_1_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_all_1_iint8_dp
+      module function center_mask_all_2_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_iint8_dp
+      module function center_mask_all_3_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_iint8_dp
+      module function center_mask_all_4_iint8_dp(x, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_iint8_dp
+      module function center_mask_all_1_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_all_1_iint16_dp
+      module function center_mask_all_2_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_iint16_dp
+      module function center_mask_all_3_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_iint16_dp
+      module function center_mask_all_4_iint16_dp(x, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_iint16_dp
+      module function center_mask_all_1_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_all_1_iint32_dp
+      module function center_mask_all_2_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_iint32_dp
+      module function center_mask_all_3_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_iint32_dp
+      module function center_mask_all_4_iint32_dp(x, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_iint32_dp
+      module function center_mask_all_1_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:)
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_all_1_iint64_dp
+      module function center_mask_all_2_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:,:)
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_all_2_iint64_dp
+      module function center_mask_all_3_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:)
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_all_3_iint64_dp
+      module function center_mask_all_4_iint64_dp(x, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:,:)
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_all_4_iint64_dp
+
+      module function  center_mask_1_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        real(sp) :: res(size(x, 1))
+      end function center_mask_1_rsp_rsp
+      module function  center_mask_2_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        real(sp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_rsp_rsp
+      module function  center_mask_3_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_rsp_rsp
+      module function  center_mask_4_rsp_rsp(x, dim, mask) result(res)
+        real(sp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        real(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_rsp_rsp
+      module function  center_mask_1_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_1_rdp_rdp
+      module function  center_mask_2_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_rdp_rdp
+      module function  center_mask_3_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_rdp_rdp
+      module function  center_mask_4_rdp_rdp(x, dim, mask) result(res)
+        real(dp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_rdp_rdp
+      module function  center_mask_1_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        complex(sp) :: res(size(x, 1))
+      end function center_mask_1_csp_csp
+      module function  center_mask_2_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        complex(sp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_csp_csp
+      module function  center_mask_3_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_csp_csp
+      module function  center_mask_4_csp_csp(x, dim, mask) result(res)
+        complex(sp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        complex(sp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_csp_csp
+      module function  center_mask_1_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        complex(dp) :: res(size(x, 1))
+      end function center_mask_1_cdp_cdp
+      module function  center_mask_2_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        complex(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_cdp_cdp
+      module function  center_mask_3_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_cdp_cdp
+      module function  center_mask_4_cdp_cdp(x, dim, mask) result(res)
+        complex(dp), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        complex(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_cdp_cdp
+
+
+      module function center_mask_1_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_1_iint8_dp
+      module function center_mask_2_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_iint8_dp
+      module function center_mask_3_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_iint8_dp
+      module function center_mask_4_iint8_dp(x, dim, mask) result(res)
+        integer(int8), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_iint8_dp
+      module function center_mask_1_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_1_iint16_dp
+      module function center_mask_2_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_iint16_dp
+      module function center_mask_3_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_iint16_dp
+      module function center_mask_4_iint16_dp(x, dim, mask) result(res)
+        integer(int16), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_iint16_dp
+      module function center_mask_1_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_1_iint32_dp
+      module function center_mask_2_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_iint32_dp
+      module function center_mask_3_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_iint32_dp
+      module function center_mask_4_iint32_dp(x, dim, mask) result(res)
+        integer(int32), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_iint32_dp
+      module function center_mask_1_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:)
+        real(dp) :: res(size(x, 1))
+      end function center_mask_1_iint64_dp
+      module function center_mask_2_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:)
+        real(dp) :: res(size(x, 1), size(x, 2))
+      end function center_mask_2_iint64_dp
+      module function center_mask_3_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3))
+      end function center_mask_3_iint64_dp
+      module function center_mask_4_iint64_dp(x, dim, mask) result(res)
+        integer(int64), intent(in) :: x(:,:,:,:)
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask(:,:,:,:)
+        real(dp) :: res(size(x, 1), size(x, 2), size(x, 3), size(x, 4))
+      end function center_mask_4_iint64_dp
+
+
+  end interface center
+
+
   interface corr
     !! version: experimental
     !!
@@ -486,39 +1211,6 @@ module stdlib_stats
         real(dp) :: res(merge(size(x, 1), size(x, 2), mask = 1<dim)&
                             , merge(size(x, 1), size(x, 2), mask = 1<dim))
       end function cov_mask_2_iint64_dp
-
-      module function cov2_2_rsp_rsp(x, y, maskx, masky, corrected) result(res)
-        real(sp), intent(in) :: x(:, :)
-        real(sp), intent(in) :: y(:, :)
-        logical, intent(in), optional :: maskx
-        logical, intent(in), optional :: masky
-        logical, intent(in), optional :: corrected
-        real(sp) :: res(size(x, 2), size(y, 2))
-      end function cov2_2_rsp_rsp
-      module function cov2_2_rdp_rdp(x, y, maskx, masky, corrected) result(res)
-        real(dp), intent(in) :: x(:, :)
-        real(dp), intent(in) :: y(:, :)
-        logical, intent(in), optional :: maskx
-        logical, intent(in), optional :: masky
-        logical, intent(in), optional :: corrected
-        real(dp) :: res(size(x, 2), size(y, 2))
-      end function cov2_2_rdp_rdp
-      module function cov2_2_csp_csp(x, y, maskx, masky, corrected) result(res)
-        complex(sp), intent(in) :: x(:, :)
-        complex(sp), intent(in) :: y(:, :)
-        logical, intent(in), optional :: maskx
-        logical, intent(in), optional :: masky
-        logical, intent(in), optional :: corrected
-        complex(sp) :: res(size(x, 2), size(y, 2))
-      end function cov2_2_csp_csp
-      module function cov2_2_cdp_cdp(x, y, maskx, masky, corrected) result(res)
-        complex(dp), intent(in) :: x(:, :)
-        complex(dp), intent(in) :: y(:, :)
-        logical, intent(in), optional :: maskx
-        logical, intent(in), optional :: masky
-        logical, intent(in), optional :: corrected
-        complex(dp) :: res(size(x, 2), size(y, 2))
-      end function cov2_2_cdp_cdp
   end interface cov
 
 
