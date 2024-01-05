@@ -20,6 +20,7 @@ module stdlib_stats
     !!
     !! Mean of array elements
     !! ([Specification](../page/specs/stdlib_stats.html#center-center-of-array-elements))
+
   #:for k1, t1 in RC_KINDS_TYPES
     #:for rank in RANKS
       #:set RName = rname("center_all",rank, t1, k1)
@@ -115,8 +116,6 @@ module stdlib_stats
       end function ${RName}$
     #:endfor
   #:endfor
-
-
   end interface center
 
 
