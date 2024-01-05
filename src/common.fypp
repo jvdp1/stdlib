@@ -127,6 +127,30 @@ ${prefix + joinstr.join([line.strip() for line in txt.split("\n")]) + suffix}$
 #:enddef
 
 
+#! Brace enclosed, comma separated Fortran expressions for a shape.
+#!
+#! Rank of the original variable. The routine generates
+#! for each dimension a Fortan expression which calculates the
+#! size of the array for that dimension.
+#!
+#! Args:
+#!   varname (str): Name of the variable to be used as origin
+#!   origrank (int): Rank of the original variable
+#!
+#! Returns:
+#!   Shape expression enclosed in braces, so that it can be used as suffix to
+#!   define array shapes in declarations.
+#!
+#:def shape(varname, rank)
+  #:assert rank > 0
+    #:call join_lines(joinstr=", ", prefix="(", suffix=")")
+      #:for i in range(1, rank+1)
+        size(${varname}$, ${i}$)
+      #:endfor
+    #:endcall
+#:enddef
+
+
 #! Brace enclosed, comma separated Fortran expressions for a reduced shape.
 #!
 #! Rank of the original variable will be reduced by one. The routine generates

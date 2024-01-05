@@ -15,6 +15,111 @@ module stdlib_stats
   public :: corr, cov, mean, median, moment, var
 
 
+  interface center
+    !! version: experimental
+    !!
+    !! Mean of array elements
+    !! ([Specification](../page/specs/stdlib_stats.html#center-center-of-array-elements))
+  #:for k1, t1 in RC_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname("center_all",rank, t1, k1)
+      module function ${RName}$ (x, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        logical, intent(in), optional :: mask
+        ${t1}$ :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+  #:for k1, t1 in INT_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname('center_all', rank, t1, k1,'dp')
+      module function ${RName}$(x, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        logical, intent(in), optional :: mask
+        real(dp) :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+
+  #:for k1, t1 in RC_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname("center",rank, t1, k1)
+      module function ${RName}$(x, dim, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        ${t1}$ :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+
+  #:for k1, t1 in INT_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname("center",rank, t1, k1,'dp')
+      module function ${RName}$(x, dim, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        integer, intent(in) :: dim
+        logical, intent(in), optional :: mask
+        real(dp) :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+  #:for k1, t1 in RC_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname('center_mask_all',rank, t1, k1)
+      module function ${RName}$(x, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        logical, intent(in) :: mask${ranksuffix(rank)}$
+        ${t1}$ :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+
+  #:for k1, t1 in INT_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname('center_mask_all',rank, t1, k1, 'dp')
+      module function ${RName}$(x, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        logical, intent(in) :: mask${ranksuffix(rank)}$
+        real(dp) :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+  #:for k1, t1 in RC_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname('center_mask',rank, t1, k1)
+      module function  ${RName}$(x, dim, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask${ranksuffix(rank)}$
+        ${t1}$ :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+
+  #:for k1, t1 in INT_KINDS_TYPES
+    #:for rank in RANKS
+      #:set RName = rname('center_mask',rank, t1, k1, 'dp')
+      module function ${RName}$(x, dim, mask) result(res)
+        ${t1}$, intent(in) :: x${ranksuffix(rank)}$
+        integer, intent(in) :: dim
+        logical, intent(in) :: mask${ranksuffix(rank)}$
+        real(dp) :: res${shape('x', rank)}$
+      end function ${RName}$
+    #:endfor
+  #:endfor
+
+
+  end interface center
+
+
   interface corr
     !! version: experimental
     !!
