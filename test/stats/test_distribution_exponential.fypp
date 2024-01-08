@@ -1,49 +1,47 @@
 
 #:include "common.fypp"
 #:set RC_KINDS_TYPES = REAL_KINDS_TYPES + CMPLX_KINDS_TYPES
-program test_distribution_expon
+module test_distribution_expon
     use stdlib_kinds, only : sp, dp, xdp, qp
-    use stdlib_error, only : check
     use stdlib_random, only : random_seed
     use stdlib_stats_distribution_exponential, only : expon_rvs => rvs_exp,  &
                               expon_pdf => pdf_exp, expon_cdf => cdf_exp
+    use testdrive, only : new_unittest, unittest_type, error_type, check
 
     implicit none
+    private
+    public :: collect_distribution_expon
     #:for k1, t1 in REAL_KINDS_TYPES
     ${t1}$, parameter :: ${k1}$tol = 1000 * epsilon(1.0_${k1}$)
     #:endfor
-    logical ::  warn = .true.
-    integer :: put, get
-
-    put = 12345678
-    call random_seed(put, get)
-
-
-    call test_exponential_random_generator
-
-
-    #:for k1, t1 in RC_KINDS_TYPES
-    call test_expon_rvs_${t1[0]}$${k1}$
-    #:endfor
-
-
-    #:for k1, t1 in RC_KINDS_TYPES
-    call test_expon_pdf_${t1[0]}$${k1}$
-    #:endfor
-    call test_expon_pdf_rsp
-
-
-    #:for k1, t1 in RC_KINDS_TYPES
-    call test_expon_cdf_${t1[0]}$${k1}$
-    #:endfor
-
-
-
-
 
 contains
 
-    subroutine test_exponential_random_generator
+    !> Collect all exported unit tests
+    subroutine collect_distribution_expon(testsuite)
+        !> Collection of tests
+        type(unittest_type), allocatable, intent(out) :: testsuite(:)
+
+        integer :: put, get
+
+        put = 12345678
+        call random_seed(put, get)
+
+
+        testsuite = [ &
+            new_unittest("test_exponential_random_generator", test_exponential_random_generator) &
+            #:for k1, t1 in RC_KINDS_TYPES
+              , new_unittest("test_expon_rvs_${t1[0]}$${k1}$", test_expon_rvs_${t1[0]}$${k1}$) &
+              , new_unittest("test_expon_pdf_${t1[0]}$${k1}$", test_expon_pdf_${t1[0]}$${k1}$) &
+              , new_unittest("test_expon_cdf_${t1[0]}$${k1}$", test_expon_cdf_${t1[0]}$${k1}$) &
+            #:endfor
+            ]
+    end subroutine collect_distribution_expon
+
+
+    subroutine test_exponential_random_generator(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
 
         integer, parameter :: num = 10000000, array_size = 1000
         integer :: i, j, freq(0:array_size)
@@ -64,14 +62,17 @@ contains
         write(*,*) "The critical values for chi-squared with 1000 d. of f. is" &
             //" 1143.92"
         write(*,*) "Chi-squared for exponential random generator is : ", chisq
-        call check((chisq < 1143.9), &
-            msg="exponential randomness failed chi-squared test", warn=warn)
+        call check(error, (chisq < 1143.9), &
+            "exponential randomness failed chi-squared test")
     end subroutine test_exponential_random_generator
 
 
 
     #:for k1, t1 in RC_KINDS_TYPES
-    subroutine test_expon_rvs_${t1[0]}$${k1}$
+    subroutine test_expon_rvs_${t1[0]}$${k1}$(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
+
         ${t1}$ :: res(10), scale
         integer, parameter :: k = 5
         integer :: i, n
@@ -130,8 +131,8 @@ contains
             res(i) = expon_rvs(scale)      ! 1 dummy
         end do
         res(6:10) = expon_rvs(scale, k)    ! 2 dummies
-        call check(all(abs(res - ans) < ${k1}$tol),                            &
-            msg="exponential_distribution_rvs_${t1[0]}$${k1}$ failed", warn=warn)
+        call check(error, all(abs(res - ans) < ${k1}$tol),                            &
+            "exponential_distribution_rvs_${t1[0]}$${k1}$ failed")
     end subroutine test_expon_rvs_${t1[0]}$${k1}$
 
     #:endfor
@@ -140,7 +141,9 @@ contains
 
 
     #:for k1, t1 in RC_KINDS_TYPES
-    subroutine test_expon_pdf_${t1[0]}$${k1}$
+    subroutine test_expon_pdf_${t1[0]}$${k1}$(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
 
         ${t1}$ :: x1, x2(3,4), scale
         integer :: i, n
@@ -199,8 +202,8 @@ contains
         x2 = reshape(expon_rvs(scale, 12), [3,4])
         res(:,1) = expon_pdf(x1, scale)
         res(:, 2:5) = expon_pdf(x2, scale)
-        call check(all(abs(res - reshape(ans, [3,5])) < ${k1}$tol),            &
-            msg="exponential_distribution_pdf_${t1[0]}$${k1}$ failed", warn=warn)
+        call check(error, all(abs(res - reshape(ans, [3,5])) < ${k1}$tol),            &
+            "exponential_distribution_pdf_${t1[0]}$${k1}$ failed")
     end subroutine test_expon_pdf_${t1[0]}$${k1}$
 
     #:endfor
@@ -209,7 +212,9 @@ contains
 
 
     #:for k1, t1 in RC_KINDS_TYPES
-    subroutine test_expon_cdf_${t1[0]}$${k1}$
+    subroutine test_expon_cdf_${t1[0]}$${k1}$(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
 
         ${t1}$ :: x1, x2(3,4), scale
         integer :: i, n
@@ -267,10 +272,36 @@ contains
         x2 = reshape(expon_rvs(scale, 12), [3,4])
         res(:,1) = expon_cdf(x1, scale)
         res(:, 2:5) = expon_cdf(x2, scale)
-        call check(all(abs(res - reshape(ans,[3,5])) < ${k1}$tol),             &
-            msg="exponential_distribution_cdf_${t1[0]}$${k1}$ failed", warn=warn)
+        call check(error, all(abs(res - reshape(ans,[3,5])) < ${k1}$tol),             &
+            "exponential_distribution_cdf_${t1[0]}$${k1}$ failed")
     end subroutine test_expon_cdf_${t1[0]}$${k1}$
 
     #:endfor
 
-end program test_distribution_expon
+end module test_distribution_expon
+
+program tester
+    use, intrinsic :: iso_fortran_env, only : error_unit
+    use testdrive, only : run_testsuite, new_testsuite, testsuite_type
+    use test_distribution_expon, only : collect_distribution_expon
+    implicit none
+    integer :: stat, is
+    type(testsuite_type), allocatable :: testsuites(:)
+    character(len=*), parameter :: fmt = '("#", *(1x, a))'
+
+    stat = 0
+
+    testsuites = [ &
+        new_testsuite("distribution_expon", collect_distribution_expon) &
+        ]
+
+    do is = 1, size(testsuites)
+        write(error_unit, fmt) "Testing:", testsuites(is)%name
+        call run_testsuite(testsuites(is)%collect, error_unit, stat)
+    end do
+
+    if (stat > 0) then
+        write(error_unit, '(i0, 1x, a)') stat, "test(s) failed!"
+        error stop
+    end if
+end program
