@@ -1,50 +1,47 @@
 
 #:include "common.fypp"
 #:set RC_KINDS_TYPES = REAL_KINDS_TYPES + CMPLX_KINDS_TYPES
-program test_distribution_normal
+module test_distribution_normal
     use stdlib_kinds, only : sp, dp, xdp, qp
-    use stdlib_error, only : check
     use stdlib_random, only : random_seed
     use stdlib_stats_distribution_uniform, only : uni => rvs_uniform
     use stdlib_stats_distribution_normal, only : nor_rvs => rvs_normal,        &
                           nor_pdf => pdf_normal, nor_cdf => cdf_normal
+    use testdrive, only : new_unittest, unittest_type, error_type, check
 
     implicit none
+    private
+    public :: collect_distribution_normal
     #:for k1, t1 in REAL_KINDS_TYPES
     ${t1}$, parameter :: ${k1}$tol = 1000 * epsilon(1.0_${k1}$)
     #:endfor
-    logical ::  warn = .true.
-    integer :: put, get
-
-    put = 12345678
-    call random_seed(put, get)
-
-    call test_normal_random_generator
-
-
-    #:for k1, t1 in RC_KINDS_TYPES
-    call test_nor_rvs_${t1[0]}$${k1}$
-    #:endfor
-
-
-
-    #:for k1, t1 in RC_KINDS_TYPES
-    call test_nor_pdf_${t1[0]}$${k1}$
-    #:endfor
-
-
-
-    #:for k1, t1 in RC_KINDS_TYPES
-    call test_nor_cdf_${t1[0]}$${k1}$
-    #:endfor
-
-
-
-
 
 contains
 
-    subroutine test_normal_random_generator
+    !> Collect all exported unit tests
+    subroutine collect_distribution_normal(testsuite)
+        !> Collection of tests
+        type(unittest_type), allocatable, intent(out) :: testsuite(:)
+
+        integer :: put, get
+
+        put = 12345678
+        call random_seed(put, get)
+
+
+        testsuite = [ &
+            new_unittest("test_normal_random_generator", test_normal_random_generator) &
+            #:for k1, t1 in RC_KINDS_TYPES
+              , new_unittest("test_nor_rvs_${t1[0]}$${k1}$", test_nor_rvs_${t1[0]}$${k1}$) &
+              , new_unittest("test_nor_pdf_${t1[0]}$${k1}$", test_nor_pdf_${t1[0]}$${k1}$) &
+              , new_unittest("test_nor_cdf_${t1[0]}$${k1}$", test_nor_cdf_${t1[0]}$${k1}$) &
+            #:endfor
+            ]
+    end subroutine collect_distribution_normal
+
+    subroutine test_normal_random_generator(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
 
         integer, parameter :: num = 10000000, array_size = 1000
         integer :: i, j, freq(0:array_size)
@@ -65,15 +62,17 @@ contains
         write(*,*) "The critical values for chi-squared with 1000 d. of f. is" &
             //" 1143.92"
         write(*,*) "Chi-squared for normal random generator is : ", chisq
-        call check((chisq < 1143.9),                                           &
-            msg = "normal randomness failed chi-squared test", warn = warn)
+        call check(error, (chisq < 1143.9),                                           &
+            "normal randomness failed chi-squared test")
     end subroutine test_normal_random_generator
 
 
 
 
     #:for k1, t1 in RC_KINDS_TYPES
-    subroutine test_nor_rvs_${t1[0]}$${k1}$
+    subroutine test_nor_rvs_${t1[0]}$${k1}$(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
         ${t1}$ :: res(10), loc, scale
         integer, parameter :: k = 5
         integer :: i, n
@@ -131,8 +130,8 @@ contains
            res(i) = nor_rvs(loc, scale)     ! 2 dummies
         end do
         res(6:10) = nor_rvs(loc, scale, k)  ! 3 dummies
-        call check(all(abs(res - ans) < ${k1}$tol),                            &
-            msg="normal_distribution_rvs_${t1[0]}$${k1}$ failed", warn=warn)
+        call check(error, all(abs(res - ans) < ${k1}$tol),                            &
+            "normal_distribution_rvs_${t1[0]}$${k1}$ failed")
     end subroutine test_nor_rvs_${t1[0]}$${k1}$
 
     #:endfor
@@ -141,7 +140,9 @@ contains
 
 
     #:for k1, t1 in RC_KINDS_TYPES
-    subroutine test_nor_pdf_${t1[0]}$${k1}$
+    subroutine test_nor_pdf_${t1[0]}$${k1}$(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
 
         ${t1}$ :: x1, x2(3,4), loc, scale
         integer, parameter :: k = 5
@@ -200,8 +201,8 @@ contains
         x2 = reshape(nor_rvs(loc, scale, 12), [3,4])
         res(:,1) = nor_pdf(x1, loc, scale)
         res(:, 2:5) = nor_pdf(x2, loc, scale)
-        call check(all(abs(res - reshape(ans, [3,5])) < ${k1}$tol),            &
-            msg="normal_distribution_pdf_${t1[0]}$${k1}$ failed", warn=warn)
+        call check(error, all(abs(res - reshape(ans, [3,5])) < ${k1}$tol),            &
+            "normal_distribution_pdf_${t1[0]}$${k1}$ failed")
     end subroutine test_nor_pdf_${t1[0]}$${k1}$
 
     #:endfor
@@ -210,7 +211,9 @@ contains
 
 
     #:for k1, t1 in RC_KINDS_TYPES
-    subroutine test_nor_cdf_${t1[0]}$${k1}$
+    subroutine test_nor_cdf_${t1[0]}$${k1}$(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
 
         ${t1}$ :: x1, x2(3,4), loc, scale
         integer :: i, n
@@ -269,10 +272,36 @@ contains
         x2 = reshape(nor_rvs(loc, scale, 12), [3,4])
         res(:,1) = nor_cdf(x1, loc, scale)
         res(:, 2:5) = nor_cdf(x2, loc, scale)
-        call check(all(abs(res - reshape(ans,[3,5])) < ${k1}$tol),             &
-            msg="normal_distribution_cdf_${t1[0]}$${k1}$ failed", warn=warn)
+        call check(error, all(abs(res - reshape(ans,[3,5])) < ${k1}$tol),             &
+            "normal_distribution_cdf_${t1[0]}$${k1}$ failed")
     end subroutine test_nor_cdf_${t1[0]}$${k1}$
 
     #:endfor
 
-end program test_distribution_normal
+end module test_distribution_normal
+
+program tester
+    use, intrinsic :: iso_fortran_env, only : error_unit
+    use testdrive, only : run_testsuite, new_testsuite, testsuite_type
+    use test_distribution_normal, only : collect_distribution_normal
+    implicit none
+    integer :: stat, is
+    type(testsuite_type), allocatable :: testsuites(:)
+    character(len=*), parameter :: fmt = '("#", *(1x, a))'
+
+    stat = 0
+
+    testsuites = [ &
+        new_testsuite("distribution_normal", collect_distribution_normal) &
+        ]
+
+    do is = 1, size(testsuites)
+        write(error_unit, fmt) "Testing:", testsuites(is)%name
+        call run_testsuite(testsuites(is)%collect, error_unit, stat)
+    end do
+
+    if (stat > 0) then
+        write(error_unit, '(i0, 1x, a)') stat, "test(s) failed!"
+        error stop
+    end if
+end program
