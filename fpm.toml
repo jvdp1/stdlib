@@ -15,4 +15,5 @@ macros = [
   "PROJECT_VERSION_PATCH=0",
   "MAXRANK=4",
   "WITH_QP=1",
+  "WITH_XDP=0",
 ]
