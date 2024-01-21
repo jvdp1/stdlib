@@ -6,6 +6,8 @@ test-drive.git = "https://github.com/fortran-lang/test-drive.git"
 [build]
 auto-examples = false
 auto-tests = true
+
+[library]
 include-dir = "include"
 
 [preprocess.cpp]
