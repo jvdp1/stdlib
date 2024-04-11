@@ -1,111 +1,109 @@
-module stdlib_linalg_blas_z
+module stdlib_linalg_blas_c
      use stdlib_linalg_constants
      use stdlib_linalg_blas_aux
      use stdlib_linalg_blas_s
-     use stdlib_linalg_blas_c
-     use stdlib_linalg_blas_d
      implicit none(type,external)
      private
 
 
      public :: sp,dp,qp,lk,ilp
-     public :: stdlib_zaxpy
-     public :: stdlib_zcopy
-     public :: stdlib_zdotc
-     public :: stdlib_zdotu
-     public :: stdlib_zdrot
-     public :: stdlib_zdscal
-     public :: stdlib_zgbmv
-     public :: stdlib_zgemm
-     public :: stdlib_zgemv
-     public :: stdlib_zgerc
-     public :: stdlib_zgeru
-     public :: stdlib_zhbmv
-     public :: stdlib_zhemm
-     public :: stdlib_zhemv
-     public :: stdlib_zher
-     public :: stdlib_zher2
-     public :: stdlib_zher2k
-     public :: stdlib_zherk
-     public :: stdlib_zhpmv
-     public :: stdlib_zhpr
-     public :: stdlib_zhpr2
-     public :: stdlib_zrotg
-     public :: stdlib_zscal
-     public :: stdlib_zswap
-     public :: stdlib_zsymm
-     public :: stdlib_zsyr2k
-     public :: stdlib_zsyrk
-     public :: stdlib_ztbmv
-     public :: stdlib_ztbsv
-     public :: stdlib_ztpmv
-     public :: stdlib_ztpsv
-     public :: stdlib_ztrmm
-     public :: stdlib_ztrmv
-     public :: stdlib_ztrsm
-     public :: stdlib_ztrsv
+     public :: stdlib_caxpy
+     public :: stdlib_ccopy
+     public :: stdlib_cdotc
+     public :: stdlib_cdotu
+     public :: stdlib_cgbmv
+     public :: stdlib_cgemm
+     public :: stdlib_cgemv
+     public :: stdlib_cgerc
+     public :: stdlib_cgeru
+     public :: stdlib_chbmv
+     public :: stdlib_chemm
+     public :: stdlib_chemv
+     public :: stdlib_cher
+     public :: stdlib_cher2
+     public :: stdlib_cher2k
+     public :: stdlib_cherk
+     public :: stdlib_chpmv
+     public :: stdlib_chpr
+     public :: stdlib_chpr2
+     public :: stdlib_crotg
+     public :: stdlib_cscal
+     public :: stdlib_csrot
+     public :: stdlib_csscal
+     public :: stdlib_cswap
+     public :: stdlib_csymm
+     public :: stdlib_csyr2k
+     public :: stdlib_csyrk
+     public :: stdlib_ctbmv
+     public :: stdlib_ctbsv
+     public :: stdlib_ctpmv
+     public :: stdlib_ctpsv
+     public :: stdlib_ctrmm
+     public :: stdlib_ctrmv
+     public :: stdlib_ctrsm
+     public :: stdlib_ctrsv
 
-     ! 64-bit real constants 
-     real(dp),    parameter, private ::     negone = -1.00_dp
-     real(dp),    parameter, private ::       zero = 0.00_dp
-     real(dp),    parameter, private ::       half = 0.50_dp
-     real(dp),    parameter, private ::        one = 1.00_dp
-     real(dp),    parameter, private ::        two = 2.00_dp
-     real(dp),    parameter, private ::      three = 3.00_dp
-     real(dp),    parameter, private ::       four = 4.00_dp
-     real(dp),    parameter, private ::      eight = 8.00_dp
-     real(dp),    parameter, private ::        ten = 10.00_dp
+     ! 32-bit real constants 
+     real(sp),    parameter, private ::     negone = -1.00_sp
+     real(sp),    parameter, private ::       zero = 0.00_sp
+     real(sp),    parameter, private ::       half = 0.50_sp
+     real(sp),    parameter, private ::        one = 1.00_sp
+     real(sp),    parameter, private ::        two = 2.00_sp
+     real(sp),    parameter, private ::      three = 3.00_sp
+     real(sp),    parameter, private ::       four = 4.00_sp
+     real(sp),    parameter, private ::      eight = 8.00_sp
+     real(sp),    parameter, private ::        ten = 10.00_sp
 
-     ! 64-bit complex constants 
-     complex(dp), parameter, private :: czero   = ( 0.0_dp,0.0_dp)
-     complex(dp), parameter, private :: chalf   = ( 0.5_dp,0.0_dp)
-     complex(dp), parameter, private :: cone    = ( 1.0_dp,0.0_dp)
-     complex(dp), parameter, private :: cnegone = (-1.0_dp,0.0_dp)
+     ! 32-bit complex constants 
+     complex(sp), parameter, private :: czero   = ( 0.0_sp,0.0_sp)
+     complex(sp), parameter, private :: chalf   = ( 0.5_sp,0.0_sp)
+     complex(sp), parameter, private :: cone    = ( 1.0_sp,0.0_sp)
+     complex(sp), parameter, private :: cnegone = (-1.0_sp,0.0_sp)
 
-     ! 64-bit scaling constants 
+     ! 32-bit scaling constants 
      integer,     parameter, private :: maxexp = maxexponent(zero) 
      integer,     parameter, private :: minexp = minexponent(zero) 
-     real(dp),    parameter, private :: rradix = real(radix(zero),dp) 
-     real(dp),    parameter, private :: ulp    = epsilon(zero) 
-     real(dp),    parameter, private :: eps    = ulp*half 
-     real(dp),    parameter, private :: safmin = rradix**max(minexp-1,1-maxexp) 
-     real(dp),    parameter, private :: safmax = one/safmin 
-     real(dp),    parameter, private :: smlnum = safmin/ulp 
-     real(dp),    parameter, private :: bignum = safmax*ulp 
-     real(dp),    parameter, private :: rtmin  = sqrt(smlnum) 
-     real(dp),    parameter, private :: rtmax  = sqrt(bignum) 
+     real(sp),    parameter, private :: rradix = real(radix(zero),sp) 
+     real(sp),    parameter, private :: ulp    = epsilon(zero) 
+     real(sp),    parameter, private :: eps    = ulp*half 
+     real(sp),    parameter, private :: safmin = rradix**max(minexp-1,1-maxexp) 
+     real(sp),    parameter, private :: safmax = one/safmin 
+     real(sp),    parameter, private :: smlnum = safmin/ulp 
+     real(sp),    parameter, private :: bignum = safmax*ulp 
+     real(sp),    parameter, private :: rtmin  = sqrt(smlnum) 
+     real(sp),    parameter, private :: rtmax  = sqrt(bignum) 
 
-     ! 64-bit Blue's scaling constants 
+     ! 32-bit Blue's scaling constants 
      ! ssml>=1/s and sbig==1/S with s,S as defined in https://doi.org/10.1145/355769.355771 
-     real(dp),    parameter, private :: tsml   = rradix**ceiling((minexp-1)*half) 
-     real(dp),    parameter, private :: tbig   = rradix**floor((maxexp-digits(zero)+1)*half) 
-     real(dp),    parameter, private :: ssml   = rradix**(-floor((minexp-digits(zero))*half)) 
-     real(dp),    parameter, private :: sbig   = rradix**(-ceiling((maxexp+digits(zero)-1)*half)) 
+     real(sp),    parameter, private :: tsml   = rradix**ceiling((minexp-1)*half) 
+     real(sp),    parameter, private :: tbig   = rradix**floor((maxexp-digits(zero)+1)*half) 
+     real(sp),    parameter, private :: ssml   = rradix**(-floor((minexp-digits(zero))*half)) 
+     real(sp),    parameter, private :: sbig   = rradix**(-ceiling((maxexp+digits(zero)-1)*half)) 
 
 
      contains
 
+     !> CAXPY: constant times a vector plus a vector.
 
-     pure subroutine stdlib_zaxpy(n,za,zx,incx,zy,incy)
-     !! ZAXPY constant times a vector plus a vector.
+     pure subroutine stdlib_caxpy(n,ca,cx,incx,cy,incy)
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: za
+           complex(sp), intent(in) :: ca
            integer(ilp), intent(in) :: incx, incy, n
            ! Array Arguments 
-           complex(dp), intent(in) :: zx(*)
-           complex(dp), intent(inout) :: zy(*)
+           complex(sp), intent(in) :: cx(*)
+           complex(sp), intent(inout) :: cy(*)
         ! =====================================================================
            ! Local Scalars 
            integer(ilp) :: i, ix, iy
            if (n<=0) return
-           if (stdlib_dcabs1(za)==0.0_dp) return
+           if (stdlib_scabs1(ca)==0.0e+0_sp) return
            if (incx==1 .and. incy==1) then
               ! code for both increments equal to 1
               do i = 1,n
-                 zy(i) = zy(i) + za*zx(i)
+                 cy(i) = cy(i) + ca*cx(i)
               end do
            else
               ! code for unequal increments or equal increments
@@ -115,25 +113,25 @@ module stdlib_linalg_blas_z
               if (incx<0) ix = (-n+1)*incx + 1
               if (incy<0) iy = (-n+1)*incy + 1
               do i = 1,n
-                 zy(iy) = zy(iy) + za*zx(ix)
+                 cy(iy) = cy(iy) + ca*cx(ix)
                  ix = ix + incx
                  iy = iy + incy
               end do
            end if
            return
-     end subroutine stdlib_zaxpy
+     end subroutine stdlib_caxpy
 
+     !> CCOPY: copies a vector x to a vector y.
 
-     pure subroutine stdlib_zcopy(n,zx,incx,zy,incy)
-     !! ZCOPY copies a vector, x, to a vector, y.
+     pure subroutine stdlib_ccopy(n,cx,incx,cy,incy)
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
            integer(ilp), intent(in) :: incx, incy, n
            ! Array Arguments 
-           complex(dp), intent(in) :: zx(*)
-           complex(dp), intent(out) :: zy(*)
+           complex(sp), intent(in) :: cx(*)
+           complex(sp), intent(out) :: cy(*)
         ! =====================================================================
            ! Local Scalars 
            integer(ilp) :: i, ix, iy
@@ -141,7 +139,7 @@ module stdlib_linalg_blas_z
            if (incx==1 .and. incy==1) then
               ! code for both increments equal to 1
               do i = 1,n
-               zy(i) = zx(i)
+                 cy(i) = cx(i)
               end do
            else
               ! code for unequal increments or equal increments
@@ -151,38 +149,38 @@ module stdlib_linalg_blas_z
               if (incx<0) ix = (-n+1)*incx + 1
               if (incy<0) iy = (-n+1)*incy + 1
               do i = 1,n
-                 zy(iy) = zx(ix)
+                 cy(iy) = cx(ix)
                  ix = ix + incx
                  iy = iy + incy
               end do
            end if
            return
-     end subroutine stdlib_zcopy
+     end subroutine stdlib_ccopy
 
+     !> CDOTC: forms the dot product of two complex vectors
+     !> CDOTC = X^H * Y
 
-     pure complex(dp) function stdlib_zdotc(n,zx,incx,zy,incy)
-     !! ZDOTC forms the dot product of two complex vectors
-     !! ZDOTC = X^H * Y
+     pure complex(sp) function stdlib_cdotc(n,cx,incx,cy,incy)
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
            integer(ilp), intent(in) :: incx, incy, n
            ! Array Arguments 
-           complex(dp), intent(in) :: zx(*), zy(*)
+           complex(sp), intent(in) :: cx(*), cy(*)
         ! =====================================================================
            ! Local Scalars 
-           complex(dp) :: ztemp
+           complex(sp) :: ctemp
            integer(ilp) :: i, ix, iy
            ! Intrinsic Functions 
            intrinsic :: conjg
-           ztemp = (0.0_dp,0.0_dp)
-           stdlib_zdotc = (0.0_dp,0.0_dp)
+           ctemp = (0.0_sp,0.0_sp)
+           stdlib_cdotc = (0.0_sp,0.0_sp)
            if (n<=0) return
            if (incx==1 .and. incy==1) then
               ! code for both increments equal to 1
               do i = 1,n
-                 ztemp = ztemp + conjg(zx(i))*zy(i)
+                 ctemp = ctemp + conjg(cx(i))*cy(i)
               end do
            else
               ! code for unequal increments or equal increments
@@ -192,37 +190,37 @@ module stdlib_linalg_blas_z
               if (incx<0) ix = (-n+1)*incx + 1
               if (incy<0) iy = (-n+1)*incy + 1
               do i = 1,n
-                 ztemp = ztemp + conjg(zx(ix))*zy(iy)
+                 ctemp = ctemp + conjg(cx(ix))*cy(iy)
                  ix = ix + incx
                  iy = iy + incy
               end do
            end if
-           stdlib_zdotc = ztemp
+           stdlib_cdotc = ctemp
            return
-     end function stdlib_zdotc
+     end function stdlib_cdotc
 
+     !> CDOTU: forms the dot product of two complex vectors
+     !> CDOTU = X^T * Y
 
-     pure complex(dp) function stdlib_zdotu(n,zx,incx,zy,incy)
-     !! ZDOTU forms the dot product of two complex vectors
-     !! ZDOTU = X^T * Y
+     pure complex(sp) function stdlib_cdotu(n,cx,incx,cy,incy)
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
            integer(ilp), intent(in) :: incx, incy, n
            ! Array Arguments 
-           complex(dp), intent(in) :: zx(*), zy(*)
+           complex(sp), intent(in) :: cx(*), cy(*)
         ! =====================================================================
            ! Local Scalars 
-           complex(dp) :: ztemp
+           complex(sp) :: ctemp
            integer(ilp) :: i, ix, iy
-           ztemp = (0.0_dp,0.0_dp)
-           stdlib_zdotu = (0.0_dp,0.0_dp)
+           ctemp = (0.0_sp,0.0_sp)
+           stdlib_cdotu = (0.0_sp,0.0_sp)
            if (n<=0) return
            if (incx==1 .and. incy==1) then
               ! code for both increments equal to 1
               do i = 1,n
-                 ztemp = ztemp + zx(i)*zy(i)
+                 ctemp = ctemp + cx(i)*cy(i)
               end do
            else
               ! code for unequal increments or equal increments
@@ -232,113 +230,37 @@ module stdlib_linalg_blas_z
               if (incx<0) ix = (-n+1)*incx + 1
               if (incy<0) iy = (-n+1)*incy + 1
               do i = 1,n
-                 ztemp = ztemp + zx(ix)*zy(iy)
+                 ctemp = ctemp + cx(ix)*cy(iy)
                  ix = ix + incx
                  iy = iy + incy
               end do
            end if
-           stdlib_zdotu = ztemp
+           stdlib_cdotu = ctemp
            return
-     end function stdlib_zdotu
+     end function stdlib_cdotu
 
+     !> CGBMV:  performs one of the matrix-vector operations
+     !> y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y,   or
+     !> y := alpha*A**H*x + beta*y,
+     !> where alpha and beta are scalars, x and y are vectors and A is an
+     !> m by n band matrix, with kl sub-diagonals and ku super-diagonals.
 
-     pure subroutine stdlib_zdrot( n, zx, incx, zy, incy, c, s )
-     !! Applies a plane rotation, where the cos and sin (c and s) are real
-     !! and the vectors cx and cy are complex.
-     !! jack dongarra, linpack, 3/11/78.
-        ! -- reference blas level1 routine --
-        ! -- reference blas is a software package provided by univ. of tennessee,    --
-        ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
-           ! Scalar Arguments 
-           integer(ilp), intent(in) :: incx, incy, n
-           real(dp), intent(in) :: c, s
-           ! Array Arguments 
-           complex(dp), intent(inout) :: zx(*), zy(*)
-       ! =====================================================================
-           ! Local Scalars 
-           integer(ilp) :: i, ix, iy
-           complex(dp) :: ctemp
-           ! Executable Statements 
-           if( n<=0 )return
-           if( incx==1 .and. incy==1 ) then
-              ! code for both increments equal to 1
-              do i = 1, n
-                 ctemp = c*zx( i ) + s*zy( i )
-                 zy( i ) = c*zy( i ) - s*zx( i )
-                 zx( i ) = ctemp
-              end do
-           else
-              ! code for unequal increments or equal increments not equal
-                ! to 1
-              ix = 1
-              iy = 1
-              if( incx<0 )ix = ( -n+1 )*incx + 1
-              if( incy<0 )iy = ( -n+1 )*incy + 1
-              do i = 1, n
-                 ctemp = c*zx( ix ) + s*zy( iy )
-                 zy( iy ) = c*zy( iy ) - s*zx( ix )
-                 zx( ix ) = ctemp
-                 ix = ix + incx
-                 iy = iy + incy
-              end do
-           end if
-           return
-     end subroutine stdlib_zdrot
-
-
-     pure subroutine stdlib_zdscal(n,da,zx,incx)
-     !! ZDSCAL scales a vector by a constant.
-        ! -- reference blas level1 routine --
-        ! -- reference blas is a software package provided by univ. of tennessee,    --
-        ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
-           ! Scalar Arguments 
-           real(dp), intent(in) :: da
-           integer(ilp), intent(in) :: incx, n
-           ! Array Arguments 
-           complex(dp), intent(inout) :: zx(*)
-        ! =====================================================================
-           ! Local Scalars 
-           integer(ilp) :: i, nincx
-           ! Intrinsic Functions 
-           intrinsic :: cmplx
-           if (n<=0 .or. incx<=0) return
-           if (incx==1) then
-              ! code for increment equal to 1
-              do i = 1,n
-                 zx(i) = cmplx(da,0.0_dp,KIND=dp)*zx(i)
-              end do
-           else
-              ! code for increment not equal to 1
-              nincx = n*incx
-              do i = 1,nincx,incx
-                 zx(i) = cmplx(da,0.0_dp,KIND=dp)*zx(i)
-              end do
-           end if
-           return
-     end subroutine stdlib_zdscal
-
-
-     pure subroutine stdlib_zgbmv(trans,m,n,kl,ku,alpha,a,lda,x,incx,beta,y,incy)
-     !! ZGBMV performs one of the matrix-vector operations
-     !! y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y,   or
-     !! y := alpha*A**H*x + beta*y,
-     !! where alpha and beta are scalars, x and y are vectors and A is an
-     !! m by n band matrix, with kl sub-diagonals and ku super-diagonals.
+     pure subroutine stdlib_cgbmv(trans,m,n,kl,ku,alpha,a,lda,x,incx,beta,y,incy)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: incx, incy, kl, ku, lda, m, n
            character, intent(in) :: trans
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), x(*)
-           complex(dp), intent(inout) :: y(*)
+           complex(sp), intent(in) :: a(lda,*), x(*)
+           complex(sp), intent(inout) :: y(*)
         ! =====================================================================
            
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, iy, j, jx, jy, k, kup1, kx, ky, lenx, leny
            logical(lk) :: noconj
            ! Intrinsic Functions 
@@ -364,7 +286,7 @@ module stdlib_linalg_blas_z
                info = 13
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZGBMV ',info)
+               call stdlib_xerbla('CGBMV ',info)
                return
            end if
            ! quick return if possible.
@@ -487,31 +409,31 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zgbmv
+     end subroutine stdlib_cgbmv
 
+     !> CGEMM:  performs one of the matrix-matrix operations
+     !> C := alpha*op( A )*op( B ) + beta*C,
+     !> where  op( X ) is one of
+     !> op( X ) = X   or   op( X ) = X**T   or   op( X ) = X**H,
+     !> alpha and beta are scalars, and A, B and C are matrices, with op( A )
+     !> an m by k matrix,  op( B )  a  k by n matrix and  C an m by n matrix.
 
-     pure subroutine stdlib_zgemm(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
-     !! ZGEMM performs one of the matrix-matrix operations
-     !! C := alpha*op( A )*op( B ) + beta*C,
-     !! where  op( X ) is one of
-     !! op( X ) = X   or   op( X ) = X**T   or   op( X ) = X**H,
-     !! alpha and beta are scalars, and A, B and C are matrices, with op( A )
-     !! an m by k matrix,  op( B )  a  k by n matrix and  C an m by n matrix.
+     pure subroutine stdlib_cgemm(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: k, lda, ldb, ldc, m, n
            character, intent(in) :: transa, transb
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), b(ldb,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*), b(ldb,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
            intrinsic :: conjg,max
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, j, l, nrowa, nrowb
            logical(lk) :: conja, conjb, nota, notb
            
@@ -519,7 +441,7 @@ module stdlib_linalg_blas_z
            ! set  nota  and  notb  as  true if  a  and  b  respectively are not
            ! conjugated or transposed, set  conja and conjb  as true if  a  and
            ! b  respectively are to be  transposed but  not conjugated  and set
-           ! nrowa and nrowb  as the number of rows  of  a  and  b  respectively.
+           ! nrowa and  nrowb  as the number of rows of  a  and  b  respectively.
            nota = stdlib_lsame(transa,'N')
            notb = stdlib_lsame(transb,'N')
            conja = stdlib_lsame(transa,'C')
@@ -555,7 +477,7 @@ module stdlib_linalg_blas_z
                info = 13
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZGEMM ',info)
+               call stdlib_xerbla('CGEMM ',info)
                return
            end if
            ! quick return if possible.
@@ -736,30 +658,30 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zgemm
+     end subroutine stdlib_cgemm
 
+     !> CGEMV: performs one of the matrix-vector operations
+     !> y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y,   or
+     !> y := alpha*A**H*x + beta*y,
+     !> where alpha and beta are scalars, x and y are vectors and A is an
+     !> m by n matrix.
 
-     pure subroutine stdlib_zgemv(trans,m,n,alpha,a,lda,x,incx,beta,y,incy)
-     !! ZGEMV performs one of the matrix-vector operations
-     !! y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y,   or
-     !! y := alpha*A**H*x + beta*y,
-     !! where alpha and beta are scalars, x and y are vectors and A is an
-     !! m by n matrix.
+     pure subroutine stdlib_cgemv(trans,m,n,alpha,a,lda,x,incx,beta,y,incy)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: incx, incy, lda, m, n
            character, intent(in) :: trans
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), x(*)
-           complex(dp), intent(inout) :: y(*)
+           complex(sp), intent(in) :: a(lda,*), x(*)
+           complex(sp), intent(inout) :: y(*)
         ! =====================================================================
            
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, iy, j, jx, jy, kx, ky, lenx, leny
            logical(lk) :: noconj
            ! Intrinsic Functions 
@@ -781,7 +703,7 @@ module stdlib_linalg_blas_z
                info = 11
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZGEMV ',info)
+               call stdlib_xerbla('CGEMV ',info)
                return
            end if
            ! quick return if possible.
@@ -897,27 +819,27 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zgemv
+     end subroutine stdlib_cgemv
 
+     !> CGERC:  performs the rank 1 operation
+     !> A := alpha*x*y**H + A,
+     !> where alpha is a scalar, x is an m element vector, y is an n element
+     !> vector and A is an m by n matrix.
 
-     pure subroutine stdlib_zgerc(m,n,alpha,x,incx,y,incy,a,lda)
-     !! ZGERC performs the rank 1 operation
-     !! A := alpha*x*y**H + A,
-     !! where alpha is a scalar, x is an m element vector, y is an n element
-     !! vector and A is an m by n matrix.
+     pure subroutine stdlib_cgerc(m,n,alpha,x,incx,y,incy,a,lda)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
+           complex(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: incx, incy, lda, m, n
            ! Array Arguments 
-           complex(dp), intent(inout) :: a(lda,*)
-           complex(dp), intent(in) :: x(*), y(*)
+           complex(sp), intent(inout) :: a(lda,*)
+           complex(sp), intent(in) :: x(*), y(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jy, kx
            ! Intrinsic Functions 
            intrinsic :: conjg,max
@@ -935,7 +857,7 @@ module stdlib_linalg_blas_z
                info = 9
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZGERC ',info)
+               call stdlib_xerbla('CGERC ',info)
                return
            end if
            ! quick return if possible.
@@ -976,27 +898,27 @@ module stdlib_linalg_blas_z
                end do
            end if
            return
-     end subroutine stdlib_zgerc
+     end subroutine stdlib_cgerc
 
+     !> CGERU:  performs the rank 1 operation
+     !> A := alpha*x*y**T + A,
+     !> where alpha is a scalar, x is an m element vector, y is an n element
+     !> vector and A is an m by n matrix.
 
-     pure subroutine stdlib_zgeru(m,n,alpha,x,incx,y,incy,a,lda)
-     !! ZGERU performs the rank 1 operation
-     !! A := alpha*x*y**T + A,
-     !! where alpha is a scalar, x is an m element vector, y is an n element
-     !! vector and A is an m by n matrix.
+     pure subroutine stdlib_cgeru(m,n,alpha,x,incx,y,incy,a,lda)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
+           complex(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: incx, incy, lda, m, n
            ! Array Arguments 
-           complex(dp), intent(inout) :: a(lda,*)
-           complex(dp), intent(in) :: x(*), y(*)
+           complex(sp), intent(inout) :: a(lda,*)
+           complex(sp), intent(in) :: x(*), y(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jy, kx
            ! Intrinsic Functions 
            intrinsic :: max
@@ -1014,7 +936,7 @@ module stdlib_linalg_blas_z
                info = 9
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZGERU ',info)
+               call stdlib_xerbla('CGERU ',info)
                return
            end if
            ! quick return if possible.
@@ -1055,32 +977,32 @@ module stdlib_linalg_blas_z
                end do
            end if
            return
-     end subroutine stdlib_zgeru
+     end subroutine stdlib_cgeru
 
+     !> CHBMV:  performs the matrix-vector  operation
+     !> y := alpha*A*x + beta*y,
+     !> where alpha and beta are scalars, x and y are n element vectors and
+     !> A is an n by n hermitian band matrix, with k super-diagonals.
 
-     pure subroutine stdlib_zhbmv(uplo,n,k,alpha,a,lda,x,incx,beta,y,incy)
-     !! ZHBMV performs the matrix-vector  operation
-     !! y := alpha*A*x + beta*y,
-     !! where alpha and beta are scalars, x and y are n element vectors and
-     !! A is an n by n hermitian band matrix, with k super-diagonals.
+     pure subroutine stdlib_chbmv(uplo,n,k,alpha,a,lda,x,incx,beta,y,incy)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: incx, incy, k, lda, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), x(*)
-           complex(dp), intent(inout) :: y(*)
+           complex(sp), intent(in) :: a(lda,*), x(*)
+           complex(sp), intent(inout) :: y(*)
         ! =====================================================================
            
            
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, ix, iy, j, jx, jy, kplus1, kx, ky, l
            ! Intrinsic Functions 
-           intrinsic :: real,conjg,max,min
+           intrinsic :: conjg,max,min,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -1097,7 +1019,7 @@ module stdlib_linalg_blas_z
                info = 11
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHBMV ',info)
+               call stdlib_xerbla('CHBMV ',info)
                return
            end if
            ! quick return if possible.
@@ -1155,7 +1077,7 @@ module stdlib_linalg_blas_z
                            y(i) = y(i) + temp1*a(l+i,j)
                            temp2 = temp2 + conjg(a(l+i,j))*x(i)
                        end do
-                       y(j) = y(j) + temp1*real(a(kplus1,j),KIND=dp) + alpha*temp2
+                       y(j) = y(j) + temp1*real(a(kplus1,j),KIND=sp) + alpha*temp2
                    end do
                else
                    jx = kx
@@ -1172,7 +1094,7 @@ module stdlib_linalg_blas_z
                            ix = ix + incx
                            iy = iy + incy
                        end do
-                       y(jy) = y(jy) + temp1*real(a(kplus1,j),KIND=dp) + alpha*temp2
+                       y(jy) = y(jy) + temp1*real(a(kplus1,j),KIND=sp) + alpha*temp2
                        jx = jx + incx
                        jy = jy + incy
                        if (j>k) then
@@ -1187,7 +1109,7 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        temp1 = alpha*x(j)
                        temp2 = czero
-                       y(j) = y(j) + temp1*real(a(1,j),KIND=dp)
+                       y(j) = y(j) + temp1*real(a(1,j),KIND=sp)
                        l = 1 - j
                        do i = j + 1,min(n,j+k)
                            y(i) = y(i) + temp1*a(l+i,j)
@@ -1201,7 +1123,7 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        temp1 = alpha*x(jx)
                        temp2 = czero
-                       y(jy) = y(jy) + temp1*real(a(1,j),KIND=dp)
+                       y(jy) = y(jy) + temp1*real(a(1,j),KIND=sp)
                        l = 1 - j
                        ix = jx
                        iy = jy
@@ -1218,31 +1140,31 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zhbmv
+     end subroutine stdlib_chbmv
 
+     !> CHEMM:  performs one of the matrix-matrix operations
+     !> C := alpha*A*B + beta*C,
+     !> or
+     !> C := alpha*B*A + beta*C,
+     !> where alpha and beta are scalars, A is an hermitian matrix and  B and
+     !> C are m by n matrices.
 
-     pure subroutine stdlib_zhemm(side,uplo,m,n,alpha,a,lda,b,ldb,beta,c,ldc)
-     !! ZHEMM performs one of the matrix-matrix operations
-     !! C := alpha*A*B + beta*C,
-     !! or
-     !! C := alpha*B*A + beta*C,
-     !! where alpha and beta are scalars, A is an hermitian matrix and  B and
-     !! C are m by n matrices.
+     pure subroutine stdlib_chemm(side,uplo,m,n,alpha,a,lda,b,ldb,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: lda, ldb, ldc, m, n
            character, intent(in) :: side, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), b(ldb,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*), b(ldb,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
-           intrinsic :: real,conjg,max
+           intrinsic :: conjg,max,real
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, j, k, nrowa
            logical(lk) :: upper
            
@@ -1272,7 +1194,7 @@ module stdlib_linalg_blas_z
                info = 12
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHEMM ',info)
+               call stdlib_xerbla('CHEMM ',info)
                return
            end if
            ! quick return if possible.
@@ -1307,9 +1229,9 @@ module stdlib_linalg_blas_z
                                temp2 = temp2 + b(k,j)*conjg(a(k,i))
                            end do
                            if (beta==czero) then
-                               c(i,j) = temp1*real(a(i,i),KIND=dp) + alpha*temp2
+                               c(i,j) = temp1*real(a(i,i),KIND=sp) + alpha*temp2
                            else
-                               c(i,j) = beta*c(i,j) + temp1*real(a(i,i),KIND=dp) +&
+                               c(i,j) = beta*c(i,j) + temp1*real(a(i,i),KIND=sp) +&
                                          alpha*temp2
                            end if
                        end do
@@ -1324,9 +1246,9 @@ module stdlib_linalg_blas_z
                                temp2 = temp2 + b(k,j)*conjg(a(k,i))
                            end do
                            if (beta==czero) then
-                               c(i,j) = temp1*real(a(i,i),KIND=dp) + alpha*temp2
+                               c(i,j) = temp1*real(a(i,i),KIND=sp) + alpha*temp2
                            else
-                               c(i,j) = beta*c(i,j) + temp1*real(a(i,i),KIND=dp) +&
+                               c(i,j) = beta*c(i,j) + temp1*real(a(i,i),KIND=sp) +&
                                          alpha*temp2
                            end if
                        end do
@@ -1335,7 +1257,7 @@ module stdlib_linalg_blas_z
            else
               ! form  c := alpha*b*a + beta*c.
                loop_170: do j = 1,n
-                   temp1 = alpha*real(a(j,j),KIND=dp)
+                   temp1 = alpha*real(a(j,j),KIND=sp)
                    if (beta==czero) then
                        do i = 1,m
                            c(i,j) = temp1*b(i,j)
@@ -1368,32 +1290,32 @@ module stdlib_linalg_blas_z
                end do loop_170
            end if
            return
-     end subroutine stdlib_zhemm
+     end subroutine stdlib_chemm
 
+     !> CHEMV:  performs the matrix-vector  operation
+     !> y := alpha*A*x + beta*y,
+     !> where alpha and beta are scalars, x and y are n element vectors and
+     !> A is an n by n hermitian matrix.
 
-     pure subroutine stdlib_zhemv(uplo,n,alpha,a,lda,x,incx,beta,y,incy)
-     !! ZHEMV performs the matrix-vector  operation
-     !! y := alpha*A*x + beta*y,
-     !! where alpha and beta are scalars, x and y are n element vectors and
-     !! A is an n by n hermitian matrix.
+     pure subroutine stdlib_chemv(uplo,n,alpha,a,lda,x,incx,beta,y,incy)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: incx, incy, lda, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), x(*)
-           complex(dp), intent(inout) :: y(*)
+           complex(sp), intent(in) :: a(lda,*), x(*)
+           complex(sp), intent(inout) :: y(*)
         ! =====================================================================
            
            
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, ix, iy, j, jx, jy, kx, ky
            ! Intrinsic Functions 
-           intrinsic :: real,conjg,max
+           intrinsic :: conjg,max,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -1408,7 +1330,7 @@ module stdlib_linalg_blas_z
                info = 10
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHEMV ',info)
+               call stdlib_xerbla('CHEMV ',info)
                return
            end if
            ! quick return if possible.
@@ -1465,7 +1387,7 @@ module stdlib_linalg_blas_z
                            y(i) = y(i) + temp1*a(i,j)
                            temp2 = temp2 + conjg(a(i,j))*x(i)
                        end do
-                       y(j) = y(j) + temp1*real(a(j,j),KIND=dp) + alpha*temp2
+                       y(j) = y(j) + temp1*real(a(j,j),KIND=sp) + alpha*temp2
                    end do
                else
                    jx = kx
@@ -1481,7 +1403,7 @@ module stdlib_linalg_blas_z
                            ix = ix + incx
                            iy = iy + incy
                        end do
-                       y(jy) = y(jy) + temp1*real(a(j,j),KIND=dp) + alpha*temp2
+                       y(jy) = y(jy) + temp1*real(a(j,j),KIND=sp) + alpha*temp2
                        jx = jx + incx
                        jy = jy + incy
                    end do
@@ -1492,7 +1414,7 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        temp1 = alpha*x(j)
                        temp2 = czero
-                       y(j) = y(j) + temp1*real(a(j,j),KIND=dp)
+                       y(j) = y(j) + temp1*real(a(j,j),KIND=sp)
                        do i = j + 1,n
                            y(i) = y(i) + temp1*a(i,j)
                            temp2 = temp2 + conjg(a(i,j))*x(i)
@@ -1505,7 +1427,7 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        temp1 = alpha*x(jx)
                        temp2 = czero
-                       y(jy) = y(jy) + temp1*real(a(j,j),KIND=dp)
+                       y(jy) = y(jy) + temp1*real(a(j,j),KIND=sp)
                        ix = jx
                        iy = jy
                        do i = j + 1,n
@@ -1521,31 +1443,31 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zhemv
+     end subroutine stdlib_chemv
 
+     !> CHER:   performs the hermitian rank 1 operation
+     !> A := alpha*x*x**H + A,
+     !> where alpha is a real scalar, x is an n element vector and A is an
+     !> n by n hermitian matrix.
 
-     pure subroutine stdlib_zher(uplo,n,alpha,x,incx,a,lda)
-     !! ZHER performs the hermitian rank 1 operation
-     !! A := alpha*x*x**H + A,
-     !! where alpha is a real scalar, x is an n element vector and A is an
-     !! n by n hermitian matrix.
+     pure subroutine stdlib_cher(uplo,n,alpha,x,incx,a,lda)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           real(dp), intent(in) :: alpha
+           real(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: incx, lda, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(inout) :: a(lda,*)
-           complex(dp), intent(in) :: x(*)
+           complex(sp), intent(inout) :: a(lda,*)
+           complex(sp), intent(in) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, kx
            ! Intrinsic Functions 
-           intrinsic :: real,conjg,max
+           intrinsic :: conjg,max,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -1558,11 +1480,11 @@ module stdlib_linalg_blas_z
                info = 7
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHER  ',info)
+               call stdlib_xerbla('CHER  ',info)
                return
            end if
            ! quick return if possible.
-           if ((n==0) .or. (alpha==real(czero,KIND=dp))) return
+           if ((n==0) .or. (alpha==real(czero,KIND=sp))) return
            ! set the start point in x if the increment is not unity.
            if (incx<=0) then
                kx = 1 - (n-1)*incx
@@ -1581,9 +1503,9 @@ module stdlib_linalg_blas_z
                            do i = 1,j - 1
                                a(i,j) = a(i,j) + x(i)*temp
                            end do
-                           a(j,j) = real(a(j,j),KIND=dp) + real(x(j)*temp,KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) + real(x(j)*temp,KIND=sp)
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                    end do
                else
@@ -1596,9 +1518,9 @@ module stdlib_linalg_blas_z
                                a(i,j) = a(i,j) + x(ix)*temp
                                ix = ix + incx
                            end do
-                           a(j,j) = real(a(j,j),KIND=dp) + real(x(jx)*temp,KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) + real(x(jx)*temp,KIND=sp)
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                        jx = jx + incx
                    end do
@@ -1609,12 +1531,12 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        if (x(j)/=czero) then
                            temp = alpha*conjg(x(j))
-                           a(j,j) = real(a(j,j),KIND=dp) + real(temp*x(j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) + real(temp*x(j),KIND=sp)
                            do i = j + 1,n
                                a(i,j) = a(i,j) + x(i)*temp
                            end do
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                    end do
                else
@@ -1622,45 +1544,45 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        if (x(jx)/=czero) then
                            temp = alpha*conjg(x(jx))
-                           a(j,j) = real(a(j,j),KIND=dp) + real(temp*x(jx),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) + real(temp*x(jx),KIND=sp)
                            ix = jx
                            do i = j + 1,n
                                ix = ix + incx
                                a(i,j) = a(i,j) + x(ix)*temp
                            end do
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                        jx = jx + incx
                    end do
                end if
            end if
            return
-     end subroutine stdlib_zher
+     end subroutine stdlib_cher
 
+     !> CHER2:  performs the hermitian rank 2 operation
+     !> A := alpha*x*y**H + conjg( alpha )*y*x**H + A,
+     !> where alpha is a scalar, x and y are n element vectors and A is an n
+     !> by n hermitian matrix.
 
-     pure subroutine stdlib_zher2(uplo,n,alpha,x,incx,y,incy,a,lda)
-     !! ZHER2 performs the hermitian rank 2 operation
-     !! A := alpha*x*y**H + conjg( alpha )*y*x**H + A,
-     !! where alpha is a scalar, x and y are n element vectors and A is an n
-     !! by n hermitian matrix.
+     pure subroutine stdlib_cher2(uplo,n,alpha,x,incx,y,incy,a,lda)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
+           complex(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: incx, incy, lda, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(inout) :: a(lda,*)
-           complex(dp), intent(in) :: x(*), y(*)
+           complex(sp), intent(inout) :: a(lda,*)
+           complex(sp), intent(in) :: x(*), y(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, ix, iy, j, jx, jy, kx, ky
            ! Intrinsic Functions 
-           intrinsic :: real,conjg,max
+           intrinsic :: conjg,max,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -1675,7 +1597,7 @@ module stdlib_linalg_blas_z
                info = 9
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHER2 ',info)
+               call stdlib_xerbla('CHER2 ',info)
                return
            end if
            ! quick return if possible.
@@ -1709,10 +1631,10 @@ module stdlib_linalg_blas_z
                            do i = 1,j - 1
                                a(i,j) = a(i,j) + x(i)*temp1 + y(i)*temp2
                            end do
-                           a(j,j) = real(a(j,j),KIND=dp) +real(x(j)*temp1+y(j)*temp2,KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) +real(x(j)*temp1+y(j)*temp2,KIND=sp)
                                      
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                    end do
                else
@@ -1727,10 +1649,10 @@ module stdlib_linalg_blas_z
                                ix = ix + incx
                                iy = iy + incy
                            end do
-                           a(j,j) = real(a(j,j),KIND=dp) +real(x(jx)*temp1+y(jy)*temp2,KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) +real(x(jx)*temp1+y(jy)*temp2,KIND=sp)
                                      
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                        jx = jx + incx
                        jy = jy + incy
@@ -1743,13 +1665,13 @@ module stdlib_linalg_blas_z
                        if ((x(j)/=czero) .or. (y(j)/=czero)) then
                            temp1 = alpha*conjg(y(j))
                            temp2 = conjg(alpha*x(j))
-                           a(j,j) = real(a(j,j),KIND=dp) +real(x(j)*temp1+y(j)*temp2,KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) +real(x(j)*temp1+y(j)*temp2,KIND=sp)
                                      
                            do i = j + 1,n
                                a(i,j) = a(i,j) + x(i)*temp1 + y(i)*temp2
                            end do
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                    end do
                else
@@ -1757,7 +1679,7 @@ module stdlib_linalg_blas_z
                        if ((x(jx)/=czero) .or. (y(jy)/=czero)) then
                            temp1 = alpha*conjg(y(jy))
                            temp2 = conjg(alpha*x(jx))
-                           a(j,j) = real(a(j,j),KIND=dp) +real(x(jx)*temp1+y(jy)*temp2,KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp) +real(x(jx)*temp1+y(jy)*temp2,KIND=sp)
                                      
                            ix = jx
                            iy = jy
@@ -1767,7 +1689,7 @@ module stdlib_linalg_blas_z
                                a(i,j) = a(i,j) + x(ix)*temp1 + y(iy)*temp2
                            end do
                        else
-                           a(j,j) = real(a(j,j),KIND=dp)
+                           a(j,j) = real(a(j,j),KIND=sp)
                        end if
                        jx = jx + incx
                        jy = jy + incy
@@ -1775,33 +1697,33 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zher2
+     end subroutine stdlib_cher2
 
+     !> CHER2K:  performs one of the hermitian rank 2k operations
+     !> C := alpha*A*B**H + conjg( alpha )*B*A**H + beta*C,
+     !> or
+     !> C := alpha*A**H*B + conjg( alpha )*B**H*A + beta*C,
+     !> where  alpha and beta  are scalars with  beta  real,  C is an  n by n
+     !> hermitian matrix and  A and B  are  n by k matrices in the first case
+     !> and  k by n  matrices in the second case.
 
-     pure subroutine stdlib_zher2k(uplo,trans,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
-     !! ZHER2K performs one of the hermitian rank 2k operations
-     !! C := alpha*A*B**H + conjg( alpha )*B*A**H + beta*C,
-     !! or
-     !! C := alpha*A**H*B + conjg( alpha )*B**H*A + beta*C,
-     !! where  alpha and beta  are scalars with  beta  real,  C is an  n by n
-     !! hermitian matrix and  A and B  are  n by k matrices in the first case
-     !! and  k by n  matrices in the second case.
+     pure subroutine stdlib_cher2k(uplo,trans,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
-           real(dp), intent(in) :: beta
+           complex(sp), intent(in) :: alpha
+           real(sp), intent(in) :: beta
            integer(ilp), intent(in) :: k, lda, ldb, ldc, n
            character, intent(in) :: trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), b(ldb,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*), b(ldb,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
-           intrinsic :: real,conjg,max
+           intrinsic :: conjg,max,real
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, j, l, nrowa
            logical(lk) :: upper
            
@@ -1831,7 +1753,7 @@ module stdlib_linalg_blas_z
                info = 12
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHER2K',info)
+               call stdlib_xerbla('CHER2K',info)
                return
            end if
            ! quick return if possible.
@@ -1839,7 +1761,7 @@ module stdlib_linalg_blas_z
            ! and when  alpha.eq.czero.
            if (alpha==czero) then
                if (upper) then
-                   if (beta==real(czero,KIND=dp)) then
+                   if (beta==real(czero,KIND=sp)) then
                        do j = 1,n
                            do i = 1,j
                                c(i,j) = czero
@@ -1850,11 +1772,11 @@ module stdlib_linalg_blas_z
                            do i = 1,j - 1
                                c(i,j) = beta*c(i,j)
                            end do
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                        end do
                    end if
                else
-                   if (beta==real(czero,KIND=dp)) then
+                   if (beta==real(czero,KIND=sp)) then
                        do j = 1,n
                            do i = j,n
                                c(i,j) = czero
@@ -1862,7 +1784,7 @@ module stdlib_linalg_blas_z
                        end do
                    else
                        do j = 1,n
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                            do i = j + 1,n
                                c(i,j) = beta*c(i,j)
                            end do
@@ -1877,7 +1799,7 @@ module stdlib_linalg_blas_z
                          ! c.
                if (upper) then
                    do j = 1,n
-                       if (beta==real(czero,KIND=dp)) then
+                       if (beta==real(czero,KIND=sp)) then
                            do i = 1,j
                                c(i,j) = czero
                            end do
@@ -1885,9 +1807,9 @@ module stdlib_linalg_blas_z
                            do i = 1,j - 1
                                c(i,j) = beta*c(i,j)
                            end do
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                        else
-                           c(j,j) = real(c(j,j),KIND=dp)
+                           c(j,j) = real(c(j,j),KIND=sp)
                        end if
                        do l = 1,k
                            if ((a(j,l)/=czero) .or. (b(j,l)/=czero)) then
@@ -1896,14 +1818,14 @@ module stdlib_linalg_blas_z
                                do i = 1,j - 1
                                    c(i,j) = c(i,j) + a(i,l)*temp1 +b(i,l)*temp2
                                end do
-                               c(j,j) = real(c(j,j),KIND=dp) +real(a(j,l)*temp1+b(j,l)*temp2,&
-                                         KIND=dp)
+                               c(j,j) = real(c(j,j),KIND=sp) +real(a(j,l)*temp1+b(j,l)*temp2,&
+                                         KIND=sp)
                            end if
                        end do
                    end do
                else
                    do j = 1,n
-                       if (beta==real(czero,KIND=dp)) then
+                       if (beta==real(czero,KIND=sp)) then
                            do i = j,n
                                c(i,j) = czero
                            end do
@@ -1911,9 +1833,9 @@ module stdlib_linalg_blas_z
                            do i = j + 1,n
                                c(i,j) = beta*c(i,j)
                            end do
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                        else
-                           c(j,j) = real(c(j,j),KIND=dp)
+                           c(j,j) = real(c(j,j),KIND=sp)
                        end if
                        do l = 1,k
                            if ((a(j,l)/=czero) .or. (b(j,l)/=czero)) then
@@ -1922,8 +1844,8 @@ module stdlib_linalg_blas_z
                                do i = j + 1,n
                                    c(i,j) = c(i,j) + a(i,l)*temp1 +b(i,l)*temp2
                                end do
-                               c(j,j) = real(c(j,j),KIND=dp) +real(a(j,l)*temp1+b(j,l)*temp2,&
-                                         KIND=dp)
+                               c(j,j) = real(c(j,j),KIND=sp) +real(a(j,l)*temp1+b(j,l)*temp2,&
+                                         KIND=sp)
                            end if
                        end do
                    end do
@@ -1941,14 +1863,14 @@ module stdlib_linalg_blas_z
                                temp2 = temp2 + conjg(b(l,i))*a(l,j)
                            end do
                            if (i==j) then
-                               if (beta==real(czero,KIND=dp)) then
-                                   c(j,j) = real(alpha*temp1+conjg(alpha)*temp2,KIND=dp)
+                               if (beta==real(czero,KIND=sp)) then
+                                   c(j,j) = real(alpha*temp1+conjg(alpha)*temp2,KIND=sp)
                                else
-                                   c(j,j) = beta*real(c(j,j),KIND=dp) +real(alpha*temp1+conjg(&
-                                             alpha)*temp2,KIND=dp)
+                                   c(j,j) = beta*real(c(j,j),KIND=sp) +real(alpha*temp1+conjg(&
+                                             alpha)*temp2,KIND=sp)
                                end if
                            else
-                               if (beta==real(czero,KIND=dp)) then
+                               if (beta==real(czero,KIND=sp)) then
                                    c(i,j) = alpha*temp1 + conjg(alpha)*temp2
                                else
                                    c(i,j) = beta*c(i,j) + alpha*temp1 +conjg(alpha)*temp2
@@ -1966,14 +1888,14 @@ module stdlib_linalg_blas_z
                                temp2 = temp2 + conjg(b(l,i))*a(l,j)
                            end do
                            if (i==j) then
-                               if (beta==real(czero,KIND=dp)) then
-                                   c(j,j) = real(alpha*temp1+conjg(alpha)*temp2,KIND=dp)
+                               if (beta==real(czero,KIND=sp)) then
+                                   c(j,j) = real(alpha*temp1+conjg(alpha)*temp2,KIND=sp)
                                else
-                                   c(j,j) = beta*real(c(j,j),KIND=dp) +real(alpha*temp1+conjg(&
-                                             alpha)*temp2,KIND=dp)
+                                   c(j,j) = beta*real(c(j,j),KIND=sp) +real(alpha*temp1+conjg(&
+                                             alpha)*temp2,KIND=sp)
                                end if
                            else
-                               if (beta==real(czero,KIND=dp)) then
+                               if (beta==real(czero,KIND=sp)) then
                                    c(i,j) = alpha*temp1 + conjg(alpha)*temp2
                                else
                                    c(i,j) = beta*c(i,j) + alpha*temp1 +conjg(alpha)*temp2
@@ -1984,33 +1906,33 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zher2k
+     end subroutine stdlib_cher2k
 
+     !> CHERK:  performs one of the hermitian rank k operations
+     !> C := alpha*A*A**H + beta*C,
+     !> or
+     !> C := alpha*A**H*A + beta*C,
+     !> where  alpha and beta  are  real scalars,  C is an  n by n  hermitian
+     !> matrix and  A  is an  n by k  matrix in the  first case and a  k by n
+     !> matrix in the second case.
 
-     pure subroutine stdlib_zherk(uplo,trans,n,k,alpha,a,lda,beta,c,ldc)
-     !! ZHERK performs one of the hermitian rank k operations
-     !! C := alpha*A*A**H + beta*C,
-     !! or
-     !! C := alpha*A**H*A + beta*C,
-     !! where  alpha and beta  are  real scalars,  C is an  n by n  hermitian
-     !! matrix and  A  is an  n by k  matrix in the  first case and a  k by n
-     !! matrix in the second case.
+     pure subroutine stdlib_cherk(uplo,trans,n,k,alpha,a,lda,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           real(dp), intent(in) :: alpha, beta
+           real(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: k, lda, ldc, n
            character, intent(in) :: trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
-           intrinsic :: real,cmplx,conjg,max
+           intrinsic :: cmplx,conjg,max,real
            ! Local Scalars 
-           complex(dp) :: temp
-           real(dp) :: rtemp
+           complex(sp) :: temp
+           real(sp) :: rtemp
            integer(ilp) :: i, info, j, l, nrowa
            logical(lk) :: upper
            
@@ -2037,7 +1959,7 @@ module stdlib_linalg_blas_z
                info = 10
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHERK ',info)
+               call stdlib_xerbla('CHERK ',info)
                return
            end if
            ! quick return if possible.
@@ -2056,7 +1978,7 @@ module stdlib_linalg_blas_z
                            do i = 1,j - 1
                                c(i,j) = beta*c(i,j)
                            end do
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                        end do
                    end if
                else
@@ -2068,7 +1990,7 @@ module stdlib_linalg_blas_z
                        end do
                    else
                        do j = 1,n
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                            do i = j + 1,n
                                c(i,j) = beta*c(i,j)
                            end do
@@ -2090,17 +2012,17 @@ module stdlib_linalg_blas_z
                            do i = 1,j - 1
                                c(i,j) = beta*c(i,j)
                            end do
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                        else
-                           c(j,j) = real(c(j,j),KIND=dp)
+                           c(j,j) = real(c(j,j),KIND=sp)
                        end if
                        do l = 1,k
-                           if (a(j,l)/=cmplx(zero,KIND=dp)) then
+                           if (a(j,l)/=cmplx(zero,KIND=sp)) then
                                temp = alpha*conjg(a(j,l))
                                do i = 1,j - 1
                                    c(i,j) = c(i,j) + temp*a(i,l)
                                end do
-                               c(j,j) = real(c(j,j),KIND=dp) + real(temp*a(i,l),KIND=dp)
+                               c(j,j) = real(c(j,j),KIND=sp) + real(temp*a(i,l),KIND=sp)
                            end if
                        end do
                    end do
@@ -2111,17 +2033,17 @@ module stdlib_linalg_blas_z
                                c(i,j) = zero
                            end do
                        else if (beta/=one) then
-                           c(j,j) = beta*real(c(j,j),KIND=dp)
+                           c(j,j) = beta*real(c(j,j),KIND=sp)
                            do i = j + 1,n
                                c(i,j) = beta*c(i,j)
                            end do
                        else
-                           c(j,j) = real(c(j,j),KIND=dp)
+                           c(j,j) = real(c(j,j),KIND=sp)
                        end if
                        do l = 1,k
-                           if (a(j,l)/=cmplx(zero,KIND=dp)) then
+                           if (a(j,l)/=cmplx(zero,KIND=sp)) then
                                temp = alpha*conjg(a(j,l))
-                               c(j,j) = real(c(j,j),KIND=dp) + real(temp*a(j,l),KIND=dp)
+                               c(j,j) = real(c(j,j),KIND=sp) + real(temp*a(j,l),KIND=sp)
                                do i = j + 1,n
                                    c(i,j) = c(i,j) + temp*a(i,l)
                                end do
@@ -2151,7 +2073,7 @@ module stdlib_linalg_blas_z
                        if (beta==zero) then
                            c(j,j) = alpha*rtemp
                        else
-                           c(j,j) = alpha*rtemp + beta*real(c(j,j),KIND=dp)
+                           c(j,j) = alpha*rtemp + beta*real(c(j,j),KIND=sp)
                        end if
                    end do
                else
@@ -2163,7 +2085,7 @@ module stdlib_linalg_blas_z
                        if (beta==zero) then
                            c(j,j) = alpha*rtemp
                        else
-                           c(j,j) = alpha*rtemp + beta*real(c(j,j),KIND=dp)
+                           c(j,j) = alpha*rtemp + beta*real(c(j,j),KIND=sp)
                        end if
                        do i = j + 1,n
                            temp = zero
@@ -2180,32 +2102,32 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zherk
+     end subroutine stdlib_cherk
 
+     !> CHPMV:  performs the matrix-vector operation
+     !> y := alpha*A*x + beta*y,
+     !> where alpha and beta are scalars, x and y are n element vectors and
+     !> A is an n by n hermitian matrix, supplied in packed form.
 
-     pure subroutine stdlib_zhpmv(uplo,n,alpha,ap,x,incx,beta,y,incy)
-     !! ZHPMV performs the matrix-vector operation
-     !! y := alpha*A*x + beta*y,
-     !! where alpha and beta are scalars, x and y are n element vectors and
-     !! A is an n by n hermitian matrix, supplied in packed form.
+     pure subroutine stdlib_chpmv(uplo,n,alpha,ap,x,incx,beta,y,incy)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: incx, incy, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: ap(*), x(*)
-           complex(dp), intent(inout) :: y(*)
+           complex(sp), intent(in) :: ap(*), x(*)
+           complex(sp), intent(inout) :: y(*)
         ! =====================================================================
            
            
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, ix, iy, j, jx, jy, k, kk, kx, ky
            ! Intrinsic Functions 
-           intrinsic :: real,conjg
+           intrinsic :: conjg,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -2218,7 +2140,7 @@ module stdlib_linalg_blas_z
                info = 9
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHPMV ',info)
+               call stdlib_xerbla('CHPMV ',info)
                return
            end if
            ! quick return if possible.
@@ -2277,7 +2199,7 @@ module stdlib_linalg_blas_z
                            temp2 = temp2 + conjg(ap(k))*x(i)
                            k = k + 1
                        end do
-                       y(j) = y(j) + temp1*real(ap(kk+j-1),KIND=dp) + alpha*temp2
+                       y(j) = y(j) + temp1*real(ap(kk+j-1),KIND=sp) + alpha*temp2
                        kk = kk + j
                    end do
                else
@@ -2294,7 +2216,7 @@ module stdlib_linalg_blas_z
                            ix = ix + incx
                            iy = iy + incy
                        end do
-                       y(jy) = y(jy) + temp1*real(ap(kk+j-1),KIND=dp) + alpha*temp2
+                       y(jy) = y(jy) + temp1*real(ap(kk+j-1),KIND=sp) + alpha*temp2
                        jx = jx + incx
                        jy = jy + incy
                        kk = kk + j
@@ -2306,7 +2228,7 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        temp1 = alpha*x(j)
                        temp2 = czero
-                       y(j) = y(j) + temp1*real(ap(kk),KIND=dp)
+                       y(j) = y(j) + temp1*real(ap(kk),KIND=sp)
                        k = kk + 1
                        do i = j + 1,n
                            y(i) = y(i) + temp1*ap(k)
@@ -2322,7 +2244,7 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        temp1 = alpha*x(jx)
                        temp2 = czero
-                       y(jy) = y(jy) + temp1*real(ap(kk),KIND=dp)
+                       y(jy) = y(jy) + temp1*real(ap(kk),KIND=sp)
                        ix = jx
                        iy = jy
                        do k = kk + 1,kk + n - j
@@ -2339,31 +2261,31 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zhpmv
+     end subroutine stdlib_chpmv
 
+     !> CHPR:    performs the hermitian rank 1 operation
+     !> A := alpha*x*x**H + A,
+     !> where alpha is a real scalar, x is an n element vector and A is an
+     !> n by n hermitian matrix, supplied in packed form.
 
-     pure subroutine stdlib_zhpr(uplo,n,alpha,x,incx,ap)
-     !! ZHPR performs the hermitian rank 1 operation
-     !! A := alpha*x*x**H + A,
-     !! where alpha is a real scalar, x is an n element vector and A is an
-     !! n by n hermitian matrix, supplied in packed form.
+     pure subroutine stdlib_chpr(uplo,n,alpha,x,incx,ap)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           real(dp), intent(in) :: alpha
+           real(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: incx, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(inout) :: ap(*)
-           complex(dp), intent(in) :: x(*)
+           complex(sp), intent(inout) :: ap(*)
+           complex(sp), intent(in) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, k, kk, kx
            ! Intrinsic Functions 
-           intrinsic :: real,conjg
+           intrinsic :: conjg,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -2374,11 +2296,11 @@ module stdlib_linalg_blas_z
                info = 5
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHPR  ',info)
+               call stdlib_xerbla('CHPR  ',info)
                return
            end if
            ! quick return if possible.
-           if ((n==0) .or. (alpha==real(czero,KIND=dp))) return
+           if ((n==0) .or. (alpha==real(czero,KIND=sp))) return
            ! set the start point in x if the increment is not unity.
            if (incx<=0) then
                kx = 1 - (n-1)*incx
@@ -2399,9 +2321,9 @@ module stdlib_linalg_blas_z
                                ap(k) = ap(k) + x(i)*temp
                                k = k + 1
                            end do
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp) + real(x(j)*temp,KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp) + real(x(j)*temp,KIND=sp)
                        else
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp)
                        end if
                        kk = kk + j
                    end do
@@ -2415,10 +2337,10 @@ module stdlib_linalg_blas_z
                                ap(k) = ap(k) + x(ix)*temp
                                ix = ix + incx
                            end do
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp) + real(x(jx)*temp,KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp) + real(x(jx)*temp,KIND=sp)
                                      
                        else
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp)
                        end if
                        jx = jx + incx
                        kk = kk + j
@@ -2430,14 +2352,14 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        if (x(j)/=czero) then
                            temp = alpha*conjg(x(j))
-                           ap(kk) = real(ap(kk),KIND=dp) + real(temp*x(j),KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp) + real(temp*x(j),KIND=sp)
                            k = kk + 1
                            do i = j + 1,n
                                ap(k) = ap(k) + x(i)*temp
                                k = k + 1
                            end do
                        else
-                           ap(kk) = real(ap(kk),KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp)
                        end if
                        kk = kk + n - j + 1
                    end do
@@ -2446,14 +2368,14 @@ module stdlib_linalg_blas_z
                    do j = 1,n
                        if (x(jx)/=czero) then
                            temp = alpha*conjg(x(jx))
-                           ap(kk) = real(ap(kk),KIND=dp) + real(temp*x(jx),KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp) + real(temp*x(jx),KIND=sp)
                            ix = jx
                            do k = kk + 1,kk + n - j
                                ix = ix + incx
                                ap(k) = ap(k) + x(ix)*temp
                            end do
                        else
-                           ap(kk) = real(ap(kk),KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp)
                        end if
                        jx = jx + incx
                        kk = kk + n - j + 1
@@ -2461,31 +2383,31 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zhpr
+     end subroutine stdlib_chpr
 
+     !> CHPR2:  performs the hermitian rank 2 operation
+     !> A := alpha*x*y**H + conjg( alpha )*y*x**H + A,
+     !> where alpha is a scalar, x and y are n element vectors and A is an
+     !> n by n hermitian matrix, supplied in packed form.
 
-     pure subroutine stdlib_zhpr2(uplo,n,alpha,x,incx,y,incy,ap)
-     !! ZHPR2 performs the hermitian rank 2 operation
-     !! A := alpha*x*y**H + conjg( alpha )*y*x**H + A,
-     !! where alpha is a scalar, x and y are n element vectors and A is an
-     !! n by n hermitian matrix, supplied in packed form.
+     pure subroutine stdlib_chpr2(uplo,n,alpha,x,incx,y,incy,ap)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
+           complex(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: incx, incy, n
            character, intent(in) :: uplo
            ! Array Arguments 
-           complex(dp), intent(inout) :: ap(*)
-           complex(dp), intent(in) :: x(*), y(*)
+           complex(sp), intent(inout) :: ap(*)
+           complex(sp), intent(in) :: x(*), y(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, ix, iy, j, jx, jy, k, kk, kx, ky
            ! Intrinsic Functions 
-           intrinsic :: real,conjg
+           intrinsic :: conjg,real
            ! test the input parameters.
            info = 0
            if (.not.stdlib_lsame(uplo,'U') .and. .not.stdlib_lsame(uplo,'L')) then
@@ -2498,7 +2420,7 @@ module stdlib_linalg_blas_z
                info = 7
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZHPR2 ',info)
+               call stdlib_xerbla('CHPR2 ',info)
                return
            end if
            ! quick return if possible.
@@ -2534,10 +2456,10 @@ module stdlib_linalg_blas_z
                                ap(k) = ap(k) + x(i)*temp1 + y(i)*temp2
                                k = k + 1
                            end do
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp) +real(x(j)*temp1+y(j)*temp2,&
-                                     KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp) +real(x(j)*temp1+y(j)*temp2,&
+                                     KIND=sp)
                        else
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp)
                        end if
                        kk = kk + j
                    end do
@@ -2553,10 +2475,10 @@ module stdlib_linalg_blas_z
                                ix = ix + incx
                                iy = iy + incy
                            end do
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp) +real(x(jx)*temp1+y(jy)*temp2,&
-                                     KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp) +real(x(jx)*temp1+y(jy)*temp2,&
+                                     KIND=sp)
                        else
-                           ap(kk+j-1) = real(ap(kk+j-1),KIND=dp)
+                           ap(kk+j-1) = real(ap(kk+j-1),KIND=sp)
                        end if
                        jx = jx + incx
                        jy = jy + incy
@@ -2570,7 +2492,7 @@ module stdlib_linalg_blas_z
                        if ((x(j)/=czero) .or. (y(j)/=czero)) then
                            temp1 = alpha*conjg(y(j))
                            temp2 = conjg(alpha*x(j))
-                           ap(kk) = real(ap(kk),KIND=dp) +real(x(j)*temp1+y(j)*temp2,KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp) +real(x(j)*temp1+y(j)*temp2,KIND=sp)
                                      
                            k = kk + 1
                            do i = j + 1,n
@@ -2578,7 +2500,7 @@ module stdlib_linalg_blas_z
                                k = k + 1
                            end do
                        else
-                           ap(kk) = real(ap(kk),KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp)
                        end if
                        kk = kk + n - j + 1
                    end do
@@ -2587,7 +2509,7 @@ module stdlib_linalg_blas_z
                        if ((x(jx)/=czero) .or. (y(jy)/=czero)) then
                            temp1 = alpha*conjg(y(jy))
                            temp2 = conjg(alpha*x(jx))
-                           ap(kk) = real(ap(kk),KIND=dp) +real(x(jx)*temp1+y(jy)*temp2,KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp) +real(x(jx)*temp1+y(jy)*temp2,KIND=sp)
                                      
                            ix = jx
                            iy = jy
@@ -2597,7 +2519,7 @@ module stdlib_linalg_blas_z
                                ap(k) = ap(k) + x(ix)*temp1 + y(iy)*temp2
                            end do
                        else
-                           ap(kk) = real(ap(kk),KIND=dp)
+                           ap(kk) = real(ap(kk),KIND=sp)
                        end if
                        jx = jx + incx
                        jy = jy + incy
@@ -2606,43 +2528,45 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zhpr2
+     end subroutine stdlib_chpr2
 
+     !> !
+     !>
+     !> The computation uses the formulas
+     !> |x| = sqrt( Re(x)**2 + Im(x)**2 )
+     !> sgn(x) = x / |x|  if x /= 0
+     !> = 1        if x  = 0
+     !> c = |a| / sqrt(|a|**2 + |b|**2)
+     !> s = sgn(a) * conjg(b) / sqrt(|a|**2 + |b|**2)
+     !> When a and b are real and r /= 0, the formulas simplify to
+     !> r = sgn(a)*sqrt(|a|**2 + |b|**2)
+     !> c = a / r
+     !> s = b / r
+     !> the same as in SROTG when |a| > |b|.  When |b| >= |a|, the
+     !> sign of c and s will be different from those computed by SROTG
+     !> if the signs of a and b are not the same.
 
-     pure subroutine stdlib_zrotg( a, b, c, s )
-     !! The computation uses the formulas
-     !! |x| = sqrt( Re(x)**2 + Im(x)**2 )
-     !! sgn(x) = x / |x|  if x /= 0
-     !! = 1        if x  = 0
-     !! c = |a| / sqrt(|a|**2 + |b|**2)
-     !! s = sgn(a) * conjg(b) / sqrt(|a|**2 + |b|**2)
-     !! When a and b are real and r /= 0, the formulas simplify to
-     !! r = sgn(a)*sqrt(|a|**2 + |b|**2)
-     !! c = a / r
-     !! s = b / r
-     !! the same as in DROTG when |a| > |b|.  When |b| >= |a|, the
-     !! sign of c and s will be different from those computed by DROTG
-     !! if the signs of a and b are not the same.
+     pure subroutine stdlib_crotg( a, b, c, s )
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
         ! Constants 
-        integer, parameter :: wp = kind(1._dp)
+        integer, parameter :: wp = kind(1._sp)
         ! Scaling Constants 
         ! Scalar Arguments 
-        real(dp), intent(out) :: c
-        complex(dp), intent(inout) :: a
-        complex(dp), intent(in) :: b
-        complex(dp), intent(out) :: s
+        real(sp), intent(out) :: c
+        complex(sp), intent(inout) :: a
+        complex(sp), intent(in) :: b
+        complex(sp), intent(out) :: s
         ! Local Scalars 
-        real(dp) :: d, f1, f2, g1, g2, h2, p, u, uu, v, vv, w
-        complex(dp) :: f, fs, g, gs, r, t
+        real(sp) :: d, f1, f2, g1, g2, h2, p, u, uu, v, vv, w
+        complex(sp) :: f, fs, g, gs, r, t
         ! Intrinsic Functions 
         intrinsic :: abs,aimag,conjg,max,min,real,sqrt
         ! Statement Functions 
-        real(dp) :: abssq
+        real(sp) :: abssq
         ! Statement Function Definitions 
-        abssq( t ) = real( t,KIND=dp)**2 + aimag( t )**2
+        abssq( t ) = real( t,KIND=sp)**2 + aimag( t )**2
         ! Executable Statements 
         f = a
         g = b
@@ -2652,7 +2576,7 @@ module stdlib_linalg_blas_z
            r = f
         else if( f == czero ) then
            c = zero
-           g1 = max( abs(real(g,KIND=dp)), abs(aimag(g)) )
+           g1 = max( abs(real(g,KIND=sp)), abs(aimag(g)) )
            if( g1 > rtmin .and. g1 < rtmax ) then
               ! use unscaled algorithm
               g2 = abssq( g )
@@ -2670,8 +2594,8 @@ module stdlib_linalg_blas_z
               r = d*u
            end if
         else
-           f1 = max( abs(real(f,KIND=dp)), abs(aimag(f)) )
-           g1 = max( abs(real(g,KIND=dp)), abs(aimag(g)) )
+           f1 = max( abs(real(f,KIND=sp)), abs(aimag(f)) )
+           g1 = max( abs(real(g,KIND=sp)), abs(aimag(g)) )
      if( f1 > rtmin .and. f1 < rtmax .and.          g1 > rtmin .and. g1 < rtmax ) then
               ! use unscaled algorithm
               f2 = abssq( f )
@@ -2721,19 +2645,19 @@ module stdlib_linalg_blas_z
         end if
         a = r
         return
-     end subroutine stdlib_zrotg
+     end subroutine stdlib_crotg
 
+     !> CSCAL: scales a vector by a constant.
 
-     pure subroutine stdlib_zscal(n,za,zx,incx)
-     !! ZSCAL scales a vector by a constant.
+     pure subroutine stdlib_cscal(n,ca,cx,incx)
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: za
+           complex(sp), intent(in) :: ca
            integer(ilp), intent(in) :: incx, n
            ! Array Arguments 
-           complex(dp), intent(inout) :: zx(*)
+           complex(sp), intent(inout) :: cx(*)
         ! =====================================================================
            ! Local Scalars 
            integer(ilp) :: i, nincx
@@ -2741,39 +2665,115 @@ module stdlib_linalg_blas_z
            if (incx==1) then
               ! code for increment equal to 1
               do i = 1,n
-                 zx(i) = za*zx(i)
+                 cx(i) = ca*cx(i)
               end do
            else
               ! code for increment not equal to 1
               nincx = n*incx
               do i = 1,nincx,incx
-                 zx(i) = za*zx(i)
+                 cx(i) = ca*cx(i)
               end do
            end if
            return
-     end subroutine stdlib_zscal
+     end subroutine stdlib_cscal
 
+     !> CSROT: applies a plane rotation, where the cos and sin (c and s) are real
+     !> and the vectors cx and cy are complex.
+     !> jack dongarra, linpack, 3/11/78.
 
-     pure subroutine stdlib_zswap(n,zx,incx,zy,incy)
-     !! ZSWAP interchanges two vectors.
+     pure subroutine stdlib_csrot( n, cx, incx, cy, incy, c, s )
+        ! -- reference blas level1 routine --
+        ! -- reference blas is a software package provided by univ. of tennessee,    --
+        ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
+           ! Scalar Arguments 
+           integer(ilp), intent(in) :: incx, incy, n
+           real(sp), intent(in) :: c, s
+           ! Array Arguments 
+           complex(sp), intent(inout) :: cx(*), cy(*)
+        ! =====================================================================
+           ! Local Scalars 
+           integer(ilp) :: i, ix, iy
+           complex(sp) :: ctemp
+           ! Executable Statements 
+           if( n<=0 )return
+           if( incx==1 .and. incy==1 ) then
+              ! code for both increments equal to 1
+              do i = 1, n
+                 ctemp = c*cx( i ) + s*cy( i )
+                 cy( i ) = c*cy( i ) - s*cx( i )
+                 cx( i ) = ctemp
+              end do
+           else
+              ! code for unequal increments or equal increments not equal
+                ! to 1
+              ix = 1
+              iy = 1
+              if( incx<0 )ix = ( -n+1 )*incx + 1
+              if( incy<0 )iy = ( -n+1 )*incy + 1
+              do i = 1, n
+                 ctemp = c*cx( ix ) + s*cy( iy )
+                 cy( iy ) = c*cy( iy ) - s*cx( ix )
+                 cx( ix ) = ctemp
+                 ix = ix + incx
+                 iy = iy + incy
+              end do
+           end if
+           return
+     end subroutine stdlib_csrot
+
+     !> CSSCAL: scales a complex vector by a real constant.
+
+     pure subroutine stdlib_csscal(n,sa,cx,incx)
+        ! -- reference blas level1 routine --
+        ! -- reference blas is a software package provided by univ. of tennessee,    --
+        ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
+           ! Scalar Arguments 
+           real(sp), intent(in) :: sa
+           integer(ilp), intent(in) :: incx, n
+           ! Array Arguments 
+           complex(sp), intent(inout) :: cx(*)
+        ! =====================================================================
+           ! Local Scalars 
+           integer(ilp) :: i, nincx
+           ! Intrinsic Functions 
+           intrinsic :: aimag,cmplx,real
+           if (n<=0 .or. incx<=0) return
+           if (incx==1) then
+              ! code for increment equal to 1
+              do i = 1,n
+                 cx(i) = cmplx(sa*real(cx(i),KIND=sp),sa*aimag(cx(i)),KIND=sp)
+              end do
+           else
+              ! code for increment not equal to 1
+              nincx = n*incx
+              do i = 1,nincx,incx
+                 cx(i) = cmplx(sa*real(cx(i),KIND=sp),sa*aimag(cx(i)),KIND=sp)
+              end do
+           end if
+           return
+     end subroutine stdlib_csscal
+
+     !> CSWAP: interchanges two vectors.
+
+     pure subroutine stdlib_cswap(n,cx,incx,cy,incy)
         ! -- reference blas level1 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
            integer(ilp), intent(in) :: incx, incy, n
            ! Array Arguments 
-           complex(dp), intent(inout) :: zx(*), zy(*)
+           complex(sp), intent(inout) :: cx(*), cy(*)
         ! =====================================================================
            ! Local Scalars 
-           complex(dp) :: ztemp
+           complex(sp) :: ctemp
            integer(ilp) :: i, ix, iy
            if (n<=0) return
            if (incx==1 .and. incy==1) then
              ! code for both increments equal to 1
               do i = 1,n
-                 ztemp = zx(i)
-                 zx(i) = zy(i)
-                 zy(i) = ztemp
+                 ctemp = cx(i)
+                 cx(i) = cy(i)
+                 cy(i) = ctemp
               end do
            else
              ! code for unequal increments or equal increments not equal
@@ -2783,39 +2783,39 @@ module stdlib_linalg_blas_z
               if (incx<0) ix = (-n+1)*incx + 1
               if (incy<0) iy = (-n+1)*incy + 1
               do i = 1,n
-                 ztemp = zx(ix)
-                 zx(ix) = zy(iy)
-                 zy(iy) = ztemp
+                 ctemp = cx(ix)
+                 cx(ix) = cy(iy)
+                 cy(iy) = ctemp
                  ix = ix + incx
                  iy = iy + incy
               end do
            end if
            return
-     end subroutine stdlib_zswap
+     end subroutine stdlib_cswap
 
+     !> CSYMM:  performs one of the matrix-matrix operations
+     !> C := alpha*A*B + beta*C,
+     !> or
+     !> C := alpha*B*A + beta*C,
+     !> where  alpha and beta are scalars, A is a symmetric matrix and  B and
+     !> C are m by n matrices.
 
-     pure subroutine stdlib_zsymm(side,uplo,m,n,alpha,a,lda,b,ldb,beta,c,ldc)
-     !! ZSYMM performs one of the matrix-matrix operations
-     !! C := alpha*A*B + beta*C,
-     !! or
-     !! C := alpha*B*A + beta*C,
-     !! where  alpha and beta are scalars, A is a symmetric matrix and  B and
-     !! C are m by n matrices.
+     pure subroutine stdlib_csymm(side,uplo,m,n,alpha,a,lda,b,ldb,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: lda, ldb, ldc, m, n
            character, intent(in) :: side, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), b(ldb,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*), b(ldb,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
            intrinsic :: max
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, j, k, nrowa
            logical(lk) :: upper
            
@@ -2845,7 +2845,7 @@ module stdlib_linalg_blas_z
                info = 12
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZSYMM ',info)
+               call stdlib_xerbla('CSYMM ',info)
                return
            end if
            ! quick return if possible.
@@ -2939,32 +2939,32 @@ module stdlib_linalg_blas_z
                end do loop_170
            end if
            return
-     end subroutine stdlib_zsymm
+     end subroutine stdlib_csymm
 
+     !> CSYR2K:  performs one of the symmetric rank 2k operations
+     !> C := alpha*A*B**T + alpha*B*A**T + beta*C,
+     !> or
+     !> C := alpha*A**T*B + alpha*B**T*A + beta*C,
+     !> where  alpha and beta  are scalars,  C is an  n by n symmetric matrix
+     !> and  A and B  are  n by k  matrices  in the  first  case  and  k by n
+     !> matrices in the second case.
 
-     pure subroutine stdlib_zsyr2k(uplo,trans,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
-     !! ZSYR2K performs one of the symmetric rank 2k operations
-     !! C := alpha*A*B**T + alpha*B*A**T + beta*C,
-     !! or
-     !! C := alpha*A**T*B + alpha*B**T*A + beta*C,
-     !! where  alpha and beta  are scalars,  C is an  n by n symmetric matrix
-     !! and  A and B  are  n by k  matrices  in the  first  case  and  k by n
-     !! matrices in the second case.
+     pure subroutine stdlib_csyr2k(uplo,trans,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: k, lda, ldb, ldc, n
            character, intent(in) :: trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*), b(ldb,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*), b(ldb,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
            intrinsic :: max
            ! Local Scalars 
-           complex(dp) :: temp1, temp2
+           complex(sp) :: temp1, temp2
            integer(ilp) :: i, info, j, l, nrowa
            logical(lk) :: upper
            
@@ -2994,7 +2994,7 @@ module stdlib_linalg_blas_z
                info = 12
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZSYR2K',info)
+               call stdlib_xerbla('CSYR2K',info)
                return
            end if
            ! quick return if possible.
@@ -3115,32 +3115,32 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zsyr2k
+     end subroutine stdlib_csyr2k
 
+     !> CSYRK:  performs one of the symmetric rank k operations
+     !> C := alpha*A*A**T + beta*C,
+     !> or
+     !> C := alpha*A**T*A + beta*C,
+     !> where  alpha and beta  are scalars,  C is an  n by n symmetric matrix
+     !> and  A  is an  n by k  matrix in the first case and a  k by n  matrix
+     !> in the second case.
 
-     pure subroutine stdlib_zsyrk(uplo,trans,n,k,alpha,a,lda,beta,c,ldc)
-     !! ZSYRK performs one of the symmetric rank k operations
-     !! C := alpha*A*A**T + beta*C,
-     !! or
-     !! C := alpha*A**T*A + beta*C,
-     !! where  alpha and beta  are scalars,  C is an  n by n symmetric matrix
-     !! and  A  is an  n by k  matrix in the first case and a  k by n  matrix
-     !! in the second case.
+     pure subroutine stdlib_csyrk(uplo,trans,n,k,alpha,a,lda,beta,c,ldc)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha, beta
+           complex(sp), intent(in) :: alpha, beta
            integer(ilp), intent(in) :: k, lda, ldc, n
            character, intent(in) :: trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: c(ldc,*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: c(ldc,*)
         ! =====================================================================
            ! Intrinsic Functions 
            intrinsic :: max
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, j, l, nrowa
            logical(lk) :: upper
            
@@ -3168,7 +3168,7 @@ module stdlib_linalg_blas_z
                info = 10
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZSYRK ',info)
+               call stdlib_xerbla('CSYRK ',info)
                return
            end if
            ! quick return if possible.
@@ -3283,14 +3283,14 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_zsyrk
+     end subroutine stdlib_csyrk
 
+     !> CTBMV:  performs one of the matrix-vector operations
+     !> x := A*x,   or   x := A**T*x,   or   x := A**H*x,
+     !> where x is an n element vector and  A is an n by n unit, or non-unit,
+     !> upper or lower triangular band matrix, with ( k + 1 ) diagonals.
 
-     pure subroutine stdlib_ztbmv(uplo,trans,diag,n,k,a,lda,x,incx)
-     !! ZTBMV performs one of the matrix-vector operations
-     !! x := A*x,   or   x := A**T*x,   or   x := A**H*x,
-     !! where x is an n element vector and  A is an n by n unit, or non-unit,
-     !! upper or lower triangular band matrix, with ( k + 1 ) diagonals.
+     pure subroutine stdlib_ctbmv(uplo,trans,diag,n,k,a,lda,x,incx)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -3298,12 +3298,12 @@ module stdlib_linalg_blas_z
            integer(ilp), intent(in) :: incx, k, lda, n
            character, intent(in) :: diag, trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: x(*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, kplus1, kx, l
            logical(lk) :: noconj, nounit
            ! Intrinsic Functions 
@@ -3327,7 +3327,7 @@ module stdlib_linalg_blas_z
                info = 9
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTBMV ',info)
+               call stdlib_xerbla('CTBMV ',info)
                return
            end if
            ! quick return if possible.
@@ -3497,17 +3497,17 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztbmv
+     end subroutine stdlib_ctbmv
 
+     !> CTBSV:  solves one of the systems of equations
+     !> A*x = b,   or   A**T*x = b,   or   A**H*x = b,
+     !> where b and x are n element vectors and A is an n by n unit, or
+     !> non-unit, upper or lower triangular band matrix, with ( k + 1 )
+     !> diagonals.
+     !> No test for singularity or near-singularity is included in this
+     !> routine. Such tests must be performed before calling this routine.
 
-     pure subroutine stdlib_ztbsv(uplo,trans,diag,n,k,a,lda,x,incx)
-     !! ZTBSV solves one of the systems of equations
-     !! A*x = b,   or   A**T*x = b,   or   A**H*x = b,
-     !! where b and x are n element vectors and A is an n by n unit, or
-     !! non-unit, upper or lower triangular band matrix, with ( k + 1 )
-     !! diagonals.
-     !! No test for singularity or near-singularity is included in this
-     !! routine. Such tests must be performed before calling this routine.
+     pure subroutine stdlib_ctbsv(uplo,trans,diag,n,k,a,lda,x,incx)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -3515,12 +3515,12 @@ module stdlib_linalg_blas_z
            integer(ilp), intent(in) :: incx, k, lda, n
            character, intent(in) :: diag, trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: x(*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, kplus1, kx, l
            logical(lk) :: noconj, nounit
            ! Intrinsic Functions 
@@ -3544,7 +3544,7 @@ module stdlib_linalg_blas_z
                info = 9
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTBSV ',info)
+               call stdlib_xerbla('CTBSV ',info)
                return
            end if
            ! quick return if possible.
@@ -3714,14 +3714,14 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztbsv
+     end subroutine stdlib_ctbsv
 
+     !> CTPMV:  performs one of the matrix-vector operations
+     !> x := A*x,   or   x := A**T*x,   or   x := A**H*x,
+     !> where x is an n element vector and  A is an n by n unit, or non-unit,
+     !> upper or lower triangular matrix, supplied in packed form.
 
-     pure subroutine stdlib_ztpmv(uplo,trans,diag,n,ap,x,incx)
-     !! ZTPMV performs one of the matrix-vector operations
-     !! x := A*x,   or   x := A**T*x,   or   x := A**H*x,
-     !! where x is an n element vector and  A is an n by n unit, or non-unit,
-     !! upper or lower triangular matrix, supplied in packed form.
+     pure subroutine stdlib_ctpmv(uplo,trans,diag,n,ap,x,incx)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -3729,12 +3729,12 @@ module stdlib_linalg_blas_z
            integer(ilp), intent(in) :: incx, n
            character, intent(in) :: diag, trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: ap(*)
-           complex(dp), intent(inout) :: x(*)
+           complex(sp), intent(in) :: ap(*)
+           complex(sp), intent(inout) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, k, kk, kx
            logical(lk) :: noconj, nounit
            ! Intrinsic Functions 
@@ -3754,7 +3754,7 @@ module stdlib_linalg_blas_z
                info = 7
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTPMV ',info)
+               call stdlib_xerbla('CTPMV ',info)
                return
            end if
            ! quick return if possible.
@@ -3931,16 +3931,16 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztpmv
+     end subroutine stdlib_ctpmv
 
+     !> CTPSV:  solves one of the systems of equations
+     !> A*x = b,   or   A**T*x = b,   or   A**H*x = b,
+     !> where b and x are n element vectors and A is an n by n unit, or
+     !> non-unit, upper or lower triangular matrix, supplied in packed form.
+     !> No test for singularity or near-singularity is included in this
+     !> routine. Such tests must be performed before calling this routine.
 
-     pure subroutine stdlib_ztpsv(uplo,trans,diag,n,ap,x,incx)
-     !! ZTPSV solves one of the systems of equations
-     !! A*x = b,   or   A**T*x = b,   or   A**H*x = b,
-     !! where b and x are n element vectors and A is an n by n unit, or
-     !! non-unit, upper or lower triangular matrix, supplied in packed form.
-     !! No test for singularity or near-singularity is included in this
-     !! routine. Such tests must be performed before calling this routine.
+     pure subroutine stdlib_ctpsv(uplo,trans,diag,n,ap,x,incx)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -3948,12 +3948,12 @@ module stdlib_linalg_blas_z
            integer(ilp), intent(in) :: incx, n
            character, intent(in) :: diag, trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: ap(*)
-           complex(dp), intent(inout) :: x(*)
+           complex(sp), intent(in) :: ap(*)
+           complex(sp), intent(inout) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, k, kk, kx
            logical(lk) :: noconj, nounit
            ! Intrinsic Functions 
@@ -3973,7 +3973,7 @@ module stdlib_linalg_blas_z
                info = 7
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTPSV ',info)
+               call stdlib_xerbla('CTPSV ',info)
                return
            end if
            ! quick return if possible.
@@ -4150,30 +4150,30 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztpsv
+     end subroutine stdlib_ctpsv
 
+     !> CTRMM:  performs one of the matrix-matrix operations
+     !> B := alpha*op( A )*B,   or   B := alpha*B*op( A )
+     !> where  alpha  is a scalar,  B  is an m by n matrix,  A  is a unit, or
+     !> non-unit,  upper or lower triangular matrix  and  op( A )  is one  of
+     !> op( A ) = A   or   op( A ) = A**T   or   op( A ) = A**H.
 
-     pure subroutine stdlib_ztrmm(side,uplo,transa,diag,m,n,alpha,a,lda,b,ldb)
-     !! ZTRMM performs one of the matrix-matrix operations
-     !! B := alpha*op( A )*B,   or   B := alpha*B*op( A )
-     !! where  alpha  is a scalar,  B  is an m by n matrix,  A  is a unit, or
-     !! non-unit,  upper or lower triangular matrix  and  op( A )  is one  of
-     !! op( A ) = A   or   op( A ) = A**T   or   op( A ) = A**H.
+     pure subroutine stdlib_ctrmm(side,uplo,transa,diag,m,n,alpha,a,lda,b,ldb)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
+           complex(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: lda, ldb, m, n
            character, intent(in) :: diag, side, transa, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: b(ldb,*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: b(ldb,*)
         ! =====================================================================
            ! Intrinsic Functions 
            intrinsic :: conjg,max
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, j, k, nrowa
            logical(lk) :: lside, noconj, nounit, upper
            
@@ -4209,7 +4209,7 @@ module stdlib_linalg_blas_z
                info = 11
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTRMM ',info)
+               call stdlib_xerbla('CTRMM ',info)
                return
            end if
            ! quick return if possible.
@@ -4392,14 +4392,14 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztrmm
+     end subroutine stdlib_ctrmm
 
+     !> CTRMV:  performs one of the matrix-vector operations
+     !> x := A*x,   or   x := A**T*x,   or   x := A**H*x,
+     !> where x is an n element vector and  A is an n by n unit, or non-unit,
+     !> upper or lower triangular matrix.
 
-     pure subroutine stdlib_ztrmv(uplo,trans,diag,n,a,lda,x,incx)
-     !! ZTRMV performs one of the matrix-vector operations
-     !! x := A*x,   or   x := A**T*x,   or   x := A**H*x,
-     !! where x is an n element vector and  A is an n by n unit, or non-unit,
-     !! upper or lower triangular matrix.
+     pure subroutine stdlib_ctrmv(uplo,trans,diag,n,a,lda,x,incx)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -4407,12 +4407,12 @@ module stdlib_linalg_blas_z
            integer(ilp), intent(in) :: incx, lda, n
            character, intent(in) :: diag, trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: x(*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, kx
            logical(lk) :: noconj, nounit
            ! Intrinsic Functions 
@@ -4434,7 +4434,7 @@ module stdlib_linalg_blas_z
                info = 8
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTRMV ',info)
+               call stdlib_xerbla('CTRMV ',info)
                return
            end if
            ! quick return if possible.
@@ -4589,31 +4589,31 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztrmv
+     end subroutine stdlib_ctrmv
 
+     !> CTRSM:  solves one of the matrix equations
+     !> op( A )*X = alpha*B,   or   X*op( A ) = alpha*B,
+     !> where alpha is a scalar, X and B are m by n matrices, A is a unit, or
+     !> non-unit,  upper or lower triangular matrix  and  op( A )  is one  of
+     !> op( A ) = A   or   op( A ) = A**T   or   op( A ) = A**H.
+     !> The matrix X is overwritten on B.
 
-     pure subroutine stdlib_ztrsm(side,uplo,transa,diag,m,n,alpha,a,lda,b,ldb)
-     !! ZTRSM solves one of the matrix equations
-     !! op( A )*X = alpha*B,   or   X*op( A ) = alpha*B,
-     !! where alpha is a scalar, X and B are m by n matrices, A is a unit, or
-     !! non-unit,  upper or lower triangular matrix  and  op( A )  is one  of
-     !! op( A ) = A   or   op( A ) = A**T   or   op( A ) = A**H.
-     !! The matrix X is overwritten on B.
+     pure subroutine stdlib_ctrsm(side,uplo,transa,diag,m,n,alpha,a,lda,b,ldb)
         ! -- reference blas level3 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
            ! Scalar Arguments 
-           complex(dp), intent(in) :: alpha
+           complex(sp), intent(in) :: alpha
            integer(ilp), intent(in) :: lda, ldb, m, n
            character, intent(in) :: diag, side, transa, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: b(ldb,*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: b(ldb,*)
         ! =====================================================================
            ! Intrinsic Functions 
            intrinsic :: conjg,max
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, j, k, nrowa
            logical(lk) :: lside, noconj, nounit, upper
            
@@ -4649,7 +4649,7 @@ module stdlib_linalg_blas_z
                info = 11
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTRSM ',info)
+               call stdlib_xerbla('CTRSM ',info)
                return
            end if
            ! quick return if possible.
@@ -4854,16 +4854,16 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztrsm
+     end subroutine stdlib_ctrsm
 
+     !> CTRSV:  solves one of the systems of equations
+     !> A*x = b,   or   A**T*x = b,   or   A**H*x = b,
+     !> where b and x are n element vectors and A is an n by n unit, or
+     !> non-unit, upper or lower triangular matrix.
+     !> No test for singularity or near-singularity is included in this
+     !> routine. Such tests must be performed before calling this routine.
 
-     pure subroutine stdlib_ztrsv(uplo,trans,diag,n,a,lda,x,incx)
-     !! ZTRSV solves one of the systems of equations
-     !! A*x = b,   or   A**T*x = b,   or   A**H*x = b,
-     !! where b and x are n element vectors and A is an n by n unit, or
-     !! non-unit, upper or lower triangular matrix.
-     !! No test for singularity or near-singularity is included in this
-     !! routine. Such tests must be performed before calling this routine.
+     pure subroutine stdlib_ctrsv(uplo,trans,diag,n,a,lda,x,incx)
         ! -- reference blas level2 routine --
         ! -- reference blas is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -4871,12 +4871,12 @@ module stdlib_linalg_blas_z
            integer(ilp), intent(in) :: incx, lda, n
            character, intent(in) :: diag, trans, uplo
            ! Array Arguments 
-           complex(dp), intent(in) :: a(lda,*)
-           complex(dp), intent(inout) :: x(*)
+           complex(sp), intent(in) :: a(lda,*)
+           complex(sp), intent(inout) :: x(*)
         ! =====================================================================
            
            ! Local Scalars 
-           complex(dp) :: temp
+           complex(sp) :: temp
            integer(ilp) :: i, info, ix, j, jx, kx
            logical(lk) :: noconj, nounit
            ! Intrinsic Functions 
@@ -4898,7 +4898,7 @@ module stdlib_linalg_blas_z
                info = 8
            end if
            if (info/=0) then
-               call stdlib_xerbla('ZTRSV ',info)
+               call stdlib_xerbla('CTRSV ',info)
                return
            end if
            ! quick return if possible.
@@ -5053,8 +5053,8 @@ module stdlib_linalg_blas_z
                end if
            end if
            return
-     end subroutine stdlib_ztrsv
+     end subroutine stdlib_ctrsv
 
 
 
-end module stdlib_linalg_blas_z
+end module stdlib_linalg_blas_c

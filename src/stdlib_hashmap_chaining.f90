@@ -775,7 +775,6 @@ contains
         centry % next => bentry
         map % inverse(inmap) % target => null()
         map % num_free = map % num_free + 1
-        map % num_entries = map % num_entries - 1
 
     end subroutine remove_chaining_entry
 

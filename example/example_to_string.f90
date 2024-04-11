@@ -1,6 +1,5 @@
 program example_to_string
   use stdlib_strings, only: to_string
-  implicit none
 
 !> Example for `complex` type
   print *, to_string((1, 1))              !! "(1.00000000,1.00000000)"
