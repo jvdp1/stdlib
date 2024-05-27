@@ -93,7 +93,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -512,7 +512,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -931,7 +931,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -1350,7 +1350,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -1769,7 +1769,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -2188,7 +2188,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -2607,7 +2607,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -3026,7 +3026,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -3446,7 +3446,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -3865,7 +3865,7 @@ contains
         integer(int_index), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index)
@@ -4284,7 +4284,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -4703,7 +4703,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -5122,7 +5122,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -5541,7 +5541,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -5960,7 +5960,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -6379,7 +6379,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -6798,7 +6798,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -7217,7 +7217,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -7637,7 +7637,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
@@ -8056,7 +8056,7 @@ contains
         integer(int_index_low), allocatable :: ibuf(:)
 
         if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
-            error stop "Too many entries for the chosen kind."
+            error stop "Too many entries for the kind of index."
         end if
 
         array_size = size(array, kind=int_index_low)
