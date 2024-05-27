@@ -79,7 +79,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int8), intent(inout)                    :: array(0:)
@@ -92,7 +92,15 @@ contains
         integer(int8), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -490,7 +498,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int16), intent(inout)                    :: array(0:)
@@ -503,7 +511,15 @@ contains
         integer(int16), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -901,7 +917,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int32), intent(inout)                    :: array(0:)
@@ -914,7 +930,15 @@ contains
         integer(int32), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -1312,7 +1336,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int64), intent(inout)                    :: array(0:)
@@ -1325,7 +1349,15 @@ contains
         integer(int64), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -1723,7 +1755,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         real(sp), intent(inout)                    :: array(0:)
@@ -1736,7 +1768,15 @@ contains
         real(sp), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -2134,7 +2174,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         real(dp), intent(inout)                    :: array(0:)
@@ -2147,7 +2187,15 @@ contains
         real(dp), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -2545,7 +2593,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         type(string_type), intent(inout)                    :: array(0:)
@@ -2558,7 +2606,15 @@ contains
         type(string_type), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -2956,7 +3012,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         character(len=*), intent(inout)                    :: array(0:)
@@ -2969,7 +3025,15 @@ contains
         character(len=:), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -3368,7 +3432,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         type(bitset_64), intent(inout)                    :: array(0:)
@@ -3381,7 +3445,15 @@ contains
         type(bitset_64), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -3779,7 +3851,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         type(bitset_large), intent(inout)                    :: array(0:)
@@ -3792,7 +3864,15 @@ contains
         type(bitset_large), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -4190,7 +4270,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int8), intent(inout)                    :: array(0:)
@@ -4203,7 +4283,15 @@ contains
         integer(int8), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -4601,7 +4689,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int16), intent(inout)                    :: array(0:)
@@ -4614,7 +4702,15 @@ contains
         integer(int16), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -5012,7 +5108,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int32), intent(inout)                    :: array(0:)
@@ -5025,7 +5121,15 @@ contains
         integer(int32), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -5423,7 +5527,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         integer(int64), intent(inout)                    :: array(0:)
@@ -5436,7 +5540,15 @@ contains
         integer(int64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -5834,7 +5946,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         real(sp), intent(inout)                    :: array(0:)
@@ -5847,7 +5959,15 @@ contains
         real(sp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -6245,7 +6365,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         real(dp), intent(inout)                    :: array(0:)
@@ -6258,7 +6378,15 @@ contains
         real(dp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -6656,7 +6784,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         type(string_type), intent(inout)                    :: array(0:)
@@ -6669,7 +6797,15 @@ contains
         type(string_type), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -7067,7 +7203,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         character(len=*), intent(inout)                    :: array(0:)
@@ -7080,7 +7216,15 @@ contains
         character(len=:), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -7479,7 +7623,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         type(bitset_64), intent(inout)                    :: array(0:)
@@ -7492,7 +7636,15 @@ contains
         type(bitset_64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
@@ -7890,7 +8042,7 @@ contains
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arraya to be
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
         type(bitset_large), intent(inout)                    :: array(0:)
@@ -7903,7 +8055,15 @@ contains
         type(bitset_large), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the chosen kind."
+        end if
+
         array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
 
         do i = 0, array_size-1
             index(i) = i+1
