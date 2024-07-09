@@ -66,31 +66,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int8), intent(inout)                    :: array(0:)
+        integer(int8), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        integer(int8), intent(out), optional            :: work(0:)
+        integer(int8), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int8), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -170,7 +171,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int8), intent(inout)            :: array(0:)
+            integer(int8), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -200,7 +201,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -255,7 +255,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int8), intent(inout)            :: array(0:)
+            integer(int8), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int8) :: tmp
@@ -296,9 +296,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int8), intent(inout)            :: array(0:)
+            integer(int8), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            integer(int8), intent(inout)            :: buf(0:)
+            integer(int8), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -315,7 +315,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -366,7 +365,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -389,9 +388,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int8), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int8), intent(inout)            :: buf(0:)
+            integer(int8), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int8), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -488,31 +487,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int16), intent(inout)                    :: array(0:)
+        integer(int16), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        integer(int16), intent(out), optional            :: work(0:)
+        integer(int16), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int16), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -592,7 +592,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int16), intent(inout)            :: array(0:)
+            integer(int16), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -622,7 +622,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -677,7 +676,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int16), intent(inout)            :: array(0:)
+            integer(int16), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int16) :: tmp
@@ -718,9 +717,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int16), intent(inout)            :: array(0:)
+            integer(int16), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            integer(int16), intent(inout)            :: buf(0:)
+            integer(int16), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -737,7 +736,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -788,7 +786,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -811,9 +809,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int16), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int16), intent(inout)            :: buf(0:)
+            integer(int16), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int16), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -910,31 +908,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int32), intent(inout)                    :: array(0:)
+        integer(int32), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        integer(int32), intent(out), optional            :: work(0:)
+        integer(int32), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int32), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -1014,7 +1013,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int32), intent(inout)            :: array(0:)
+            integer(int32), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -1044,7 +1043,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -1099,7 +1097,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int32), intent(inout)            :: array(0:)
+            integer(int32), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int32) :: tmp
@@ -1140,9 +1138,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int32), intent(inout)            :: array(0:)
+            integer(int32), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            integer(int32), intent(inout)            :: buf(0:)
+            integer(int32), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -1159,7 +1157,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -1210,7 +1207,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -1233,9 +1230,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int32), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int32), intent(inout)            :: buf(0:)
+            integer(int32), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int32), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -1332,31 +1329,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int64), intent(inout)                    :: array(0:)
+        integer(int64), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        integer(int64), intent(out), optional            :: work(0:)
+        integer(int64), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int64), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -1436,7 +1434,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int64), intent(inout)            :: array(0:)
+            integer(int64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -1466,7 +1464,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -1521,7 +1518,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int64), intent(inout)            :: array(0:)
+            integer(int64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int64) :: tmp
@@ -1562,9 +1559,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int64), intent(inout)            :: array(0:)
+            integer(int64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            integer(int64), intent(inout)            :: buf(0:)
+            integer(int64), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -1581,7 +1578,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -1632,7 +1628,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -1655,9 +1651,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int64), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int64), intent(inout)            :: buf(0:)
+            integer(int64), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int64), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -1754,31 +1750,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        real(sp), intent(inout)                    :: array(0:)
+        real(sp), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        real(sp), intent(out), optional            :: work(0:)
+        real(sp), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         real(sp), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -1858,7 +1855,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            real(sp), intent(inout)            :: array(0:)
+            real(sp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -1888,7 +1885,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -1943,7 +1939,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            real(sp), intent(inout)            :: array(0:)
+            real(sp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             real(sp) :: tmp
@@ -1984,9 +1980,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            real(sp), intent(inout)            :: array(0:)
+            real(sp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            real(sp), intent(inout)            :: buf(0:)
+            real(sp), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -2003,7 +1999,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -2054,7 +2049,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -2077,9 +2072,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(sp), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            real(sp), intent(inout)            :: buf(0:)
+            real(sp), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            real(sp), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -2176,31 +2171,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        real(dp), intent(inout)                    :: array(0:)
+        real(dp), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        real(dp), intent(out), optional            :: work(0:)
+        real(dp), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         real(dp), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -2280,7 +2276,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            real(dp), intent(inout)            :: array(0:)
+            real(dp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -2310,7 +2306,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -2365,7 +2360,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            real(dp), intent(inout)            :: array(0:)
+            real(dp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             real(dp) :: tmp
@@ -2406,9 +2401,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            real(dp), intent(inout)            :: array(0:)
+            real(dp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            real(dp), intent(inout)            :: buf(0:)
+            real(dp), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -2425,7 +2420,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -2476,7 +2470,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -2499,9 +2493,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(dp), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            real(dp), intent(inout)            :: buf(0:)
+            real(dp), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            real(dp), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -2598,31 +2592,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        type(string_type), intent(inout)                    :: array(0:)
+        type(string_type), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        type(string_type), intent(out), optional            :: work(0:)
+        type(string_type), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         type(string_type), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -2702,7 +2697,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            type(string_type), intent(inout)            :: array(0:)
+            type(string_type), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -2732,7 +2727,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -2787,7 +2781,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            type(string_type), intent(inout)            :: array(0:)
+            type(string_type), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             type(string_type) :: tmp
@@ -2828,9 +2822,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            type(string_type), intent(inout)            :: array(0:)
+            type(string_type), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            type(string_type), intent(inout)            :: buf(0:)
+            type(string_type), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -2847,7 +2841,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -2898,7 +2891,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -2921,9 +2914,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(string_type), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            type(string_type), intent(inout)            :: buf(0:)
+            type(string_type), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            type(string_type), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -3020,31 +3013,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        character(len=*), intent(inout)                    :: array(0:)
+        character(len=*), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        character(len=len(array)), intent(out), optional            :: work(0:)
+        character(len=len(array)), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         character(len=:), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -3125,7 +3119,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            character(len=*), intent(inout)            :: array(0:)
+            character(len=*), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -3155,7 +3149,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -3210,7 +3203,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            character(len=*), intent(inout)            :: array(0:)
+            character(len=*), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             character(len=len(array)) :: tmp
@@ -3251,9 +3244,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            character(len=*), intent(inout)            :: array(0:)
+            character(len=*), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            character(len=len(array)), intent(inout)            :: buf(0:)
+            character(len=len(array)), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -3270,7 +3263,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -3321,7 +3313,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -3344,9 +3336,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            character(len=*), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            character(len=len(array)), intent(inout)            :: buf(0:)
+            character(len=*), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            character(len=len(array)), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -3443,31 +3435,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        type(bitset_64), intent(inout)                    :: array(0:)
+        type(bitset_64), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        type(bitset_64), intent(out), optional            :: work(0:)
+        type(bitset_64), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         type(bitset_64), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -3547,7 +3540,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            type(bitset_64), intent(inout)            :: array(0:)
+            type(bitset_64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -3577,7 +3570,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -3632,7 +3624,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            type(bitset_64), intent(inout)            :: array(0:)
+            type(bitset_64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             type(bitset_64) :: tmp
@@ -3673,9 +3665,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            type(bitset_64), intent(inout)            :: array(0:)
+            type(bitset_64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            type(bitset_64), intent(inout)            :: buf(0:)
+            type(bitset_64), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -3692,7 +3684,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -3743,7 +3734,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -3766,9 +3757,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_64), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            type(bitset_64), intent(inout)            :: buf(0:)
+            type(bitset_64), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            type(bitset_64), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -3865,31 +3856,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        type(bitset_large), intent(inout)                    :: array(0:)
+        type(bitset_large), intent(inout)         :: array(0:)
         integer(int_index), intent(out)           :: index(0:)
-        type(bitset_large), intent(out), optional            :: work(0:)
+        type(bitset_large), intent(out), optional :: work(0:)
         integer(int_index), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         type(bitset_large), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -3969,7 +3961,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            type(bitset_large), intent(inout)            :: array(0:)
+            type(bitset_large), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -3999,7 +3991,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -4054,7 +4045,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            type(bitset_large), intent(inout)            :: array(0:)
+            type(bitset_large), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
             type(bitset_large) :: tmp
@@ -4095,9 +4086,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            type(bitset_large), intent(inout)            :: array(0:)
+            type(bitset_large), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
-            type(bitset_large), intent(inout)            :: buf(0:)
+            type(bitset_large), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -4114,7 +4105,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -4165,7 +4155,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -4188,9 +4178,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_large), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            type(bitset_large), intent(inout)            :: buf(0:)
+            type(bitset_large), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            type(bitset_large), intent(inout) :: buf(0:)
             integer(int_index), intent(inout) :: index(0:)
             integer(int_index), intent(inout) :: ibuf(0:)
 
@@ -4287,31 +4277,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int8), intent(inout)                    :: array(0:)
+        integer(int8), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        integer(int8), intent(out), optional            :: work(0:)
+        integer(int8), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int8), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -4391,7 +4382,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int8), intent(inout)            :: array(0:)
+            integer(int8), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -4421,7 +4412,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -4476,7 +4466,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int8), intent(inout)            :: array(0:)
+            integer(int8), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int8) :: tmp
@@ -4517,9 +4507,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int8), intent(inout)            :: array(0:)
+            integer(int8), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            integer(int8), intent(inout)            :: buf(0:)
+            integer(int8), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -4536,7 +4526,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -4587,7 +4576,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -4610,9 +4599,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int8), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int8), intent(inout)            :: buf(0:)
+            integer(int8), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int8), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -4709,31 +4698,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int16), intent(inout)                    :: array(0:)
+        integer(int16), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        integer(int16), intent(out), optional            :: work(0:)
+        integer(int16), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int16), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -4813,7 +4803,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int16), intent(inout)            :: array(0:)
+            integer(int16), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -4843,7 +4833,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -4898,7 +4887,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int16), intent(inout)            :: array(0:)
+            integer(int16), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int16) :: tmp
@@ -4939,9 +4928,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int16), intent(inout)            :: array(0:)
+            integer(int16), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            integer(int16), intent(inout)            :: buf(0:)
+            integer(int16), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -4958,7 +4947,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -5009,7 +4997,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -5032,9 +5020,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int16), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int16), intent(inout)            :: buf(0:)
+            integer(int16), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int16), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -5131,31 +5119,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int32), intent(inout)                    :: array(0:)
+        integer(int32), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        integer(int32), intent(out), optional            :: work(0:)
+        integer(int32), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int32), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -5235,7 +5224,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int32), intent(inout)            :: array(0:)
+            integer(int32), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -5265,7 +5254,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -5320,7 +5308,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int32), intent(inout)            :: array(0:)
+            integer(int32), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int32) :: tmp
@@ -5361,9 +5349,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int32), intent(inout)            :: array(0:)
+            integer(int32), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            integer(int32), intent(inout)            :: buf(0:)
+            integer(int32), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -5380,7 +5368,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -5431,7 +5418,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -5454,9 +5441,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int32), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int32), intent(inout)            :: buf(0:)
+            integer(int32), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int32), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -5553,31 +5540,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        integer(int64), intent(inout)                    :: array(0:)
+        integer(int64), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        integer(int64), intent(out), optional            :: work(0:)
+        integer(int64), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         integer(int64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -5657,7 +5645,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            integer(int64), intent(inout)            :: array(0:)
+            integer(int64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -5687,7 +5675,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -5742,7 +5729,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            integer(int64), intent(inout)            :: array(0:)
+            integer(int64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int64) :: tmp
@@ -5783,9 +5770,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            integer(int64), intent(inout)            :: array(0:)
+            integer(int64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            integer(int64), intent(inout)            :: buf(0:)
+            integer(int64), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -5802,7 +5789,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -5853,7 +5839,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -5876,9 +5862,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int64), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            integer(int64), intent(inout)            :: buf(0:)
+            integer(int64), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            integer(int64), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -5975,31 +5961,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        real(sp), intent(inout)                    :: array(0:)
+        real(sp), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        real(sp), intent(out), optional            :: work(0:)
+        real(sp), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         real(sp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -6079,7 +6066,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            real(sp), intent(inout)            :: array(0:)
+            real(sp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -6109,7 +6096,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -6164,7 +6150,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            real(sp), intent(inout)            :: array(0:)
+            real(sp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             real(sp) :: tmp
@@ -6205,9 +6191,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            real(sp), intent(inout)            :: array(0:)
+            real(sp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            real(sp), intent(inout)            :: buf(0:)
+            real(sp), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -6224,7 +6210,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -6275,7 +6260,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -6298,9 +6283,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(sp), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            real(sp), intent(inout)            :: buf(0:)
+            real(sp), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            real(sp), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -6397,31 +6382,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        real(dp), intent(inout)                    :: array(0:)
+        real(dp), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        real(dp), intent(out), optional            :: work(0:)
+        real(dp), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         real(dp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -6501,7 +6487,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            real(dp), intent(inout)            :: array(0:)
+            real(dp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -6531,7 +6517,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -6586,7 +6571,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            real(dp), intent(inout)            :: array(0:)
+            real(dp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             real(dp) :: tmp
@@ -6627,9 +6612,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            real(dp), intent(inout)            :: array(0:)
+            real(dp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            real(dp), intent(inout)            :: buf(0:)
+            real(dp), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -6646,7 +6631,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -6697,7 +6681,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -6720,9 +6704,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(dp), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            real(dp), intent(inout)            :: buf(0:)
+            real(dp), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            real(dp), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -6819,31 +6803,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        type(string_type), intent(inout)                    :: array(0:)
+        type(string_type), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        type(string_type), intent(out), optional            :: work(0:)
+        type(string_type), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         type(string_type), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -6923,7 +6908,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            type(string_type), intent(inout)            :: array(0:)
+            type(string_type), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -6953,7 +6938,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -7008,7 +6992,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            type(string_type), intent(inout)            :: array(0:)
+            type(string_type), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             type(string_type) :: tmp
@@ -7049,9 +7033,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            type(string_type), intent(inout)            :: array(0:)
+            type(string_type), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            type(string_type), intent(inout)            :: buf(0:)
+            type(string_type), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -7068,7 +7052,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -7119,7 +7102,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -7142,9 +7125,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(string_type), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            type(string_type), intent(inout)            :: buf(0:)
+            type(string_type), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            type(string_type), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -7241,31 +7224,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        character(len=*), intent(inout)                    :: array(0:)
+        character(len=*), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        character(len=len(array)), intent(out), optional            :: work(0:)
+        character(len=len(array)), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         character(len=:), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -7346,7 +7330,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            character(len=*), intent(inout)            :: array(0:)
+            character(len=*), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -7376,7 +7360,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -7431,7 +7414,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            character(len=*), intent(inout)            :: array(0:)
+            character(len=*), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             character(len=len(array)) :: tmp
@@ -7472,9 +7455,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            character(len=*), intent(inout)            :: array(0:)
+            character(len=*), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            character(len=len(array)), intent(inout)            :: buf(0:)
+            character(len=len(array)), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -7491,7 +7474,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -7542,7 +7524,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -7565,9 +7547,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            character(len=*), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            character(len=len(array)), intent(inout)            :: buf(0:)
+            character(len=*), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            character(len=len(array)), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -7664,31 +7646,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        type(bitset_64), intent(inout)                    :: array(0:)
+        type(bitset_64), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        type(bitset_64), intent(out), optional            :: work(0:)
+        type(bitset_64), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         type(bitset_64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -7768,7 +7751,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            type(bitset_64), intent(inout)            :: array(0:)
+            type(bitset_64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -7798,7 +7781,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -7853,7 +7835,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            type(bitset_64), intent(inout)            :: array(0:)
+            type(bitset_64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             type(bitset_64) :: tmp
@@ -7894,9 +7876,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            type(bitset_64), intent(inout)            :: array(0:)
+            type(bitset_64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            type(bitset_64), intent(inout)            :: buf(0:)
+            type(bitset_64), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -7913,7 +7895,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -7964,7 +7945,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -7987,9 +7968,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_64), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            type(bitset_64), intent(inout)            :: buf(0:)
+            type(bitset_64), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            type(bitset_64), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
@@ -8086,31 +8067,32 @@ contains
 ! a non-increasing sort. The logic of the determination of indexing largely
 ! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version is a simplification of the Timsort algorithm described
-! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version in turn is a simplification of the Timsort algorithm
+! described in
+! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size, with
-! an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size and
+! initially processed by an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
 
-        type(bitset_large), intent(inout)                    :: array(0:)
+        type(bitset_large), intent(inout)         :: array(0:)
         integer(int_index_low), intent(out)           :: index(0:)
-        type(bitset_large), intent(out), optional            :: work(0:)
+        type(bitset_large), intent(out), optional :: work(0:)
         integer(int_index_low), intent(out), optional :: iwork(0:)
-        logical, intent(in), optional            :: reverse
+        logical, intent(in), optional :: reverse
 
-        integer(int_index) :: array_size, i, stat
         type(bitset_large), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
+        integer(int_index) :: array_size, i, stat
 
         array_size = size(array, kind=int_index)
 
@@ -8190,7 +8172,7 @@ contains
         pure subroutine insertion_sort( array, index )
 ! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
 ! location of the indices in `INDEX` to the elements of `ARRAY`.
-            type(bitset_large), intent(inout)            :: array(0:)
+            type(bitset_large), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int_index) :: i, j
@@ -8220,7 +8202,6 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-
             integer(int_index) :: r
             type(run_type), intent(in), target :: runs(0:)
 
@@ -8275,7 +8256,7 @@ contains
 ! Consistency of the indices in `index` with the elements of `array`
 ! are maintained.
 
-            type(bitset_large), intent(inout)            :: array(0:)
+            type(bitset_large), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
             type(bitset_large) :: tmp
@@ -8316,9 +8297,9 @@ contains
 ! worst-case. Consistency of the indices in `index` with the elements of
 ! `array` are maintained.
 
-            type(bitset_large), intent(inout)            :: array(0:)
+            type(bitset_large), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
-            type(bitset_large), intent(inout)            :: buf(0:)
+            type(bitset_large), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
@@ -8335,7 +8316,6 @@ contains
                 if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
-
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -8386,7 +8366,7 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                     right % base + right % len - 1 ), &
+                                       right % base + right % len - 1 ), &
                                 left % len, buf, &
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
@@ -8409,9 +8389,9 @@ contains
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_large), intent(inout)            :: array(0:)
-            integer(int_index), intent(in)    :: mid
-            type(bitset_large), intent(inout)            :: buf(0:)
+            type(bitset_large), intent(inout) :: array(0:)
+            integer(int_index), intent(in)  :: mid
+            type(bitset_large), intent(inout) :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 

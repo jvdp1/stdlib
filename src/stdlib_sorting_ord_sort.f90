@@ -207,9 +207,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int8_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -548,9 +548,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int16_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -889,9 +889,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int32_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -1230,9 +1230,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int64_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -1571,9 +1571,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "sp_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -1912,9 +1912,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "dp_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -2253,9 +2253,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "string_type_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -2594,9 +2594,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "char_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -2936,9 +2936,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_64_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -3277,9 +3277,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_large_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -3618,9 +3618,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int8_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -3959,9 +3959,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int16_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -4300,9 +4300,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int32_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -4641,9 +4641,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int64_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -4982,9 +4982,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "sp_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -5323,9 +5323,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "dp_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -5664,9 +5664,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "string_type_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -6005,9 +6005,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "char_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -6347,9 +6347,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_64_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -6688,9 +6688,9 @@ contains
 
         array_size = size( array, kind=int_index )
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_large_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
