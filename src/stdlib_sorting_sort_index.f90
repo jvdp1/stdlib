@@ -173,7 +173,8 @@ contains
             integer(int8), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             integer(int8) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -258,7 +259,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int8) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -455,7 +457,8 @@ contains
             integer(int8), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             integer(int8) :: temp
 
             lo = 0
@@ -592,7 +595,8 @@ contains
             integer(int16), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             integer(int16) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -677,7 +681,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int16) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -874,7 +879,8 @@ contains
             integer(int16), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             integer(int16) :: temp
 
             lo = 0
@@ -1011,7 +1017,8 @@ contains
             integer(int32), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             integer(int32) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -1096,7 +1103,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int32) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -1293,7 +1301,8 @@ contains
             integer(int32), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             integer(int32) :: temp
 
             lo = 0
@@ -1430,7 +1439,8 @@ contains
             integer(int64), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             integer(int64) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -1515,7 +1525,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             integer(int64) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -1712,7 +1723,8 @@ contains
             integer(int64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             integer(int64) :: temp
 
             lo = 0
@@ -1849,7 +1861,8 @@ contains
             real(sp), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             real(sp) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -1934,7 +1947,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             real(sp) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -2131,7 +2145,8 @@ contains
             real(sp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             real(sp) :: temp
 
             lo = 0
@@ -2268,7 +2283,8 @@ contains
             real(dp), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             real(dp) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -2353,7 +2369,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             real(dp) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -2550,7 +2567,8 @@ contains
             real(dp), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             real(dp) :: temp
 
             lo = 0
@@ -2687,7 +2705,8 @@ contains
             type(string_type), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             type(string_type) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -2772,7 +2791,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             type(string_type) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -2969,7 +2989,8 @@ contains
             type(string_type), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             type(string_type) :: temp
 
             lo = 0
@@ -3107,7 +3128,8 @@ contains
             character(len=*), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             character(len=len(array)) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -3192,7 +3214,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             character(len=len(array)) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -3389,7 +3412,8 @@ contains
             character(len=*), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             character(len=len(array)) :: temp
 
             lo = 0
@@ -3526,7 +3550,8 @@ contains
             type(bitset_64), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             type(bitset_64) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -3611,7 +3636,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             type(bitset_64) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -3808,7 +3834,8 @@ contains
             type(bitset_64), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             type(bitset_64) :: temp
 
             lo = 0
@@ -3945,7 +3972,8 @@ contains
             type(bitset_large), intent(inout)            :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index) :: key_index
             type(bitset_large) :: key
 
             do j=1, size(array, kind=int_index)-1
@@ -4030,7 +4058,8 @@ contains
             integer(int_index), intent(inout) :: index(0:)
 
             type(bitset_large) :: tmp
-            integer(int_index) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
@@ -4227,7 +4256,8 @@ contains
             type(bitset_large), intent(inout) :: array(0:)
             integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: itemp, lo, hi
+            integer(int_index) :: itemp
+            integer(int_index) :: lo, hi
             type(bitset_large) :: temp
 
             lo = 0
@@ -4279,17 +4309,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         integer(int8), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -4303,11 +4333,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -4320,7 +4350,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -4341,17 +4371,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -4364,10 +4394,11 @@ contains
             integer(int8), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             integer(int8) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -4391,13 +4422,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -4449,11 +4480,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int8) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -4490,11 +4522,11 @@ contains
             integer(int8), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -4542,7 +4574,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4560,7 +4592,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4579,14 +4611,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             integer(int8), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             integer(int8), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -4646,11 +4678,12 @@ contains
             integer(int8), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             integer(int8) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -4698,17 +4731,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         integer(int16), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -4722,11 +4755,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -4739,7 +4772,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -4760,17 +4793,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -4783,10 +4816,11 @@ contains
             integer(int16), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             integer(int16) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -4810,13 +4844,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -4868,11 +4902,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int16) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -4909,11 +4944,11 @@ contains
             integer(int16), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -4961,7 +4996,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4979,7 +5014,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4998,14 +5033,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             integer(int16), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             integer(int16), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -5065,11 +5100,12 @@ contains
             integer(int16), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             integer(int16) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -5117,17 +5153,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         integer(int32), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -5141,11 +5177,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -5158,7 +5194,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -5179,17 +5215,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -5202,10 +5238,11 @@ contains
             integer(int32), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             integer(int32) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -5229,13 +5266,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -5287,11 +5324,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int32) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -5328,11 +5366,11 @@ contains
             integer(int32), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -5380,7 +5418,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5398,7 +5436,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5417,14 +5455,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             integer(int32), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             integer(int32), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -5484,11 +5522,12 @@ contains
             integer(int32), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             integer(int32) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -5536,17 +5575,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         integer(int64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -5560,11 +5599,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -5577,7 +5616,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -5598,17 +5637,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -5621,10 +5660,11 @@ contains
             integer(int64), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             integer(int64) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -5648,13 +5688,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -5706,11 +5746,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int64) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -5747,11 +5788,11 @@ contains
             integer(int64), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -5799,7 +5840,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5817,7 +5858,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5836,14 +5877,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             integer(int64), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             integer(int64), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -5903,11 +5944,12 @@ contains
             integer(int64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             integer(int64) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -5955,17 +5997,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         real(sp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -5979,11 +6021,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -5996,7 +6038,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -6017,17 +6059,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -6040,10 +6082,11 @@ contains
             real(sp), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             real(sp) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -6067,13 +6110,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -6125,11 +6168,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             real(sp) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -6166,11 +6210,11 @@ contains
             real(sp), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -6218,7 +6262,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6236,7 +6280,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6255,14 +6299,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             real(sp), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             real(sp), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -6322,11 +6366,12 @@ contains
             real(sp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             real(sp) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -6374,17 +6419,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         real(dp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -6398,11 +6443,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -6415,7 +6460,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -6436,17 +6481,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -6459,10 +6504,11 @@ contains
             real(dp), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             real(dp) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -6486,13 +6532,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -6544,11 +6590,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             real(dp) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -6585,11 +6632,11 @@ contains
             real(dp), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -6637,7 +6684,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6655,7 +6702,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6674,14 +6721,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             real(dp), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             real(dp), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -6741,11 +6788,12 @@ contains
             real(dp), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             real(dp) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -6793,17 +6841,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         type(string_type), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -6817,11 +6865,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -6834,7 +6882,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -6855,17 +6903,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -6878,10 +6926,11 @@ contains
             type(string_type), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             type(string_type) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -6905,13 +6954,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -6963,11 +7012,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             type(string_type) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -7004,11 +7054,11 @@ contains
             type(string_type), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -7056,7 +7106,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -7074,7 +7124,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -7093,14 +7143,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             type(string_type), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             type(string_type), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -7160,11 +7210,12 @@ contains
             type(string_type), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             type(string_type) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -7212,17 +7263,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         character(len=:), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -7236,11 +7287,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -7254,7 +7305,7 @@ contains
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -7275,17 +7326,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -7298,10 +7349,11 @@ contains
             character(len=*), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             character(len=len(array)) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -7325,13 +7377,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -7383,11 +7435,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             character(len=len(array)) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -7424,11 +7477,11 @@ contains
             character(len=len(array)), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -7476,7 +7529,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -7494,7 +7547,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -7513,14 +7566,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             character(len=*), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             character(len=len(array)), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -7580,11 +7633,12 @@ contains
             character(len=*), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             character(len=len(array)) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -7632,17 +7686,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         type(bitset_64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -7656,11 +7710,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -7673,7 +7727,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -7694,17 +7748,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -7717,10 +7771,11 @@ contains
             type(bitset_64), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             type(bitset_64) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -7744,13 +7799,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -7802,11 +7857,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             type(bitset_64) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -7843,11 +7899,11 @@ contains
             type(bitset_64), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -7895,7 +7951,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -7913,7 +7969,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -7932,14 +7988,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             type(bitset_64), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             type(bitset_64), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -7999,11 +8055,12 @@ contains
             type(bitset_64), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             type(bitset_64) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
@@ -8051,17 +8108,17 @@ contains
         integer(int_index_low), intent(out), optional :: iwork(0:)
         logical, intent(in), optional            :: reverse
 
-        integer(int_index_low) :: array_size, i, stat
+        integer(int_index) :: array_size, i, stat
         type(bitset_large), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index_low)
+        array_size = size(array, kind=int_index)
 
-        if ( size(index, kind=int_index_low) < array_size ) then
+        if ( size(index, kind=int_index) < array_size ) then
             error stop "index array is too small."
         end if
 
@@ -8075,11 +8132,11 @@ contains
 
 ! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size(work, kind=int_index_low) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "work array is too small."
             end if
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, work, iwork )
@@ -8092,7 +8149,7 @@ contains
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
-                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
                     error stop "iwork array is too small."
                 endif
                 call merge_sort( array, index, buf, iwork )
@@ -8113,17 +8170,17 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index_low)             :: min_run
-            integer(int_index_low), intent(in) :: n
+            integer(int_index)             :: min_run
+            integer(int_index), intent(in) :: n
 
-            integer(int_index_low) :: num, r
+            integer(int_index) :: num, r
 
             num = n
-            r = 0_int_index_low
+            r = 0_int_index
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index_low) )
-                num = ishft(num, -1_int_index_low)
+                r = ior( r, iand(num, 1_int_index) )
+                num = ishft(num, -1_int_index)
             end do
             min_run = num + r
 
@@ -8136,10 +8193,11 @@ contains
             type(bitset_large), intent(inout)            :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: i, j, key_index
+            integer(int_index) :: i, j
+            integer(int_index_low) :: key_index
             type(bitset_large) :: key
 
-            do j=1, size(array, kind=int_index_low)-1
+            do j=1, size(array, kind=int_index)-1
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
@@ -8163,13 +8221,13 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
 
-            integer(int_index_low) :: r
-            type(run_type_low), intent(in), target :: runs(0:)
+            integer(int_index) :: r
+            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index_low) :: n
+            integer(int_index) :: n
             logical :: test
 
-            n = size(runs, kind=int_index_low)
+            n = size(runs, kind=int_index)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -8221,11 +8279,12 @@ contains
             integer(int_index_low), intent(inout) :: index(0:)
 
             type(bitset_large) :: tmp
-            integer(int_index_low) :: i, tmp_index
+            integer(int_index) :: i
+            integer(int_index_low) :: tmp_index
 
             tmp = array(0)
             tmp_index = index(0)
-            find_hole: do i=1, size(array, kind=int_index_low)-1
+            find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
                 index(i-1) = index(i)
@@ -8262,11 +8321,11 @@ contains
             type(bitset_large), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index_low)
+            array_size = size(array, kind=int_index)
 
 ! Very short runs are extended using insertion sort to span at least this
 ! many elements. Slices of up to this length are sorted using insertion sort.
@@ -8314,7 +8373,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_low( base = start, &
+                runs(r_count) = run_type_default( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -8332,7 +8391,7 @@ contains
                                 index( left % base: &
                                      right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_low( base = left % base, &
+                    runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -8351,14 +8410,14 @@ contains
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
             type(bitset_large), intent(inout)            :: array(0:)
-            integer(int_index_low), intent(in)    :: mid
+            integer(int_index), intent(in)    :: mid
             type(bitset_large), intent(inout)            :: buf(0:)
             integer(int_index_low), intent(inout) :: index(0:)
             integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index_low) :: array_len, i, j, k
+            integer(int_index) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index_low)
+            array_len = size(array, kind=int_index)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -8418,11 +8477,12 @@ contains
             type(bitset_large), intent(inout) :: array(0:)
             integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index_low) :: itemp, lo, hi
+            integer(int_index_low) :: itemp
+            integer(int_index) :: lo, hi
             type(bitset_large) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index_low ) - 1
+            hi = size( array, kind=int_index ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
