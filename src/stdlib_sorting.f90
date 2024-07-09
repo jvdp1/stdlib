@@ -2,6 +2,8 @@
 
 
 
+
+
 !! Licensing:
 !!
 !! This file is subject both to the Fortran Standard Library license, and
@@ -687,6 +689,984 @@ module stdlib_sorting
 
     end interface sort
 
+
+    interface sort_adj
+!! Version: experimental
+!!
+!! The generic subroutine interface implementing the `SORT_ADJ` algorithm,
+!! based on the `"Rust" sort` algorithm found in `slice.rs`
+!! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
+!! but modified to return an array of indices that would provide a stable
+!! sort of the rank one `ARRAY` input.
+!! ([Specification](../page/specs/stdlib_sorting.html#sort_adj-creates-an-array-of-sorting-indices-for-an-input-array-while-also-sorting-the-array))
+!!
+!! The indices by default correspond to a
+!! non-decreasing sort, but if the optional argument `REVERSE` is present
+!! with a value of `.TRUE.` the indices correspond to a non-increasing sort.
+
+        module subroutine int8_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int8_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int8)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int8), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            integer(int8), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int8_int8_sort_adj
+
+        module subroutine int16_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int16_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int16)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int16), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            integer(int16), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int16_int8_sort_adj
+
+        module subroutine int32_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int32_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int32)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int32), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            integer(int32), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int32_int8_sort_adj
+
+        module subroutine int64_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int64_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int64), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            integer(int64), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int64_int8_sort_adj
+
+        module subroutine sp_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `sp_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(sp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(sp), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            real(sp), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine sp_int8_sort_adj
+
+        module subroutine dp_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `dp_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(dp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(dp), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            real(dp), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine dp_int8_sort_adj
+
+        module subroutine string_type_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `string_type_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(string_type)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(string_type), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            type(string_type), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine string_type_int8_sort_adj
+
+        module subroutine char_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `char_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `character(len=*)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            character(len=*), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            character(len=len(array)), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine char_int8_sort_adj
+
+        module subroutine bitset_64_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_64_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_64), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            type(bitset_64), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_64_int8_sort_adj
+
+        module subroutine bitset_large_int8_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_large_int8_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_large)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_large), intent(inout)                     :: array(0:)
+            integer(int8), intent(inout)                     :: index(0:)
+            type(bitset_large), intent(out), optional             :: work(0:)
+            integer(int8), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_large_int8_sort_adj
+
+        module subroutine int8_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int8_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int8)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int8), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            integer(int8), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int8_int16_sort_adj
+
+        module subroutine int16_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int16_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int16)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int16), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            integer(int16), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int16_int16_sort_adj
+
+        module subroutine int32_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int32_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int32)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int32), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            integer(int32), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int32_int16_sort_adj
+
+        module subroutine int64_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int64_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int64), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            integer(int64), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int64_int16_sort_adj
+
+        module subroutine sp_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `sp_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(sp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(sp), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            real(sp), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine sp_int16_sort_adj
+
+        module subroutine dp_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `dp_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(dp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(dp), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            real(dp), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine dp_int16_sort_adj
+
+        module subroutine string_type_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `string_type_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(string_type)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(string_type), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            type(string_type), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine string_type_int16_sort_adj
+
+        module subroutine char_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `char_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `character(len=*)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            character(len=*), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            character(len=len(array)), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine char_int16_sort_adj
+
+        module subroutine bitset_64_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_64_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_64), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            type(bitset_64), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_64_int16_sort_adj
+
+        module subroutine bitset_large_int16_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_large_int16_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_large)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_large), intent(inout)                     :: array(0:)
+            integer(int16), intent(inout)                     :: index(0:)
+            type(bitset_large), intent(out), optional             :: work(0:)
+            integer(int16), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_large_int16_sort_adj
+
+        module subroutine int8_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int8_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int8)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int8), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            integer(int8), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int8_int32_sort_adj
+
+        module subroutine int16_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int16_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int16)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int16), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            integer(int16), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int16_int32_sort_adj
+
+        module subroutine int32_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int32_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int32)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int32), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            integer(int32), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int32_int32_sort_adj
+
+        module subroutine int64_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int64_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int64), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            integer(int64), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int64_int32_sort_adj
+
+        module subroutine sp_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `sp_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(sp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(sp), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            real(sp), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine sp_int32_sort_adj
+
+        module subroutine dp_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `dp_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(dp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(dp), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            real(dp), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine dp_int32_sort_adj
+
+        module subroutine string_type_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `string_type_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(string_type)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(string_type), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            type(string_type), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine string_type_int32_sort_adj
+
+        module subroutine char_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `char_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `character(len=*)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            character(len=*), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            character(len=len(array)), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine char_int32_sort_adj
+
+        module subroutine bitset_64_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_64_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_64), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            type(bitset_64), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_64_int32_sort_adj
+
+        module subroutine bitset_large_int32_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_large_int32_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_large)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_large), intent(inout)                     :: array(0:)
+            integer(int32), intent(inout)                     :: index(0:)
+            type(bitset_large), intent(out), optional             :: work(0:)
+            integer(int32), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_large_int32_sort_adj
+
+        module subroutine int8_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int8_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int8)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int8), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            integer(int8), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int8_int64_sort_adj
+
+        module subroutine int16_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int16_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int16)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int16), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            integer(int16), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int16_int64_sort_adj
+
+        module subroutine int32_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int32_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int32)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int32), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            integer(int32), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int32_int64_sort_adj
+
+        module subroutine int64_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int64_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int64), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            integer(int64), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int64_int64_sort_adj
+
+        module subroutine sp_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `sp_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(sp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(sp), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            real(sp), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine sp_int64_sort_adj
+
+        module subroutine dp_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `dp_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(dp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(dp), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            real(dp), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine dp_int64_sort_adj
+
+        module subroutine string_type_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `string_type_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(string_type)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(string_type), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            type(string_type), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine string_type_int64_sort_adj
+
+        module subroutine char_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `char_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `character(len=*)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            character(len=*), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            character(len=len(array)), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine char_int64_sort_adj
+
+        module subroutine bitset_64_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_64_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_64), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            type(bitset_64), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_64_int64_sort_adj
+
+        module subroutine bitset_large_int64_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_large_int64_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_large)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_large), intent(inout)                     :: array(0:)
+            integer(int64), intent(inout)                     :: index(0:)
+            type(bitset_large), intent(out), optional             :: work(0:)
+            integer(int64), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_large_int64_sort_adj
+
+        module subroutine int8_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int8_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int8)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int8), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            integer(int8), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int8_sp_sort_adj
+
+        module subroutine int16_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int16_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int16)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int16), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            integer(int16), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int16_sp_sort_adj
+
+        module subroutine int32_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int32_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int32)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int32), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            integer(int32), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int32_sp_sort_adj
+
+        module subroutine int64_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int64_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int64), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            integer(int64), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int64_sp_sort_adj
+
+        module subroutine sp_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `sp_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(sp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(sp), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            real(sp), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine sp_sp_sort_adj
+
+        module subroutine dp_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `dp_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(dp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(dp), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            real(dp), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine dp_sp_sort_adj
+
+        module subroutine string_type_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `string_type_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(string_type)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(string_type), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            type(string_type), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine string_type_sp_sort_adj
+
+        module subroutine char_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `char_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `character(len=*)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            character(len=*), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            character(len=len(array)), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine char_sp_sort_adj
+
+        module subroutine bitset_64_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_64_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_64), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            type(bitset_64), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_64_sp_sort_adj
+
+        module subroutine bitset_large_sp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_large_sp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_large)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_large), intent(inout)                     :: array(0:)
+            real(sp), intent(inout)                     :: index(0:)
+            type(bitset_large), intent(out), optional             :: work(0:)
+            real(sp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_large_sp_sort_adj
+
+        module subroutine int8_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int8_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int8)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int8), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            integer(int8), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int8_dp_sort_adj
+
+        module subroutine int16_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int16_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int16)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int16), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            integer(int16), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int16_dp_sort_adj
+
+        module subroutine int32_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int32_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int32)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int32), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            integer(int32), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int32_dp_sort_adj
+
+        module subroutine int64_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `int64_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `integer(int64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            integer(int64), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            integer(int64), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine int64_dp_sort_adj
+
+        module subroutine sp_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `sp_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(sp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(sp), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            real(sp), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine sp_dp_sort_adj
+
+        module subroutine dp_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `dp_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `real(dp)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            real(dp), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            real(dp), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine dp_dp_sort_adj
+
+        module subroutine string_type_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `string_type_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(string_type)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(string_type), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            type(string_type), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine string_type_dp_sort_adj
+
+        module subroutine char_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `char_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `character(len=*)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            character(len=*), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            character(len=len(array)), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine char_dp_sort_adj
+
+        module subroutine bitset_64_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_64_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_64)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_64), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            type(bitset_64), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_64_dp_sort_adj
+
+        module subroutine bitset_large_dp_sort_adj( array, index, work, iwork, &
+            reverse )
+!! Version: experimental
+!!
+!! `bitset_large_dp_sort_adj( array, index[, work, iwork, reverse] )` sorts
+!! an input `ARRAY` of type `type(bitset_large)`
+!! using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!! and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!! order that would sort the input `ARRAY` in the desired direction.
+            type(bitset_large), intent(inout)                     :: array(0:)
+            real(dp), intent(inout)                     :: index(0:)
+            type(bitset_large), intent(out), optional             :: work(0:)
+            real(dp), intent(out), optional             :: iwork(0:)
+            logical, intent(in), optional             :: reverse
+        end subroutine bitset_large_dp_sort_adj
+
+
+    end interface sort_adj
+
     interface sort_index
 !! Version: experimental
 !!
@@ -701,7 +1681,172 @@ module stdlib_sorting
 !! non-decreasing sort, but if the optional argument `REVERSE` is present
 !! with a value of `.TRUE.` the indices correspond to a non-increasing sort.
 
-        module subroutine int8_sort_index_default( array, index, work, iwork, &
+!> Version: experimental
+!>
+!> `int8_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int8)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int8_sort_index_default
+!> Version: experimental
+!>
+!> `int16_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int16)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int16_sort_index_default
+!> Version: experimental
+!>
+!> `int32_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int32)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int32_sort_index_default
+!> Version: experimental
+!>
+!> `int64_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int64)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int64_sort_index_default
+!> Version: experimental
+!>
+!> `sp_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `real(sp)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure sp_sort_index_default
+!> Version: experimental
+!>
+!> `dp_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `real(dp)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure dp_sort_index_default
+!> Version: experimental
+!>
+!> `string_type_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `type(string_type)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure string_type_sort_index_default
+!> Version: experimental
+!>
+!> `char_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `character(len=*)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure char_sort_index_default
+!> Version: experimental
+!>
+!> `bitset_64_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `type(bitset_64)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure bitset_64_sort_index_default
+!> Version: experimental
+!>
+!> `bitset_large_sort_index_default( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `type(bitset_large)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure bitset_large_sort_index_default
+!> Version: experimental
+!>
+!> `int8_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int8)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int8_sort_index_low
+!> Version: experimental
+!>
+!> `int16_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int16)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int16_sort_index_low
+!> Version: experimental
+!>
+!> `int32_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int32)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int32_sort_index_low
+!> Version: experimental
+!>
+!> `int64_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `integer(int64)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure int64_sort_index_low
+!> Version: experimental
+!>
+!> `sp_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `real(sp)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure sp_sort_index_low
+!> Version: experimental
+!>
+!> `dp_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `real(dp)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure dp_sort_index_low
+!> Version: experimental
+!>
+!> `string_type_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `type(string_type)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure string_type_sort_index_low
+!> Version: experimental
+!>
+!> `char_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `character(len=*)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure char_sort_index_low
+!> Version: experimental
+!>
+!> `bitset_64_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `type(bitset_64)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure bitset_64_sort_index_low
+!> Version: experimental
+!>
+!> `bitset_large_sort_index_low( array, index[, work, iwork, reverse] )` sorts
+!> an input `ARRAY` of type `type(bitset_large)`
+!> using a hybrid sort based on the `"Rust" sort` algorithm found in `slice.rs`
+!> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
+!> order that would sort the input `ARRAY` in the desired direction.
+        module procedure bitset_large_sort_index_low
+
+    end interface sort_index
+
+contains
+
+        subroutine int8_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -715,9 +1860,31 @@ module stdlib_sorting
             integer(int8), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int8_sort_index_default
 
-        module subroutine int16_sort_index_default( array, index, work, iwork, &
+        subroutine int16_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -731,9 +1898,31 @@ module stdlib_sorting
             integer(int16), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int16_sort_index_default
 
-        module subroutine int32_sort_index_default( array, index, work, iwork, &
+        subroutine int32_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -747,9 +1936,31 @@ module stdlib_sorting
             integer(int32), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int32_sort_index_default
 
-        module subroutine int64_sort_index_default( array, index, work, iwork, &
+        subroutine int64_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -763,9 +1974,31 @@ module stdlib_sorting
             integer(int64), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int64_sort_index_default
 
-        module subroutine sp_sort_index_default( array, index, work, iwork, &
+        subroutine sp_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -779,9 +2012,31 @@ module stdlib_sorting
             real(sp), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine sp_sort_index_default
 
-        module subroutine dp_sort_index_default( array, index, work, iwork, &
+        subroutine dp_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -795,9 +2050,31 @@ module stdlib_sorting
             real(dp), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine dp_sort_index_default
 
-        module subroutine string_type_sort_index_default( array, index, work, iwork, &
+        subroutine string_type_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -811,9 +2088,31 @@ module stdlib_sorting
             type(string_type), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine string_type_sort_index_default
 
-        module subroutine char_sort_index_default( array, index, work, iwork, &
+        subroutine char_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -827,9 +2126,31 @@ module stdlib_sorting
             character(len=len(array)), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine char_sort_index_default
 
-        module subroutine bitset_64_sort_index_default( array, index, work, iwork, &
+        subroutine bitset_64_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -843,9 +2164,31 @@ module stdlib_sorting
             type(bitset_64), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine bitset_64_sort_index_default
 
-        module subroutine bitset_large_sort_index_default( array, index, work, iwork, &
+        subroutine bitset_large_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -859,9 +2202,31 @@ module stdlib_sorting
             type(bitset_large), intent(out), optional             :: work(0:)
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine bitset_large_sort_index_default
 
-        module subroutine int8_sort_index_low( array, index, work, iwork, &
+        subroutine int8_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -875,9 +2240,31 @@ module stdlib_sorting
             integer(int8), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int8_sort_index_low
 
-        module subroutine int16_sort_index_low( array, index, work, iwork, &
+        subroutine int16_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -891,9 +2278,31 @@ module stdlib_sorting
             integer(int16), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int16_sort_index_low
 
-        module subroutine int32_sort_index_low( array, index, work, iwork, &
+        subroutine int32_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -907,9 +2316,31 @@ module stdlib_sorting
             integer(int32), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int32_sort_index_low
 
-        module subroutine int64_sort_index_low( array, index, work, iwork, &
+        subroutine int64_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -923,9 +2354,31 @@ module stdlib_sorting
             integer(int64), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine int64_sort_index_low
 
-        module subroutine sp_sort_index_low( array, index, work, iwork, &
+        subroutine sp_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -939,9 +2392,31 @@ module stdlib_sorting
             real(sp), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine sp_sort_index_low
 
-        module subroutine dp_sort_index_low( array, index, work, iwork, &
+        subroutine dp_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -955,9 +2430,31 @@ module stdlib_sorting
             real(dp), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine dp_sort_index_low
 
-        module subroutine string_type_sort_index_low( array, index, work, iwork, &
+        subroutine string_type_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -971,9 +2468,31 @@ module stdlib_sorting
             type(string_type), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine string_type_sort_index_low
 
-        module subroutine char_sort_index_low( array, index, work, iwork, &
+        subroutine char_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -987,9 +2506,31 @@ module stdlib_sorting
             character(len=len(array)), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine char_sort_index_low
 
-        module subroutine bitset_64_sort_index_low( array, index, work, iwork, &
+        subroutine bitset_64_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -1003,9 +2544,31 @@ module stdlib_sorting
             type(bitset_64), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine bitset_64_sort_index_low
 
-        module subroutine bitset_large_sort_index_low( array, index, work, iwork, &
+        subroutine bitset_large_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
 !!
@@ -1019,10 +2582,30 @@ module stdlib_sorting
             type(bitset_large), intent(out), optional             :: work(0:)
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
+
+
+        integer(int_index) :: array_size, i
+
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
+
+        call sort_adj(array, index, work, iwork, reverse)
+
+
+
         end subroutine bitset_large_sort_index_low
 
-
-    end interface sort_index
 
 
 end module stdlib_sorting
