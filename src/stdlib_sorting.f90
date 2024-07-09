@@ -1928,23 +1928,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int8_sort_index_default
 
@@ -1963,23 +1963,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int16_sort_index_default
 
@@ -1998,23 +1998,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int32_sort_index_default
 
@@ -2033,23 +2033,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int64_sort_index_default
 
@@ -2068,23 +2068,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine sp_sort_index_default
 
@@ -2103,23 +2103,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine dp_sort_index_default
 
@@ -2138,23 +2138,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine string_type_sort_index_default
 
@@ -2173,23 +2173,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine char_sort_index_default
 
@@ -2208,23 +2208,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine bitset_64_sort_index_default
 
@@ -2243,23 +2243,23 @@ contains
             integer(int_index), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine bitset_large_sort_index_default
 
@@ -2278,23 +2278,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int8_sort_index_low
 
@@ -2313,23 +2313,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int16_sort_index_low
 
@@ -2348,23 +2348,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int32_sort_index_low
 
@@ -2383,23 +2383,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine int64_sort_index_low
 
@@ -2418,23 +2418,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine sp_sort_index_low
 
@@ -2453,23 +2453,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine dp_sort_index_low
 
@@ -2488,23 +2488,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine string_type_sort_index_low
 
@@ -2523,23 +2523,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine char_sort_index_low
 
@@ -2558,23 +2558,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine bitset_64_sort_index_low
 
@@ -2593,23 +2593,23 @@ contains
             integer(int_index_low), intent(out), optional            :: iwork(0:)
             logical, intent(in), optional             :: reverse
 
-            integer(int_index) :: array_size, i
+        integer(int_index) :: array_size, i
 
-            array_size = size(array, kind=int_index)
+        array_size = size(array, kind=int_index)
 
-            if ( array_size > huge(index)) then
-                error stop "Too many entries for the kind of index."
-            end if
+        if ( array_size > huge(index)) then
+            error stop "Too many entries for the kind of index."
+        end if
 
-            if ( array_size > size(index, kind=int_index) ) then
-                error stop "Too many entries for the size of index."
-            end if
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
+        end if
 
-            do i = 0, array_size-1
-                index(i) = int(i+1, kind=int_index_low)
-            end do
+        do i = 0, array_size-1
+            index(i) = int(i+1, kind=int_index_low)
+        end do
 
-            call sort_adj(array, index, work, iwork, reverse)
+        call sort_adj(array, index, work, iwork, reverse)
 
         end subroutine bitset_large_sort_index_low
 
