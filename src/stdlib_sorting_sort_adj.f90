@@ -30,7 +30,7 @@
 !!   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 !!   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 !!
-!! The generic subroutine, `SORT_INDEX`, is substantially a translation to
+!! The generic subroutine, `SORT_ADJ`, is substantially a translation to
 !! Fortran 2008 of the `"Rust" sort` sorting routines in
 !! [`slice.rs`](https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs)
 !! The `rust sort` implementation is distributed with the header:
@@ -81,7 +81,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int8), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         integer(int8), intent(out), optional :: work(0:)
@@ -90,7 +89,8 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -122,6 +122,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -498,7 +499,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int16), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         integer(int16), intent(out), optional :: work(0:)
@@ -507,7 +507,8 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -539,6 +540,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -915,7 +917,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int32), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         integer(int32), intent(out), optional :: work(0:)
@@ -924,7 +925,8 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -956,6 +958,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -1332,7 +1335,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int64), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         integer(int64), intent(out), optional :: work(0:)
@@ -1341,7 +1343,8 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -1373,6 +1376,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -1749,7 +1753,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(sp), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         real(sp), intent(out), optional :: work(0:)
@@ -1758,7 +1761,8 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -1790,6 +1794,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -2166,7 +2171,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(dp), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         real(dp), intent(out), optional :: work(0:)
@@ -2175,7 +2179,8 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -2207,6 +2212,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -2583,7 +2589,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(string_type), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         type(string_type), intent(out), optional :: work(0:)
@@ -2592,7 +2597,8 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -2624,6 +2630,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -3000,7 +3007,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         character(len=*), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         character(len=len(array)), intent(out), optional :: work(0:)
@@ -3009,7 +3015,8 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -3041,6 +3048,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
@@ -3418,7 +3426,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_64), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         type(bitset_64), intent(out), optional :: work(0:)
@@ -3427,7 +3434,8 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -3459,6 +3467,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -3835,7 +3844,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_large), intent(inout)         :: array(0:)
         integer(int8), intent(inout)         :: index(0:)
         type(bitset_large), intent(out), optional :: work(0:)
@@ -3844,7 +3852,8 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -3876,6 +3885,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -4252,7 +4262,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int8), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         integer(int8), intent(out), optional :: work(0:)
@@ -4261,7 +4270,8 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -4293,6 +4303,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -4669,7 +4680,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int16), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         integer(int16), intent(out), optional :: work(0:)
@@ -4678,7 +4688,8 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -4710,6 +4721,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -5086,7 +5098,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int32), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         integer(int32), intent(out), optional :: work(0:)
@@ -5095,7 +5106,8 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -5127,6 +5139,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -5503,7 +5516,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int64), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         integer(int64), intent(out), optional :: work(0:)
@@ -5512,7 +5524,8 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -5544,6 +5557,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -5920,7 +5934,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(sp), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         real(sp), intent(out), optional :: work(0:)
@@ -5929,7 +5942,8 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -5961,6 +5975,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -6337,7 +6352,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(dp), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         real(dp), intent(out), optional :: work(0:)
@@ -6346,7 +6360,8 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -6378,6 +6393,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -6754,7 +6770,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(string_type), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         type(string_type), intent(out), optional :: work(0:)
@@ -6763,7 +6778,8 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -6795,6 +6811,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -7171,7 +7188,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         character(len=*), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         character(len=len(array)), intent(out), optional :: work(0:)
@@ -7180,7 +7196,8 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -7212,6 +7229,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
@@ -7589,7 +7607,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_64), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         type(bitset_64), intent(out), optional :: work(0:)
@@ -7598,7 +7615,8 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -7630,6 +7648,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -8006,7 +8025,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_large), intent(inout)         :: array(0:)
         integer(int16), intent(inout)         :: index(0:)
         type(bitset_large), intent(out), optional :: work(0:)
@@ -8015,7 +8033,8 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -8047,6 +8066,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -8423,7 +8443,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int8), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         integer(int8), intent(out), optional :: work(0:)
@@ -8432,7 +8451,8 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -8464,6 +8484,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -8840,7 +8861,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int16), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         integer(int16), intent(out), optional :: work(0:)
@@ -8849,7 +8869,8 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -8881,6 +8902,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -9257,7 +9279,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int32), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         integer(int32), intent(out), optional :: work(0:)
@@ -9266,7 +9287,8 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -9298,6 +9320,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -9674,7 +9697,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int64), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         integer(int64), intent(out), optional :: work(0:)
@@ -9683,7 +9705,8 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -9715,6 +9738,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -10091,7 +10115,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(sp), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         real(sp), intent(out), optional :: work(0:)
@@ -10100,7 +10123,8 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -10132,6 +10156,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -10508,7 +10533,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(dp), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         real(dp), intent(out), optional :: work(0:)
@@ -10517,7 +10541,8 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -10549,6 +10574,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -10925,7 +10951,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(string_type), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         type(string_type), intent(out), optional :: work(0:)
@@ -10934,7 +10959,8 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -10966,6 +10992,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -11342,7 +11369,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         character(len=*), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         character(len=len(array)), intent(out), optional :: work(0:)
@@ -11351,7 +11377,8 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -11383,6 +11410,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
@@ -11760,7 +11788,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_64), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         type(bitset_64), intent(out), optional :: work(0:)
@@ -11769,7 +11796,8 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -11801,6 +11829,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -12177,7 +12206,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_large), intent(inout)         :: array(0:)
         integer(int32), intent(inout)         :: index(0:)
         type(bitset_large), intent(out), optional :: work(0:)
@@ -12186,7 +12214,8 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -12218,6 +12247,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -12594,7 +12624,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int8), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         integer(int8), intent(out), optional :: work(0:)
@@ -12603,7 +12632,8 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -12635,6 +12665,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -13011,7 +13042,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int16), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         integer(int16), intent(out), optional :: work(0:)
@@ -13020,7 +13050,8 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -13052,6 +13083,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -13428,7 +13460,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int32), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         integer(int32), intent(out), optional :: work(0:)
@@ -13437,7 +13468,8 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -13469,6 +13501,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -13845,7 +13878,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int64), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         integer(int64), intent(out), optional :: work(0:)
@@ -13854,7 +13886,8 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -13886,6 +13919,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -14262,7 +14296,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(sp), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         real(sp), intent(out), optional :: work(0:)
@@ -14271,7 +14304,8 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -14303,6 +14337,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -14679,7 +14714,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(dp), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         real(dp), intent(out), optional :: work(0:)
@@ -14688,7 +14722,8 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -14720,6 +14755,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -15096,7 +15132,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(string_type), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         type(string_type), intent(out), optional :: work(0:)
@@ -15105,7 +15140,8 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -15137,6 +15173,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -15513,7 +15550,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         character(len=*), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         character(len=len(array)), intent(out), optional :: work(0:)
@@ -15522,7 +15558,8 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -15554,6 +15591,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
@@ -15931,7 +15969,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_64), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         type(bitset_64), intent(out), optional :: work(0:)
@@ -15940,7 +15977,8 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -15972,6 +16010,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -16348,7 +16387,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_large), intent(inout)         :: array(0:)
         integer(int64), intent(inout)         :: index(0:)
         type(bitset_large), intent(out), optional :: work(0:)
@@ -16357,7 +16395,8 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -16389,6 +16428,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -16765,7 +16805,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int8), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         integer(int8), intent(out), optional :: work(0:)
@@ -16774,7 +16813,8 @@ contains
 
         integer(int8), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -16806,6 +16846,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -17182,7 +17223,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int16), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         integer(int16), intent(out), optional :: work(0:)
@@ -17191,7 +17231,8 @@ contains
 
         integer(int16), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -17223,6 +17264,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -17599,7 +17641,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int32), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         integer(int32), intent(out), optional :: work(0:)
@@ -17608,7 +17649,8 @@ contains
 
         integer(int32), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -17640,6 +17682,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -18016,7 +18059,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int64), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         integer(int64), intent(out), optional :: work(0:)
@@ -18025,7 +18067,8 @@ contains
 
         integer(int64), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -18057,6 +18100,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -18433,7 +18477,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(sp), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         real(sp), intent(out), optional :: work(0:)
@@ -18442,7 +18485,8 @@ contains
 
         real(sp), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -18474,6 +18518,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -18850,7 +18895,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(dp), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         real(dp), intent(out), optional :: work(0:)
@@ -18859,7 +18903,8 @@ contains
 
         real(dp), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -18891,6 +18936,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -19267,7 +19313,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(string_type), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         type(string_type), intent(out), optional :: work(0:)
@@ -19276,7 +19321,8 @@ contains
 
         type(string_type), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -19308,6 +19354,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -19684,7 +19731,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         character(len=*), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         character(len=len(array)), intent(out), optional :: work(0:)
@@ -19693,7 +19739,8 @@ contains
 
         character(len=:), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -19725,6 +19772,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
@@ -20102,7 +20150,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_64), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         type(bitset_64), intent(out), optional :: work(0:)
@@ -20111,7 +20158,8 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -20143,6 +20191,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -20519,7 +20568,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_large), intent(inout)         :: array(0:)
         real(sp), intent(inout)         :: index(0:)
         type(bitset_large), intent(out), optional :: work(0:)
@@ -20528,7 +20576,8 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -20560,6 +20609,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -20936,7 +20986,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int8), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         integer(int8), intent(out), optional :: work(0:)
@@ -20945,7 +20994,8 @@ contains
 
         integer(int8), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -20977,6 +21027,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -21353,7 +21404,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int16), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         integer(int16), intent(out), optional :: work(0:)
@@ -21362,7 +21412,8 @@ contains
 
         integer(int16), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -21394,6 +21445,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -21770,7 +21822,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int32), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         integer(int32), intent(out), optional :: work(0:)
@@ -21779,7 +21830,8 @@ contains
 
         integer(int32), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -21811,6 +21863,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -22187,7 +22240,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         integer(int64), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         integer(int64), intent(out), optional :: work(0:)
@@ -22196,7 +22248,8 @@ contains
 
         integer(int64), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -22228,6 +22281,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -22604,7 +22658,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(sp), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         real(sp), intent(out), optional :: work(0:)
@@ -22613,7 +22666,8 @@ contains
 
         real(sp), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -22645,6 +22699,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -23021,7 +23076,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         real(dp), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         real(dp), intent(out), optional :: work(0:)
@@ -23030,7 +23084,8 @@ contains
 
         real(dp), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -23062,6 +23117,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -23438,7 +23494,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(string_type), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         type(string_type), intent(out), optional :: work(0:)
@@ -23447,7 +23502,8 @@ contains
 
         type(string_type), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -23479,6 +23535,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -23855,7 +23912,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         character(len=*), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         character(len=len(array)), intent(out), optional :: work(0:)
@@ -23864,7 +23920,8 @@ contains
 
         character(len=:), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -23896,6 +23953,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
@@ -24273,7 +24331,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_64), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         type(bitset_64), intent(out), optional :: work(0:)
@@ -24282,7 +24339,8 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -24314,6 +24372,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -24690,7 +24749,6 @@ contains
 ! estimation of the optimal `run size` as suggested in Tim Peters'
 ! original `listsort.txt`, and the optional `work` and `iwork` arrays to be
 ! used as scratch memory.
-
         type(bitset_large), intent(inout)         :: array(0:)
         real(dp), intent(inout)         :: index(0:)
         type(bitset_large), intent(out), optional :: work(0:)
@@ -24699,7 +24757,8 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i, stat
+        integer(int_index) :: array_size, i
+        integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
 
@@ -24731,6 +24790,7 @@ contains
                 call merge_sort( array, index, work, ibuf )
             end if
         else
+! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
             if ( stat /= 0 ) error stop "Allocation of array buffer failed."
             if ( present(iwork) ) then
@@ -25083,3 +25143,4 @@ contains
 
 
 end submodule stdlib_sorting_sort_adj
+
