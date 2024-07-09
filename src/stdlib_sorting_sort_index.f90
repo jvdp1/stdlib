@@ -92,18 +92,18 @@ contains
         integer(int8), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -514,18 +514,18 @@ contains
         integer(int16), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -936,18 +936,18 @@ contains
         integer(int32), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -1358,18 +1358,18 @@ contains
         integer(int64), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -1780,18 +1780,18 @@ contains
         real(sp), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -2202,18 +2202,18 @@ contains
         real(dp), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -2624,18 +2624,18 @@ contains
         type(string_type), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -3046,18 +3046,18 @@ contains
         character(len=:), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -3469,18 +3469,18 @@ contains
         type(bitset_64), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -3891,18 +3891,18 @@ contains
         type(bitset_large), allocatable :: buf(:)
         integer(int_index), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -4313,18 +4313,18 @@ contains
         integer(int8), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -4735,18 +4735,18 @@ contains
         integer(int16), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -5157,18 +5157,18 @@ contains
         integer(int32), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -5579,18 +5579,18 @@ contains
         integer(int64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -6001,18 +6001,18 @@ contains
         real(sp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -6423,18 +6423,18 @@ contains
         real(dp), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -6845,18 +6845,18 @@ contains
         type(string_type), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -7267,18 +7267,18 @@ contains
         character(len=:), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -7690,18 +7690,18 @@ contains
         type(bitset_64), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
@@ -8112,18 +8112,18 @@ contains
         type(bitset_large), allocatable :: buf(:)
         integer(int_index_low), allocatable :: ibuf(:)
 
-        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+        array_size = size(array, kind=int_index)
+
+        if ( array_size > huge(index)) then
             error stop "Too many entries for the kind of index."
         end if
 
-        array_size = size(array, kind=int_index)
-
-        if ( size(index, kind=int_index) < array_size ) then
-            error stop "index array is too small."
+        if ( array_size > size(index, kind=int_index) ) then
+            error stop "Too many entries for the size of index."
         end if
 
         do i = 0, array_size-1
-            index(i) = i+1
+            index(i) = int(i+1, kind=int_index_low)
         end do
 
         if ( optval(reverse, .false.) ) then
