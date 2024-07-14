@@ -78,7 +78,7 @@ jobs:
       if: failure()
 
     - name: CTest
-      run: PATH=$PATH:/mingw64/bin/ ctest --test-dir build --output-on-failure --parallel -V -LE quadruple_precision
+      run: PATH=$PATH:/mingw64/bin/ ctest --test-dir build --output-on-failure -V -LE quadruple_precision
 
     - uses: actions/upload-artifact@v1
       if: failure()
