@@ -327,15 +327,18 @@ contains
 !
         class(chaining_hashmap_type), intent(inout) :: map
         type(key_type), intent(in)                  :: key
-        type(other_type), intent(out)               :: other
+        class(*), allocatable, intent(out)          :: other
         logical, intent(out), optional              :: exists
 
         integer(int_index) :: inmap
         character(*), parameter :: procedure = 'GET_OTHER_DATA'
 
+print*,'aaa0'
         call in_chain_map(map, inmap, key)
+print*,'aaa1', inmap
         if ( inmap <= 0 .or. &
              inmap > size(map % inverse, kind=int_index ) ) then
+ print*,'bbbb0'
             if ( present(exists) ) then
                 exists = .false.
                 return
@@ -344,9 +347,12 @@ contains
                     invalid_inmap
             end if
         else if ( associated( map % inverse(inmap) % target ) ) then
+ print*,'bbbb1'
             if (present(exists) ) exists = .true.
-            call copy_other( map % inverse(inmap) % target % other, other )
+            !other = map % inverse(inmap) % target % other
+            allocate(other, source=map % inverse(inmap) % target % other)
         else
+ print*,'bbbb2'
             if ( present(exists) ) then
                 exists = .false.
                 return
@@ -535,7 +541,7 @@ contains
 !
         class(chaining_hashmap_type), intent(inout) :: map
         type(key_type), intent(in)                  :: key
-        type(other_type), intent(in), optional      :: other
+        class(*), intent(in), optional              :: other
         logical, intent(out), optional              :: conflict
 
         integer(int_hash)                      :: hash_index
@@ -568,8 +574,7 @@ contains
                 new_ent % next => map % slots(hash_index) % target
                 map % slots(hash_index) % target => new_ent
                 call copy_key( key, new_ent % key )
-                if ( present(other) ) call copy_other( other, new_ent % other )
-
+                if ( present(other) ) new_ent % other = other
                 if ( new_ent % inmap == 0 ) then
                     map % num_entries = map % num_entries + 1
                     inmap = map % num_entries
@@ -793,7 +798,7 @@ contains
 !
         class(chaining_hashmap_type), intent(inout) :: map
         type(key_type), intent(in)                  :: key
-        type(other_type), intent(in)                :: other
+        class(*), intent(in)                        :: other
         logical, intent(out), optional              :: exists
 
         integer(int_index) :: inmap
@@ -811,9 +816,9 @@ contains
             end if
         else if ( associated( map % inverse(inmap) % target ) ) then
             associate( target => map % inverse(inmap) % target )
-              call copy_other( other, target % other )
-              if ( present(exists) ) exists = .true.
-              return
+                target % other = other
+                if ( present(exists) ) exists = .true.
+                return
             end associate
         else
             error stop submodule_name // ' % ' // procedure // ': ' // &
