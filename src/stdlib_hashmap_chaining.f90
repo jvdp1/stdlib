@@ -349,7 +349,8 @@ print*,'aaa1', inmap
         else if ( associated( map % inverse(inmap) % target ) ) then
  print*,'bbbb1'
             if (present(exists) ) exists = .true.
-            other = map % inverse(inmap) % target % other
+            !other = map % inverse(inmap) % target % other
+            allocate(other, source=map % inverse(inmap) % target % other)
         else
  print*,'bbbb2'
             if ( present(exists) ) then
