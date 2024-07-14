@@ -333,12 +333,9 @@ contains
         integer(int_index) :: inmap
         character(*), parameter :: procedure = 'GET_OTHER_DATA'
 
-print*,'aaa0'
         call in_chain_map(map, inmap, key)
-print*,'aaa1', inmap
         if ( inmap <= 0 .or. &
              inmap > size(map % inverse, kind=int_index ) ) then
- print*,'bbbb0'
             if ( present(exists) ) then
                 exists = .false.
                 return
@@ -347,12 +344,10 @@ print*,'aaa1', inmap
                     invalid_inmap
             end if
         else if ( associated( map % inverse(inmap) % target ) ) then
- print*,'bbbb1'
             if (present(exists) ) exists = .true.
             !other = map % inverse(inmap) % target % other
             allocate(other, source=map % inverse(inmap) % target % other)
         else
- print*,'bbbb2'
             if ( present(exists) ) then
                 exists = .false.
                 return
