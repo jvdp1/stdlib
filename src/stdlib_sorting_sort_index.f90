@@ -31,7 +31,7 @@
 !!   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 !!   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 !!
-!! The generic subroutine, `ORD_SORT`, is substantially a translation to
+!! The generic subroutine, `SORT_INDEX`, is substantially a translation to
 !! Fortran 2008 of the `"Rust" sort` sorting routines in
 !! [`slice.rs`](https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs)
 !! The `rust sort` implementation is distributed with the header:
@@ -50,173 +50,98 @@
 !! of modified versions of the code in the Fortran Standard Library under
 !! the MIT license.
 
-submodule(stdlib_sorting) stdlib_sorting_ord_sort
+submodule(stdlib_sorting) stdlib_sorting_sort_index
 
     implicit none
 
 contains
 
-    module subroutine int8_ord_sort( array, work, reverse )
-        integer(int8), intent(inout)         :: array(0:)
-        integer(int8), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
 
-        if (optval(reverse, .false.)) then
-            call int8_decrease_ord_sort(array, work)
-        else
-            call int8_increase_ord_sort(array, work)
-        endif
-
-    end subroutine int8_ord_sort
-    module subroutine int16_ord_sort( array, work, reverse )
-        integer(int16), intent(inout)         :: array(0:)
-        integer(int16), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call int16_decrease_ord_sort(array, work)
-        else
-            call int16_increase_ord_sort(array, work)
-        endif
-
-    end subroutine int16_ord_sort
-    module subroutine int32_ord_sort( array, work, reverse )
-        integer(int32), intent(inout)         :: array(0:)
-        integer(int32), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call int32_decrease_ord_sort(array, work)
-        else
-            call int32_increase_ord_sort(array, work)
-        endif
-
-    end subroutine int32_ord_sort
-    module subroutine int64_ord_sort( array, work, reverse )
-        integer(int64), intent(inout)         :: array(0:)
-        integer(int64), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call int64_decrease_ord_sort(array, work)
-        else
-            call int64_increase_ord_sort(array, work)
-        endif
-
-    end subroutine int64_ord_sort
-    module subroutine sp_ord_sort( array, work, reverse )
-        real(sp), intent(inout)         :: array(0:)
-        real(sp), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call sp_decrease_ord_sort(array, work)
-        else
-            call sp_increase_ord_sort(array, work)
-        endif
-
-    end subroutine sp_ord_sort
-    module subroutine dp_ord_sort( array, work, reverse )
-        real(dp), intent(inout)         :: array(0:)
-        real(dp), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call dp_decrease_ord_sort(array, work)
-        else
-            call dp_increase_ord_sort(array, work)
-        endif
-
-    end subroutine dp_ord_sort
-    module subroutine string_type_ord_sort( array, work, reverse )
-        type(string_type), intent(inout)         :: array(0:)
-        type(string_type), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call string_type_decrease_ord_sort(array, work)
-        else
-            call string_type_increase_ord_sort(array, work)
-        endif
-
-    end subroutine string_type_ord_sort
-    module subroutine char_ord_sort( array, work, reverse )
-        character(len=*), intent(inout)         :: array(0:)
-        character(len=len(array)), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call char_decrease_ord_sort(array, work)
-        else
-            call char_increase_ord_sort(array, work)
-        endif
-
-    end subroutine char_ord_sort
-    module subroutine bitset_64_ord_sort( array, work, reverse )
-        type(bitset_64), intent(inout)         :: array(0:)
-        type(bitset_64), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call bitset_64_decrease_ord_sort(array, work)
-        else
-            call bitset_64_increase_ord_sort(array, work)
-        endif
-
-    end subroutine bitset_64_ord_sort
-    module subroutine bitset_large_ord_sort( array, work, reverse )
-        type(bitset_large), intent(inout)         :: array(0:)
-        type(bitset_large), intent(out), optional :: work(0:)
-        logical, intent(in), optional :: reverse
-
-        if (optval(reverse, .false.)) then
-            call bitset_large_decrease_ord_sort(array, work)
-        else
-            call bitset_large_increase_ord_sort(array, work)
-        endif
-
-    end subroutine bitset_large_ord_sort
-
-
-    subroutine int8_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int8_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `int8_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int8), intent(inout)         :: array(0:)
-        integer(int8), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int8), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        integer(int8), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         integer(int8), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int8_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int8_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -242,22 +167,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int8), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             integer(int8) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -269,6 +199,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -314,29 +245,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int8), intent(inout) :: array(0:)
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             integer(int8) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -354,10 +291,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int8), intent(inout) :: array(0:)
-            integer(int8), intent(inout) :: buf(0:)
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int8), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -365,15 +305,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -393,7 +333,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -406,7 +347,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -423,8 +364,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -439,14 +382,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int8), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int8), intent(inout) :: buf(0:)
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            integer(int8), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -459,36 +404,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -497,11 +450,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int8), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             integer(int8) :: temp
 
             lo = 0
@@ -510,54 +464,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int8_increase_ord_sort
+    end subroutine int8_sort_index_default
 
 
-    subroutine int16_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int16_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `int16_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int16), intent(inout)         :: array(0:)
-        integer(int16), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int16), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        integer(int16), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         integer(int16), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int16_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int16_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -583,22 +586,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int16), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             integer(int16) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -610,6 +618,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -655,29 +664,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int16), intent(inout) :: array(0:)
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             integer(int16) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -695,10 +710,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int16), intent(inout) :: array(0:)
-            integer(int16), intent(inout) :: buf(0:)
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int16), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -706,15 +724,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -734,7 +752,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -747,7 +766,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -764,8 +783,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -780,14 +801,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int16), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int16), intent(inout) :: buf(0:)
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            integer(int16), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -800,36 +823,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -838,11 +869,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int16), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             integer(int16) :: temp
 
             lo = 0
@@ -851,54 +883,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int16_increase_ord_sort
+    end subroutine int16_sort_index_default
 
 
-    subroutine int32_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int32_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `int32_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int32), intent(inout)         :: array(0:)
-        integer(int32), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int32), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        integer(int32), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         integer(int32), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int32_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int32_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -924,22 +1005,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int32), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             integer(int32) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -951,6 +1037,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -996,29 +1083,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int32), intent(inout) :: array(0:)
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             integer(int32) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -1036,10 +1129,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int32), intent(inout) :: array(0:)
-            integer(int32), intent(inout) :: buf(0:)
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int32), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -1047,15 +1143,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -1075,7 +1171,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -1088,7 +1185,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -1105,8 +1202,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -1121,14 +1220,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int32), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int32), intent(inout) :: buf(0:)
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            integer(int32), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -1141,36 +1242,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -1179,11 +1288,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int32), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             integer(int32) :: temp
 
             lo = 0
@@ -1192,54 +1302,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int32_increase_ord_sort
+    end subroutine int32_sort_index_default
 
 
-    subroutine int64_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int64_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `int64_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int64), intent(inout)         :: array(0:)
-        integer(int64), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int64), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        integer(int64), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         integer(int64), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int64_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int64_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -1265,22 +1424,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int64), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             integer(int64) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -1292,6 +1456,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -1337,29 +1502,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int64), intent(inout) :: array(0:)
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             integer(int64) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -1377,10 +1548,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int64), intent(inout) :: array(0:)
-            integer(int64), intent(inout) :: buf(0:)
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int64), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -1388,15 +1562,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -1416,7 +1590,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -1429,7 +1604,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -1446,8 +1621,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -1462,14 +1639,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int64), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int64), intent(inout) :: buf(0:)
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            integer(int64), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -1482,36 +1661,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -1520,11 +1707,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int64), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             integer(int64) :: temp
 
             lo = 0
@@ -1533,54 +1721,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int64_increase_ord_sort
+    end subroutine int64_sort_index_default
 
 
-    subroutine sp_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine sp_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `sp_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        real(sp), intent(inout)         :: array(0:)
-        real(sp), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        real(sp), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        real(sp), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         real(sp), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "sp_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "sp_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -1606,22 +1843,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            real(sp), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             real(sp) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -1633,6 +1875,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -1678,29 +1921,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            real(sp), intent(inout) :: array(0:)
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             real(sp) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -1718,10 +1967,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            real(sp), intent(inout) :: array(0:)
-            real(sp), intent(inout) :: buf(0:)
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            real(sp), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -1729,15 +1981,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -1757,7 +2009,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -1770,7 +2023,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -1787,8 +2040,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -1803,14 +2058,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(sp), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            real(sp), intent(inout) :: buf(0:)
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            real(sp), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -1823,36 +2080,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -1861,11 +2126,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             real(sp), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             real(sp) :: temp
 
             lo = 0
@@ -1874,54 +2140,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine sp_increase_ord_sort
+    end subroutine sp_sort_index_default
 
 
-    subroutine dp_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine dp_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `dp_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        real(dp), intent(inout)         :: array(0:)
-        real(dp), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        real(dp), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        real(dp), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         real(dp), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "dp_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "dp_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -1947,22 +2262,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            real(dp), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             real(dp) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -1974,6 +2294,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -2019,29 +2340,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            real(dp), intent(inout) :: array(0:)
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             real(dp) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -2059,10 +2386,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            real(dp), intent(inout) :: array(0:)
-            real(dp), intent(inout) :: buf(0:)
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            real(dp), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -2070,15 +2400,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -2098,7 +2428,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -2111,7 +2442,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -2128,8 +2459,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -2144,14 +2477,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(dp), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            real(dp), intent(inout) :: buf(0:)
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            real(dp), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -2164,36 +2499,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -2202,11 +2545,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             real(dp), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             real(dp) :: temp
 
             lo = 0
@@ -2215,54 +2559,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine dp_increase_ord_sort
+    end subroutine dp_sort_index_default
 
 
-    subroutine string_type_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine string_type_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `string_type_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        type(string_type), intent(inout)         :: array(0:)
-        type(string_type), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        type(string_type), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        type(string_type), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         type(string_type), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "string_type_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "string_type_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -2288,22 +2681,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            type(string_type), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             type(string_type) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -2315,6 +2713,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -2360,29 +2759,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            type(string_type), intent(inout) :: array(0:)
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             type(string_type) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -2400,10 +2805,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            type(string_type), intent(inout) :: array(0:)
-            type(string_type), intent(inout) :: buf(0:)
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            type(string_type), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -2411,15 +2819,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -2439,7 +2847,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -2452,7 +2861,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -2469,8 +2878,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -2485,14 +2896,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(string_type), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            type(string_type), intent(inout) :: buf(0:)
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            type(string_type), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -2505,36 +2918,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -2543,11 +2964,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             type(string_type), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             type(string_type) :: temp
 
             lo = 0
@@ -2556,55 +2978,104 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine string_type_increase_ord_sort
+    end subroutine string_type_sort_index_default
 
 
-    subroutine char_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine char_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `char_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        character(len=*), intent(inout)         :: array(0:)
-        character(len=len(array)), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        character(len=*), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        character(len=len(array)), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         character(len=:), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "char_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
-            if ( stat /= 0 ) error stop "char_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -2630,22 +3101,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            character(len=*), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             character(len=len(array)) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -2657,6 +3133,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -2702,29 +3179,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            character(len=*), intent(inout) :: array(0:)
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             character(len=len(array)) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -2742,10 +3225,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            character(len=*), intent(inout) :: array(0:)
-            character(len=len(array)), intent(inout) :: buf(0:)
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            character(len=len(array)), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -2753,15 +3239,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -2781,7 +3267,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -2794,7 +3281,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -2811,8 +3298,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -2827,14 +3316,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            character(len=*), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            character(len=len(array)), intent(inout) :: buf(0:)
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            character(len=len(array)), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -2847,36 +3338,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -2885,11 +3384,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             character(len=*), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             character(len=len(array)) :: temp
 
             lo = 0
@@ -2898,54 +3398,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine char_increase_ord_sort
+    end subroutine char_sort_index_default
 
 
-    subroutine bitset_64_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine bitset_64_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `bitset_64_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        type(bitset_64), intent(inout)         :: array(0:)
-        type(bitset_64), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        type(bitset_64), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        type(bitset_64), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         type(bitset_64), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "bitset_64_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "bitset_64_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -2971,22 +3520,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            type(bitset_64), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             type(bitset_64) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -2998,6 +3552,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -3043,29 +3598,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            type(bitset_64), intent(inout) :: array(0:)
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             type(bitset_64) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -3083,10 +3644,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            type(bitset_64), intent(inout) :: array(0:)
-            type(bitset_64), intent(inout) :: buf(0:)
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            type(bitset_64), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -3094,15 +3658,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -3122,7 +3686,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -3135,7 +3700,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -3152,8 +3717,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -3168,14 +3735,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_64), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            type(bitset_64), intent(inout) :: buf(0:)
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            type(bitset_64), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -3188,36 +3757,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -3226,11 +3803,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             type(bitset_64), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             type(bitset_64) :: temp
 
             lo = 0
@@ -3239,54 +3817,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine bitset_64_increase_ord_sort
+    end subroutine bitset_64_sort_index_default
 
 
-    subroutine bitset_large_increase_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine bitset_large_sort_index_default( array, index, work, iwork, reverse )
+! A modification of `bitset_large_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        type(bitset_large), intent(inout)         :: array(0:)
-        type(bitset_large), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        type(bitset_large), intent(inout)                    :: array(0:)
+        integer(int_index), intent(out)           :: index(0:)
+        type(bitset_large), intent(out), optional            :: work(0:)
+        integer(int_index), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index) :: array_size, i, stat
         type(bitset_large), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index)
+
+        if ( size(index, kind=int_index) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "bitset_large_increase_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "bitset_large_increase_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -3312,22 +3939,27 @@ contains
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            type(bitset_large), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index) :: i, j, key_index
             type(bitset_large) :: key
 
             do j=1, size(array, kind=int_index)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
                     if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -3339,6 +3971,7 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
+
             integer(int_index) :: r
             type(run_type_default), intent(in), target :: runs(0:)
 
@@ -3384,29 +4017,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            type(bitset_large), intent(inout) :: array(0:)
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
             type(bitset_large) :: tmp
-            integer(int_index) :: i
+            integer(int_index) :: i, tmp_index
 
             tmp = array(0)
+            tmp_index = index(0)
             find_hole: do i=1, size(array, kind=int_index)-1
                 if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -3424,10 +4063,13 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            type(bitset_large), intent(inout) :: array(0:)
-            type(bitset_large), intent(inout) :: buf(0:)
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            type(bitset_large), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
@@ -3435,15 +4077,15 @@ contains
 
             array_size = size(array, kind=int_index)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -3463,7 +4105,8 @@ contains
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
                             if ( array(start) < array(start-1) ) exit Ascending
@@ -3476,7 +4119,7 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
@@ -3493,8 +4136,10 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
                     runs(r) = run_type_default( base = left % base, &
                                         len = left % len + right % len )
@@ -3509,14 +4154,16 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_large), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            type(bitset_large), intent(inout) :: buf(0:)
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index), intent(in)    :: mid
+            type(bitset_large), intent(inout)            :: buf(0:)
+            integer(int_index), intent(inout) :: index(0:)
+            integer(int_index), intent(inout) :: ibuf(0:)
 
             integer(int_index) :: array_len, i, j, k
 
@@ -3529,36 +4176,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
                     if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
                     if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -3567,11 +4222,12 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             type(bitset_large), intent(inout) :: array(0:)
+            integer(int_index), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index) :: itemp, lo, hi
             type(bitset_large) :: temp
 
             lo = 0
@@ -3580,54 +4236,103 @@ contains
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine bitset_large_increase_ord_sort
+    end subroutine bitset_large_sort_index_default
 
 
-    subroutine int8_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int8_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `int8_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int8), intent(inout)         :: array(0:)
-        integer(int8), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int8), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        integer(int8), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         integer(int8), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int8_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int8_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -3636,39 +4341,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int8), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             integer(int8) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -3680,13 +4390,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -3725,29 +4436,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int8), intent(inout) :: array(0:)
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int8) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -3765,26 +4482,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int8), intent(inout) :: array(0:)
-            integer(int8), intent(inout) :: buf(0:)
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int8), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -3798,16 +4518,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -3817,11 +4538,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -3834,10 +4555,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -3850,18 +4573,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int8), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int8), intent(inout) :: buf(0:)
+            integer(int8), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            integer(int8), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -3870,36 +4595,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -3908,67 +4641,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int8), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             integer(int8) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int8_decrease_ord_sort
+    end subroutine int8_sort_index_low
 
 
-    subroutine int16_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int16_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `int16_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int16), intent(inout)         :: array(0:)
-        integer(int16), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int16), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        integer(int16), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         integer(int16), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int16_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int16_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -3977,39 +4760,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int16), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             integer(int16) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -4021,13 +4809,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -4066,29 +4855,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int16), intent(inout) :: array(0:)
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int16) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -4106,26 +4901,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int16), intent(inout) :: array(0:)
-            integer(int16), intent(inout) :: buf(0:)
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int16), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -4139,16 +4937,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -4158,11 +4957,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4175,10 +4974,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4191,18 +4992,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int16), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int16), intent(inout) :: buf(0:)
+            integer(int16), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            integer(int16), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -4211,36 +5014,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -4249,67 +5060,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int16), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             integer(int16) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int16_decrease_ord_sort
+    end subroutine int16_sort_index_low
 
 
-    subroutine int32_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int32_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `int32_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int32), intent(inout)         :: array(0:)
-        integer(int32), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int32), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        integer(int32), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         integer(int32), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int32_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int32_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -4318,39 +5179,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int32), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             integer(int32) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -4362,13 +5228,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -4407,29 +5274,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int32), intent(inout) :: array(0:)
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int32) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -4447,26 +5320,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int32), intent(inout) :: array(0:)
-            integer(int32), intent(inout) :: buf(0:)
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int32), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -4480,16 +5356,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -4499,11 +5376,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4516,10 +5393,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4532,18 +5411,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int32), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int32), intent(inout) :: buf(0:)
+            integer(int32), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            integer(int32), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -4552,36 +5433,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -4590,67 +5479,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int32), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             integer(int32) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int32_decrease_ord_sort
+    end subroutine int32_sort_index_low
 
 
-    subroutine int64_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine int64_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `int64_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        integer(int64), intent(inout)         :: array(0:)
-        integer(int64), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        integer(int64), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        integer(int64), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         integer(int64), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "int64_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "int64_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -4659,39 +5598,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            integer(int64), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             integer(int64) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -4703,13 +5647,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -4748,29 +5693,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            integer(int64), intent(inout) :: array(0:)
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             integer(int64) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -4788,26 +5739,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            integer(int64), intent(inout) :: array(0:)
-            integer(int64), intent(inout) :: buf(0:)
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int64), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -4821,16 +5775,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -4840,11 +5795,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4857,10 +5812,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4873,18 +5830,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            integer(int64), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            integer(int64), intent(inout) :: buf(0:)
+            integer(int64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            integer(int64), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -4893,36 +5852,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -4931,67 +5898,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             integer(int64), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             integer(int64) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine int64_decrease_ord_sort
+    end subroutine int64_sort_index_low
 
 
-    subroutine sp_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine sp_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `sp_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        real(sp), intent(inout)         :: array(0:)
-        real(sp), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        real(sp), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        real(sp), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         real(sp), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "sp_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "sp_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -5000,39 +6017,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            real(sp), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             real(sp) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -5044,13 +6066,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -5089,29 +6112,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            real(sp), intent(inout) :: array(0:)
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             real(sp) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -5129,26 +6158,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            real(sp), intent(inout) :: array(0:)
-            real(sp), intent(inout) :: buf(0:)
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            real(sp), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -5162,16 +6194,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -5181,11 +6214,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5198,10 +6231,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5214,18 +6249,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(sp), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            real(sp), intent(inout) :: buf(0:)
+            real(sp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            real(sp), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -5234,36 +6271,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -5272,67 +6317,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             real(sp), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             real(sp) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine sp_decrease_ord_sort
+    end subroutine sp_sort_index_low
 
 
-    subroutine dp_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine dp_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `dp_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        real(dp), intent(inout)         :: array(0:)
-        real(dp), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        real(dp), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        real(dp), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         real(dp), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "dp_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "dp_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -5341,39 +6436,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            real(dp), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             real(dp) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -5385,13 +6485,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -5430,29 +6531,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            real(dp), intent(inout) :: array(0:)
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             real(dp) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -5470,26 +6577,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            real(dp), intent(inout) :: array(0:)
-            real(dp), intent(inout) :: buf(0:)
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            real(dp), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -5503,16 +6613,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -5522,11 +6633,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5539,10 +6650,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5555,18 +6668,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            real(dp), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            real(dp), intent(inout) :: buf(0:)
+            real(dp), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            real(dp), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -5575,36 +6690,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -5613,67 +6736,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             real(dp), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             real(dp) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine dp_decrease_ord_sort
+    end subroutine dp_sort_index_low
 
 
-    subroutine string_type_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine string_type_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `string_type_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        type(string_type), intent(inout)         :: array(0:)
-        type(string_type), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        type(string_type), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        type(string_type), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         type(string_type), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "string_type_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "string_type_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -5682,39 +6855,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            type(string_type), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             type(string_type) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -5726,13 +6904,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -5771,29 +6950,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            type(string_type), intent(inout) :: array(0:)
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             type(string_type) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -5811,26 +6996,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            type(string_type), intent(inout) :: array(0:)
-            type(string_type), intent(inout) :: buf(0:)
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            type(string_type), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -5844,16 +7032,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -5863,11 +7052,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5880,10 +7069,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5896,18 +7087,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(string_type), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            type(string_type), intent(inout) :: buf(0:)
+            type(string_type), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            type(string_type), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -5916,36 +7109,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -5954,68 +7155,118 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             type(string_type), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             type(string_type) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine string_type_decrease_ord_sort
+    end subroutine string_type_sort_index_low
 
 
-    subroutine char_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine char_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `char_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        character(len=*), intent(inout)         :: array(0:)
-        character(len=len(array)), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        character(len=*), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        character(len=len(array)), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         character(len=:), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "char_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( character(len=len(array)) :: buf(0:array_size/2-1), &
                       stat=stat )
-            if ( stat /= 0 ) error stop "char_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -6024,39 +7275,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            character(len=*), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             character(len=len(array)) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -6068,13 +7324,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -6113,29 +7370,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            character(len=*), intent(inout) :: array(0:)
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             character(len=len(array)) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -6153,26 +7416,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            character(len=*), intent(inout) :: array(0:)
-            character(len=len(array)), intent(inout) :: buf(0:)
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            character(len=len(array)), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -6186,16 +7452,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -6205,11 +7472,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6222,10 +7489,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6238,18 +7507,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            character(len=*), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            character(len=len(array)), intent(inout) :: buf(0:)
+            character(len=*), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            character(len=len(array)), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -6258,36 +7529,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -6296,67 +7575,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             character(len=*), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             character(len=len(array)) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine char_decrease_ord_sort
+    end subroutine char_sort_index_low
 
 
-    subroutine bitset_64_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine bitset_64_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `bitset_64_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        type(bitset_64), intent(inout)         :: array(0:)
-        type(bitset_64), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        type(bitset_64), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        type(bitset_64), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         type(bitset_64), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "bitset_64_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "bitset_64_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -6365,39 +7694,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            type(bitset_64), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             type(bitset_64) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -6409,13 +7743,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -6454,29 +7789,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            type(bitset_64), intent(inout) :: array(0:)
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             type(bitset_64) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -6494,26 +7835,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            type(bitset_64), intent(inout) :: array(0:)
-            type(bitset_64), intent(inout) :: buf(0:)
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            type(bitset_64), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -6527,16 +7871,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -6546,11 +7891,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6563,10 +7908,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6579,18 +7926,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_64), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            type(bitset_64), intent(inout) :: buf(0:)
+            type(bitset_64), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            type(bitset_64), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -6599,36 +7948,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -6637,67 +7994,117 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             type(bitset_64), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             type(bitset_64) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine bitset_64_decrease_ord_sort
+    end subroutine bitset_64_sort_index_low
 
 
-    subroutine bitset_large_decrease_ord_sort( array, work )
-! A translation to Fortran 2008, of the `"Rust" sort` algorithm found in
-! `slice.rs`
+    module subroutine bitset_large_sort_index_low( array, index, work, iwork, reverse )
+! A modification of `bitset_large_ord_sort` to return an array of indices that
+! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
+! as desired. The indices by default
+! correspond to a non-decreasing sort, but if the optional argument
+! `REVERSE` is present with a value of `.TRUE.` the indices correspond to
+! a non-increasing sort. The logic of the determination of indexing largely
+! follows the `"Rust" sort` found in `slice.rs`:
 ! https://github.com/rust-lang/rust/blob/90eb44a5897c39e3dff9c7e48e3973671dcd9496/src/liballoc/slice.rs#L2159
-! The Rust version in turn is a simplification of the Timsort algorithm
-! described in
-! https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
+! The Rust version is a simplification of the Timsort algorithm described
+! in https://svn.python.org/projects/python/trunk/Objects/listsort.txt, as
 ! it drops both the use of 'galloping' to identify bounds of regions to be
 ! sorted and the estimation of the optimal `run size`. However it remains
 ! a hybrid sorting algorithm combining an iterative Merge sort controlled
 ! by a stack of `RUNS` identified by regions of uniformly decreasing or
-! non-decreasing sequences that may be expanded to a minimum run size and
-! initially processed by an insertion sort.
+! non-decreasing sequences that may be expanded to a minimum run size, with
+! an insertion sort.
 !
 ! Note the Fortran implementation simplifies the logic as it only has to
 ! deal with Fortran arrays of intrinsic types and not the full generality
 ! of Rust's arrays and lists for arbitrary types. It also adds the
 ! estimation of the optimal `run size` as suggested in Tim Peters'
-! original `listsort.txt`, and an optional `work` array to be used as
-! scratch memory.
-        type(bitset_large), intent(inout)         :: array(0:)
-        type(bitset_large), intent(out), optional :: work(0:)
+! original listsort.txt, and the optional `work` and `iwork` arrays to be
+! used as scratch memory.
 
+        type(bitset_large), intent(inout)                    :: array(0:)
+        integer(int_index_low), intent(out)           :: index(0:)
+        type(bitset_large), intent(out), optional            :: work(0:)
+        integer(int_index_low), intent(out), optional :: iwork(0:)
+        logical, intent(in), optional            :: reverse
+
+        integer(int_index_low) :: array_size, i, stat
         type(bitset_large), allocatable :: buf(:)
-        integer(int_index) :: array_size
-        integer :: stat
+        integer(int_index_low), allocatable :: ibuf(:)
 
-        array_size = size( array, kind=int_index )
+        if ( size(array, kind=int_index) > huge(1_int_index_low) ) then
+            error stop "Too many entries for the kind of index."
+        end if
+
+        array_size = size(array, kind=int_index_low)
+
+        if ( size(index, kind=int_index_low) < array_size ) then
+            error stop "index array is too small."
+        end if
+
+        do i = 0, array_size-1
+            index(i) = i+1
+        end do
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
+        end if
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
-                error stop "bitset_large_decrease_ord_sort: work array is too small."
-            endif
-! Use the work array as scratch memory
-            call merge_sort( array, work )
+            if ( size(work, kind=int_index_low) < array_size/2 ) then
+                error stop "work array is too small."
+            end if
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, work, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, work, ibuf )
+            end if
         else
-! Allocate a buffer to use as scratch memory.
             allocate( buf(0:array_size/2-1), stat=stat )
-            if ( stat /= 0 ) error stop "bitset_large_decrease_ord_sort: Allocation of buffer failed."
-            call merge_sort( array, buf )
+            if ( stat /= 0 ) error stop "Allocation of array buffer failed."
+            if ( present(iwork) ) then
+                if ( size(iwork, kind=int_index_low) < array_size/2 ) then
+                    error stop "iwork array is too small."
+                endif
+                call merge_sort( array, index, buf, iwork )
+            else
+                allocate( ibuf(0:array_size/2-1), stat=stat )
+                if ( stat /= 0 ) error stop "Allocation of index buffer failed."
+                call merge_sort( array, index, buf, ibuf )
+            end if
+        end if
+
+        if ( optval(reverse, .false.) ) then
+            call reverse_segment( array, index )
         end if
 
     contains
@@ -6706,39 +8113,44 @@ contains
 !! Returns the minimum length of a run from 32-63 so that N/MIN_RUN is
 !! less than or equal to a power of two. See
 !! https://svn.python.org/projects/python/trunk/Objects/listsort.txt
-            integer(int_index)             :: min_run
-            integer(int_index), intent(in) :: n
+            integer(int_index_low)             :: min_run
+            integer(int_index_low), intent(in) :: n
 
-            integer(int_index) :: num, r
+            integer(int_index_low) :: num, r
 
             num = n
-            r = 0_int_index
+            r = 0_int_index_low
 
             do while( num >= 64 )
-                r = ior( r, iand(num, 1_int_index) )
-                num = ishft(num, -1_int_index)
+                r = ior( r, iand(num, 1_int_index_low) )
+                num = ishft(num, -1_int_index_low)
             end do
             min_run = num + r
 
         end function calc_min_run
 
 
-        pure subroutine insertion_sort( array )
-! Sorts `ARRAY` using an insertion sort.
-            type(bitset_large), intent(inout) :: array(0:)
+        pure subroutine insertion_sort( array, index )
+! Sorts `ARRAY` using an insertion sort, while maintaining consistency in
+! location of the indices in `INDEX` to the elements of `ARRAY`.
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: i, j
+            integer(int_index_low) :: i, j, key_index
             type(bitset_large) :: key
 
-            do j=1, size(array, kind=int_index)-1
+            do j=1, size(array, kind=int_index_low)-1
                 key = array(j)
+                key_index = index(j)
                 i = j - 1
                 do while( i >= 0 )
-                    if ( array(i) >= key ) exit
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
+                    index(i+1) = index(i)
                     i = i - 1
                 end do
                 array(i+1) = key
+                index(i+1) = key_index
             end do
 
         end subroutine insertion_sort
@@ -6750,13 +8162,14 @@ contains
 !
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
-            integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
 
-            integer(int_index) :: n
+            integer(int_index_low) :: r
+            type(run_type_low), intent(in), target :: runs(0:)
+
+            integer(int_index_low) :: n
             logical :: test
 
-            n = size(runs, kind=int_index)
+            n = size(runs, kind=int_index_low)
             test = .false.
             if (n >= 2) then
                 if ( runs( n-1 ) % base == 0 .or. &
@@ -6795,29 +8208,35 @@ contains
         end function collapse
 
 
-        pure subroutine insert_head( array )
+        pure subroutine insert_head( array, index )
 ! Inserts `array(0)` into the pre-sorted sequence `array(1:)` so that the
 ! whole `array(0:)` becomes sorted, copying the first element into
 ! a temporary variable, iterating until the right place for it is found.
 ! copying every traversed element into the slot preceding it, and finally,
 ! copying data from the temporary variable into the resulting hole.
+! Consistency of the indices in `index` with the elements of `array`
+! are maintained.
 
-            type(bitset_large), intent(inout) :: array(0:)
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
             type(bitset_large) :: tmp
-            integer(int_index) :: i
+            integer(int_index_low) :: i, tmp_index
 
             tmp = array(0)
-            find_hole: do i=1, size(array, kind=int_index)-1
-                if ( array(i) <= tmp ) exit find_hole
+            tmp_index = index(0)
+            find_hole: do i=1, size(array, kind=int_index_low)-1
+                if ( array(i) >= tmp ) exit find_hole
                 array(i-1) = array(i)
+                index(i-1) = index(i)
             end do find_hole
             array(i-1) = tmp
+            index(i-1) = tmp_index
 
         end subroutine insert_head
 
 
-        subroutine merge_sort( array, buf )
+        subroutine merge_sort( array, index, buf, ibuf )
 ! The Rust merge sort borrows some (but not all) of the ideas from TimSort,
 ! which is described in detail at
 ! (http://svn.python.org/projects/python/trunk/Objects/listsort.txt).
@@ -6835,26 +8254,29 @@ contains
 !    runs(i - 1)%len + runs(i)%len`
 !
 ! The invariants ensure that the total running time is `O(n log n)`
-! worst-case.
+! worst-case. Consistency of the indices in `index` with the elements of
+! `array` are maintained.
 
-            type(bitset_large), intent(inout) :: array(0:)
-            type(bitset_large), intent(inout) :: buf(0:)
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            type(bitset_large), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_size, finish, min_run, r, r_count, &
+            integer(int_index_low) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type_low) :: runs(0:max_merge_stack-1), left, right
 
-            array_size = size(array, kind=int_index)
+            array_size = size(array, kind=int_index_low)
 
-! Very short runs are extended using insertion sort to span at least
-! min_run elements. Slices of up to this length are sorted using insertion
-! sort.
+! Very short runs are extended using insertion sort to span at least this
+! many elements. Slices of up to this length are sorted using insertion sort.
             min_run = calc_min_run( array_size )
 
             if ( array_size <= min_run ) then
-                if ( array_size >= 2 ) call insertion_sort( array )
+                if ( array_size >= 2 ) call insertion_sort( array, index )
                 return
             end if
+
 
 ! Following Rust sort, natural runs in `array` are identified by traversing
 ! it backwards. By traversing it backward, merges more often go in the
@@ -6868,16 +8290,17 @@ contains
                 start = finish
                 if ( start > 0 ) then
                     start = start - 1
-                    if ( array(start+1) > array(start) ) then
+                    if ( array(start+1) < array(start) ) then
                         Descending: do while ( start > 0 )
-                            if ( array(start) <= array(start-1) ) &
+                            if ( array(start) >= array(start-1) ) &
                                 exit Descending
                             start = start - 1
                         end do Descending
-                        call reverse_segment( array(start:finish) )
+                        call reverse_segment( array(start:finish), &
+                                            index(start:finish) )
                     else
                         Ascending: do while( start > 0 )
-                            if ( array(start) > array(start-1) ) exit Ascending
+                            if ( array(start) < array(start-1) ) exit Ascending
                             start = start - 1
                         end do Ascending
                     end if
@@ -6887,11 +8310,11 @@ contains
                 Insert: do while ( start > 0 )
                     if ( finish - start >= min_run - 1 ) exit Insert
                     start = start - 1
-                    call insert_head( array(start:finish) )
+                    call insert_head( array(start:finish), index(start:finish) )
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type_low( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6904,10 +8327,12 @@ contains
                     left = runs( r + 1 )
                     right = runs( r )
                     call merge( array( left % base: &
-                                       right % base + right % len - 1 ), &
-                                left % len, buf )
+                                     right % base + right % len - 1 ), &
+                                left % len, buf, &
+                                index( left % base: &
+                                     right % base + right % len - 1 ), ibuf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type_low( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6920,18 +8345,20 @@ contains
         end subroutine merge_sort
 
 
-        pure subroutine merge( array, mid, buf )
+        pure subroutine merge( array, mid, buf, index, ibuf )
 ! Merges the two non-decreasing runs `ARRAY(0:MID-1)` and `ARRAY(MID:)`
 ! using `BUF` as temporary storage, and stores the merged runs into
 ! `ARRAY(0:)`. `MID` must be > 0, and < `SIZE(ARRAY)-1`. Buffer `BUF`
 ! must be long enough to hold the shorter of the two runs.
-            type(bitset_large), intent(inout) :: array(0:)
-            integer(int_index), intent(in)  :: mid
-            type(bitset_large), intent(inout) :: buf(0:)
+            type(bitset_large), intent(inout)            :: array(0:)
+            integer(int_index_low), intent(in)    :: mid
+            type(bitset_large), intent(inout)            :: buf(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
+            integer(int_index_low), intent(inout) :: ibuf(0:)
 
-            integer(int_index) :: array_len, i, j, k
+            integer(int_index_low) :: array_len, i, j, k
 
-            array_len = size(array, kind=int_index)
+            array_len = size(array, kind=int_index_low)
 
 ! Merge first copies the shorter run into `buf`. Then, depending on which
 ! run was shorter, it traces the copied run and the longer run forwards
@@ -6940,36 +8367,44 @@ contains
 
             if ( mid <= array_len - mid ) then ! The left run is shorter.
                 buf(0:mid-1) = array(0:mid-1)
+                ibuf(0:mid-1) = index(0:mid-1)
                 i = 0
                 j = mid
                 merge_lower: do k = 0, array_len-1
-                    if ( buf(i) >= array(j) ) then
+                    if ( buf(i) <= array(j) ) then
                         array(k) = buf(i)
+                        index(k) = ibuf(i)
                         i = i + 1
                         if ( i >= mid ) exit merge_lower
                     else
                         array(k) = array(j)
+                        index(k) = index(j)
                         j = j + 1
                         if ( j >= array_len ) then
                             array(k+1:) = buf(i:mid-1)
+                            index(k+1:) = ibuf(i:mid-1)
                             exit merge_lower
                         end if
                     end if
                 end do merge_lower
-            else ! The right run is shorter ! check that it is stable
+            else ! The right run is shorter
                 buf(0:array_len-mid-1) = array(mid:array_len-1)
+                ibuf(0:array_len-mid-1) = index(mid:array_len-1)
                 i = mid - 1
                 j = array_len - mid -1
                 merge_upper: do k = array_len-1, 0, -1
-                    if ( buf(j) <= array(i) ) then
+                    if ( buf(j) >= array(i) ) then
                         array(k) = buf(j)
+                        index(k) = ibuf(j)
                         j = j - 1
                         if ( j < 0 ) exit merge_upper
                     else
                         array(k) = array(i)
+                        index(k) = index(i)
                         i = i - 1
                         if ( i < 0 ) then
                             array(0:k-1) = buf(0:j)
+                            index(0:k-1) = ibuf(0:j)
                             exit merge_upper
                         end if
                     end if
@@ -6978,27 +8413,30 @@ contains
         end subroutine merge
 
 
-        pure subroutine reverse_segment( array )
+        pure subroutine reverse_segment( array, index )
 ! Reverse a segment of an array in place
             type(bitset_large), intent(inout) :: array(0:)
+            integer(int_index_low), intent(inout) :: index(0:)
 
-            integer(int_index) :: lo, hi
+            integer(int_index_low) :: itemp, lo, hi
             type(bitset_large) :: temp
 
             lo = 0
-            hi = size( array, kind=int_index ) - 1
+            hi = size( array, kind=int_index_low ) - 1
             do while( lo < hi )
                 temp = array(lo)
                 array(lo) = array(hi)
                 array(hi) = temp
+                itemp = index(lo)
+                index(lo) = index(hi)
+                index(hi) = itemp
                 lo = lo + 1
                 hi = hi - 1
             end do
 
         end subroutine reverse_segment
 
-    end subroutine bitset_large_decrease_ord_sort
+    end subroutine bitset_large_sort_index_low
 
 
-end submodule stdlib_sorting_ord_sort
-
+end submodule stdlib_sorting_sort_index
