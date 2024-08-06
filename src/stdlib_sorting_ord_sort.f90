@@ -206,10 +206,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int8_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -270,7 +272,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -361,7 +363,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -410,7 +412,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -426,7 +428,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -547,10 +549,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int16_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -611,7 +615,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -702,7 +706,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -751,7 +755,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -767,7 +771,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -888,10 +892,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int32_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -952,7 +958,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -1043,7 +1049,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -1092,7 +1098,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -1108,7 +1114,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -1229,10 +1235,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int64_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -1293,7 +1301,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -1384,7 +1392,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -1433,7 +1441,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -1449,7 +1457,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -1570,10 +1578,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "sp_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -1634,7 +1644,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -1725,7 +1735,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -1774,7 +1784,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -1790,7 +1800,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -1911,10 +1921,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "dp_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -1975,7 +1987,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -2066,7 +2078,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -2115,7 +2127,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -2131,7 +2143,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -2252,10 +2264,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "string_type_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -2316,7 +2330,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -2407,7 +2421,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -2456,7 +2470,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -2472,7 +2486,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -2593,10 +2607,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "char_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -2658,7 +2674,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -2749,7 +2765,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -2798,7 +2814,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -2814,7 +2830,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -2935,10 +2951,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_64_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -2999,7 +3017,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -3090,7 +3108,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -3139,7 +3157,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -3155,7 +3173,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -3276,10 +3294,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_large_increase_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -3340,7 +3360,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -3431,7 +3451,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -3480,7 +3500,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -3496,7 +3516,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -3617,10 +3637,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int8_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -3681,7 +3703,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -3772,7 +3794,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -3821,7 +3843,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -3837,7 +3859,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -3958,10 +3980,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int16_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -4022,7 +4046,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -4113,7 +4137,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -4162,7 +4186,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4178,7 +4202,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4299,10 +4323,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int32_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -4363,7 +4389,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -4454,7 +4480,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -4503,7 +4529,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4519,7 +4545,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4640,10 +4666,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "int64_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -4704,7 +4732,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -4795,7 +4823,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -4844,7 +4872,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -4860,7 +4888,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -4981,10 +5009,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "sp_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -5045,7 +5075,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -5136,7 +5166,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -5185,7 +5215,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5201,7 +5231,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5322,10 +5352,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "dp_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -5386,7 +5418,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -5477,7 +5509,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -5526,7 +5558,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5542,7 +5574,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -5663,10 +5695,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "string_type_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -5727,7 +5761,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -5818,7 +5852,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -5867,7 +5901,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -5883,7 +5917,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6004,10 +6038,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "char_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -6069,7 +6105,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -6160,7 +6196,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -6209,7 +6245,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6225,7 +6261,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6346,10 +6382,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_64_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -6410,7 +6448,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -6501,7 +6539,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -6550,7 +6588,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6566,7 +6604,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
@@ -6687,10 +6725,12 @@ contains
         integer :: stat
 
         array_size = size( array, kind=int_index )
+
+! If necessary allocate buffers to serve as scratch memory.
         if ( present(work) ) then
-            if ( size( work, kind=int_index) < array_size/2 ) then
+            if ( size(work, kind=int_index) < array_size/2 ) then
                 error stop "bitset_large_decrease_ord_sort: work array is too small."
-            endif
+            end if
 ! Use the work array as scratch memory
             call merge_sort( array, work )
         else
@@ -6751,7 +6791,7 @@ contains
 ! 1. len(-3) > len(-2) + len(-1)
 ! 2. len(-2) > len(-1)
             integer(int_index) :: r
-            type(run_type_default), intent(in), target :: runs(0:)
+            type(run_type), intent(in), target :: runs(0:)
 
             integer(int_index) :: n
             logical :: test
@@ -6842,7 +6882,7 @@ contains
 
             integer(int_index) :: array_size, finish, min_run, r, r_count, &
                 start
-            type(run_type_default) :: runs(0:max_merge_stack-1), left, right
+            type(run_type) :: runs(0:max_merge_stack-1), left, right
 
             array_size = size(array, kind=int_index)
 
@@ -6891,7 +6931,7 @@ contains
                 end do Insert
                 if ( start == 0 .and. finish == array_size - 1 ) return
 
-                runs(r_count) = run_type_default( base = start, &
+                runs(r_count) = run_type( base = start, &
                                           len = finish - start + 1 )
                 finish = start-1
                 r_count = r_count + 1
@@ -6907,7 +6947,7 @@ contains
                                        right % base + right % len - 1 ), &
                                 left % len, buf )
 
-                    runs(r) = run_type_default( base = left % base, &
+                    runs(r) = run_type( base = left % base, &
                                         len = left % len + right % len )
                     if ( r == r_count - 3 ) runs(r+1) = runs(r+2)
                     r_count = r_count - 1
