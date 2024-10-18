@@ -89,18 +89,10 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -507,18 +499,10 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -925,18 +909,10 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -1343,18 +1319,10 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -1761,18 +1729,10 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -2179,18 +2139,10 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -2597,18 +2549,10 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -3015,18 +2959,10 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -3434,18 +3370,10 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -3852,18 +3780,10 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int8), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -4270,18 +4190,10 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -4688,18 +4600,10 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -5106,18 +5010,10 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -5524,18 +5420,10 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -5942,18 +5830,10 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -6360,18 +6240,10 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -6778,18 +6650,10 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -7196,18 +7060,10 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -7615,18 +7471,10 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -8033,18 +7881,10 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int16), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -8451,18 +8291,10 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -8869,18 +8701,10 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -9287,18 +9111,10 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -9705,18 +9521,10 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -10123,18 +9931,10 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -10541,18 +10341,10 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -10959,18 +10751,10 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -11377,18 +11161,10 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -11796,18 +11572,10 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -12214,18 +11982,10 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int32), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -12632,18 +12392,10 @@ contains
 
         integer(int8), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -13050,18 +12802,10 @@ contains
 
         integer(int16), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -13468,18 +13212,10 @@ contains
 
         integer(int32), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -13886,18 +13622,10 @@ contains
 
         integer(int64), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -14304,18 +14032,10 @@ contains
 
         real(sp), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -14722,18 +14442,10 @@ contains
 
         real(dp), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -15140,18 +14852,10 @@ contains
 
         type(string_type), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -15558,18 +15262,10 @@ contains
 
         character(len=:), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -15977,18 +15673,10 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -16395,18 +16083,10 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         integer(int64), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -16813,18 +16493,10 @@ contains
 
         integer(int8), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -17231,18 +16903,10 @@ contains
 
         integer(int16), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -17649,18 +17313,10 @@ contains
 
         integer(int32), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -18067,18 +17723,10 @@ contains
 
         integer(int64), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -18485,18 +18133,10 @@ contains
 
         real(sp), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -18903,18 +18543,10 @@ contains
 
         real(dp), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -19321,18 +18953,10 @@ contains
 
         type(string_type), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -19739,18 +19363,10 @@ contains
 
         character(len=:), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -20158,18 +19774,10 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -20576,18 +20184,10 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         real(sp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -20994,18 +20594,10 @@ contains
 
         integer(int8), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -21412,18 +21004,10 @@ contains
 
         integer(int16), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -21830,18 +21414,10 @@ contains
 
         integer(int32), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -22248,18 +21824,10 @@ contains
 
         integer(int64), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -22666,18 +22234,10 @@ contains
 
         real(sp), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -23084,18 +22644,10 @@ contains
 
         real(dp), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -23502,18 +23054,10 @@ contains
 
         type(string_type), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -23920,18 +23464,10 @@ contains
 
         character(len=:), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -24339,18 +23875,10 @@ contains
 
         type(bitset_64), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
@@ -24757,18 +24285,10 @@ contains
 
         type(bitset_large), allocatable :: buf(:)
         real(dp), allocatable :: ibuf(:)
-        integer(int_index) :: array_size, i
+        integer(int_index) :: array_size
         integer(int_index) :: stat
 
         array_size = size(array, kind=int_index)
-
-        if ( array_size > huge(adjoint_array)) then
-            error stop "Too many entries for the kind of adjoint_array."
-        end if
-
-        if ( array_size > size(adjoint_array, kind=int_index) ) then
-            error stop "Too many entries for the size of adjoint_array."
-        end if
 
         if ( optval(reverse, .false.) ) then
             call reverse_segment( array, adjoint_array )
