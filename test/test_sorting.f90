@@ -3,7 +3,7 @@
 module test_sorting
 
     use, intrinsic :: iso_fortran_env, only: compiler_version, error_unit
-    use stdlib_kinds, only: int8, int16, int32, int64, dp, sp
+    use stdlib_kinds, only: int8, int16, int32, int64, dp, sp, xdp, qp
     use stdlib_sorting, only: sort, sort_index, sort_adjoint, ord_sort, radix_sort, int_index, int_index_low
     use stdlib_string_type, only: string_type, assignment(=), operator(>), &
         operator(<), write(formatted)
@@ -128,6 +128,8 @@ contains
             new_unittest('string_sort_adjointes_int64', test_string_sort_adjointes_int64), &
             new_unittest('bitset_large_sort_adjointes_int64', test_bitsetl_sort_adjointes_int64), &
             new_unittest('bitset_64_sort_adjointes_int64', test_bitset64_sort_adjointes_int64), &
+            new_unittest('real_sort_adjointes_sp', test_real_sort_adjointes_sp), &
+            new_unittest('real_sort_adjointes_dp', test_real_sort_adjointes_dp), &
             new_unittest('int_ord_sorts', test_int_ord_sorts) &
         ]
 
@@ -3251,6 +3253,227 @@ contains
 
     end subroutine test_bitset64_sort_adjoint_int64
 
+    subroutine test_real_sort_adjointes_sp(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
+        logical                     :: ltest
+
+        call test_real_sort_adjoint_sp( blocks, "Blocks", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( decrease, "Decreasing", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( identical, "Identical", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( increase, "Increasing", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( rand1, "Random dense", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( rand2, "Random order", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( rand0, "Random sparse", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( rand3, "Random 3", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_sp( rand10, "Random 10", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+    end subroutine test_real_sort_adjointes_sp
+
+    subroutine test_real_sort_adjoint_sp( a, a_name, ltest )
+        integer(int32), intent(inout) :: a(:)
+        character(*), intent(in)      :: a_name
+        logical, intent(out)          :: ltest
+
+        integer(int64)                 :: t0, t1, tdiff
+        real(dp)                       :: rate
+        real(sp)                         :: adjoint(size(a))
+        real(sp)                         :: iwork(size(a))
+        integer(int64)                 :: i, j
+        integer(int64)                 :: i_adj
+        logical                        :: valid
+        logical                        :: valid_adj
+
+        ltest = .true.
+
+        tdiff = 0
+        do i = 1, repeat
+            dummy = a
+            adjoint = real(dummy, kind=sp)
+            call system_clock( t0, rate )
+            call sort_adjoint( dummy, adjoint, work, iwork )
+            call system_clock( t1, rate )
+            tdiff = tdiff + t1 - t0
+        end do
+        tdiff = tdiff/repeat
+
+        call verify_sort( dummy, valid, i )
+        call verify_adjoint(int(adjoint, kind=int32), dummy, valid_adj, i_adj )
+
+        ltest = (ltest .and. valid .and. valid_adj)
+        if ( .not. valid ) then
+            write( *, * ) "SORT_ADJOINT did not sort " // a_name // "."
+            write(*,*) 'i = ', i
+            write(*,'(a18, 2i7)') 'a(i-1:i) = ', a(i-1:i)
+        end if
+        if ( .not. valid_adj ) then
+            write( *, * ) "SORT_ADJOINT did not sort " // a_name // "."
+            write(*,*) 'i_adj = ', i_adj
+            write(*,'(a18, 2i7)') 'a(i_adj-1:i_adj) = ', a(i_adj-1:i_adj)
+        end if
+        write( lun, '("|      Integer |", 1x, i7, 2x, "|", 1x, a15, " |", ' // &
+            'a12, " |",  F10.6, " |" )' ) &
+            test_size, a_name, "Sort_adjoint", tdiff/rate
+
+        !reverse
+        dummy = a
+        adjoint = real(dummy, kind=sp)
+        call sort_adjoint( dummy, adjoint, work, iwork, reverse=.true. )
+
+        call verify_reverse_sort( dummy, valid, i )
+        call verify_adjoint(int(adjoint, kind=int32), dummy, valid_adj, i_adj )
+        ltest = (ltest .and. valid .and. valid_adj)
+        if ( .not. valid ) then
+            write( *, * ) "SORT_ADJOINT did not reverse sort " // &
+                a_name // "."
+            write(*,*) 'i = ', i
+            write(*,'(a18, 2i7)') 'a(i-1:i) = ', a(i-1:i)
+        end if
+        if ( .not. valid_adj ) then
+            write( *, * ) "SORT_ADJOINT did not reverse sort " // &
+                a_name // "."
+            write(*,*) 'i_adj = ', i_adj
+            write(*,'(a18, 2i7)') 'a(i_adj-1:i_adj) = ', a(i_adj-1:i_adj)
+        end if
+
+    end subroutine test_real_sort_adjoint_sp
+    subroutine test_real_sort_adjointes_dp(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
+        logical                     :: ltest
+
+        call test_real_sort_adjoint_dp( blocks, "Blocks", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( decrease, "Decreasing", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( identical, "Identical", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( increase, "Increasing", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( rand1, "Random dense", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( rand2, "Random order", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( rand0, "Random sparse", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( rand3, "Random 3", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+        call test_real_sort_adjoint_dp( rand10, "Random 10", ltest )
+        call check(error, ltest)
+        if (allocated(error)) return
+
+    end subroutine test_real_sort_adjointes_dp
+
+    subroutine test_real_sort_adjoint_dp( a, a_name, ltest )
+        integer(int32), intent(inout) :: a(:)
+        character(*), intent(in)      :: a_name
+        logical, intent(out)          :: ltest
+
+        integer(int64)                 :: t0, t1, tdiff
+        real(dp)                       :: rate
+        real(dp)                         :: adjoint(size(a))
+        real(dp)                         :: iwork(size(a))
+        integer(int64)                 :: i, j
+        integer(int64)                 :: i_adj
+        logical                        :: valid
+        logical                        :: valid_adj
+
+        ltest = .true.
+
+        tdiff = 0
+        do i = 1, repeat
+            dummy = a
+            adjoint = real(dummy, kind=dp)
+            call system_clock( t0, rate )
+            call sort_adjoint( dummy, adjoint, work, iwork )
+            call system_clock( t1, rate )
+            tdiff = tdiff + t1 - t0
+        end do
+        tdiff = tdiff/repeat
+
+        call verify_sort( dummy, valid, i )
+        call verify_adjoint(int(adjoint, kind=int32), dummy, valid_adj, i_adj )
+
+        ltest = (ltest .and. valid .and. valid_adj)
+        if ( .not. valid ) then
+            write( *, * ) "SORT_ADJOINT did not sort " // a_name // "."
+            write(*,*) 'i = ', i
+            write(*,'(a18, 2i7)') 'a(i-1:i) = ', a(i-1:i)
+        end if
+        if ( .not. valid_adj ) then
+            write( *, * ) "SORT_ADJOINT did not sort " // a_name // "."
+            write(*,*) 'i_adj = ', i_adj
+            write(*,'(a18, 2i7)') 'a(i_adj-1:i_adj) = ', a(i_adj-1:i_adj)
+        end if
+        write( lun, '("|      Integer |", 1x, i7, 2x, "|", 1x, a15, " |", ' // &
+            'a12, " |",  F10.6, " |" )' ) &
+            test_size, a_name, "Sort_adjoint", tdiff/rate
+
+        !reverse
+        dummy = a
+        adjoint = real(dummy, kind=dp)
+        call sort_adjoint( dummy, adjoint, work, iwork, reverse=.true. )
+
+        call verify_reverse_sort( dummy, valid, i )
+        call verify_adjoint(int(adjoint, kind=int32), dummy, valid_adj, i_adj )
+        ltest = (ltest .and. valid .and. valid_adj)
+        if ( .not. valid ) then
+            write( *, * ) "SORT_ADJOINT did not reverse sort " // &
+                a_name // "."
+            write(*,*) 'i = ', i
+            write(*,'(a18, 2i7)') 'a(i-1:i) = ', a(i-1:i)
+        end if
+        if ( .not. valid_adj ) then
+            write( *, * ) "SORT_ADJOINT did not reverse sort " // &
+                a_name // "."
+            write(*,*) 'i_adj = ', i_adj
+            write(*,'(a18, 2i7)') 'a(i_adj-1:i_adj) = ', a(i_adj-1:i_adj)
+        end if
+
+    end subroutine test_real_sort_adjoint_dp
+
     subroutine verify_sort( a, valid, i )
         integer(int32), intent(in) :: a(0:)
         logical, intent(out) :: valid
@@ -3266,6 +3489,23 @@ contains
         valid = .true.
 
     end subroutine verify_sort
+
+    subroutine verify_adjoint( a, true, valid, i )
+        integer(int32), intent(in) :: a(:)
+        integer(int32), intent(in) :: true(:)
+        logical, intent(out) :: valid
+        integer(int64), intent(out) :: i
+
+        integer(int64) :: n
+
+        n = size( a, kind=int64 )
+        valid = .false.
+        do i=1, n
+            if ( a(i) /= true(i) ) return
+        end do
+        valid = .true.
+
+    end subroutine verify_adjoint
 
     subroutine verify_real_sort( a, valid, i )
         real(sp), intent(in) :: a(0:)
