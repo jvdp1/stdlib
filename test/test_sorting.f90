@@ -1958,7 +1958,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int8)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int8)
             call system_clock( t0, rate )
             call sort_adjoint( dummy, adjoint, work, iwork )
             call system_clock( t1, rate )
@@ -1979,7 +1979,7 @@ contains
 
         !reverse
         dummy = a
-        adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int8)
+        adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int8)
         call sort_adjoint( dummy, adjoint, work, iwork, reverse=.true. )
 
         call verify_reverse_sort( dummy, valid, i )
@@ -2028,7 +2028,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             char_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int8)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int8)
             call system_clock( t0, rate )
 
             call sort_adjoint( char_dummy, adjoint, char_work, iwork )
@@ -2088,7 +2088,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             string_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int8)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int8)
             call system_clock( t0, rate )
             call sort_adjoint( string_dummy, adjoint, string_work, iwork )
             call system_clock( t1, rate )
@@ -2146,7 +2146,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitsetl_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int8)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int8)
             call system_clock( t0, rate )
             call sort_adjoint( bitsetl_dummy, adjoint, bitsetl_work, iwork )
             call system_clock( t1, rate )
@@ -2206,7 +2206,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitset64_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int8)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int8)
             call system_clock( t0, rate )
             call sort_adjoint( bitset64_dummy, adjoint, bitset64_work, iwork )
             call system_clock( t1, rate )
@@ -2299,7 +2299,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int16)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int16)
             call system_clock( t0, rate )
             call sort_adjoint( dummy, adjoint, work, iwork )
             call system_clock( t1, rate )
@@ -2320,7 +2320,7 @@ contains
 
         !reverse
         dummy = a
-        adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int16)
+        adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int16)
         call sort_adjoint( dummy, adjoint, work, iwork, reverse=.true. )
 
         call verify_reverse_sort( dummy, valid, i )
@@ -2369,7 +2369,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             char_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int16)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int16)
             call system_clock( t0, rate )
 
             call sort_adjoint( char_dummy, adjoint, char_work, iwork )
@@ -2429,7 +2429,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             string_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int16)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int16)
             call system_clock( t0, rate )
             call sort_adjoint( string_dummy, adjoint, string_work, iwork )
             call system_clock( t1, rate )
@@ -2487,7 +2487,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitsetl_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int16)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int16)
             call system_clock( t0, rate )
             call sort_adjoint( bitsetl_dummy, adjoint, bitsetl_work, iwork )
             call system_clock( t1, rate )
@@ -2547,7 +2547,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitset64_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int16)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int16)
             call system_clock( t0, rate )
             call sort_adjoint( bitset64_dummy, adjoint, bitset64_work, iwork )
             call system_clock( t1, rate )
@@ -2640,7 +2640,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int32)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int32)
             call system_clock( t0, rate )
             call sort_adjoint( dummy, adjoint, work, iwork )
             call system_clock( t1, rate )
@@ -2661,7 +2661,7 @@ contains
 
         !reverse
         dummy = a
-        adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int32)
+        adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int32)
         call sort_adjoint( dummy, adjoint, work, iwork, reverse=.true. )
 
         call verify_reverse_sort( dummy, valid, i )
@@ -2710,7 +2710,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             char_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int32)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int32)
             call system_clock( t0, rate )
 
             call sort_adjoint( char_dummy, adjoint, char_work, iwork )
@@ -2770,7 +2770,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             string_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int32)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int32)
             call system_clock( t0, rate )
             call sort_adjoint( string_dummy, adjoint, string_work, iwork )
             call system_clock( t1, rate )
@@ -2828,7 +2828,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitsetl_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int32)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int32)
             call system_clock( t0, rate )
             call sort_adjoint( bitsetl_dummy, adjoint, bitsetl_work, iwork )
             call system_clock( t1, rate )
@@ -2888,7 +2888,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitset64_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int32)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int32)
             call system_clock( t0, rate )
             call sort_adjoint( bitset64_dummy, adjoint, bitset64_work, iwork )
             call system_clock( t1, rate )
@@ -2981,7 +2981,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int64)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int64)
             call system_clock( t0, rate )
             call sort_adjoint( dummy, adjoint, work, iwork )
             call system_clock( t1, rate )
@@ -3002,7 +3002,7 @@ contains
 
         !reverse
         dummy = a
-        adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int64)
+        adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int64)
         call sort_adjoint( dummy, adjoint, work, iwork, reverse=.true. )
 
         call verify_reverse_sort( dummy, valid, i )
@@ -3051,7 +3051,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             char_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int64)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int64)
             call system_clock( t0, rate )
 
             call sort_adjoint( char_dummy, adjoint, char_work, iwork )
@@ -3111,7 +3111,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             string_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int64)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int64)
             call system_clock( t0, rate )
             call sort_adjoint( string_dummy, adjoint, string_work, iwork )
             call system_clock( t1, rate )
@@ -3169,7 +3169,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitsetl_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int64)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int64)
             call system_clock( t0, rate )
             call sort_adjoint( bitsetl_dummy, adjoint, bitsetl_work, iwork )
             call system_clock( t1, rate )
@@ -3229,7 +3229,7 @@ contains
         tdiff = 0
         do i = 1, repeat
             bitset64_dummy = a
-            adjoint = int([(j, j=1_int64, size(a, kind=1_int64))], kind=int64)
+            adjoint = int([(j, j=1_int64, size(a, kind=int64))], kind=int64)
             call system_clock( t0, rate )
             call sort_adjoint( bitset64_dummy, adjoint, bitset64_work, iwork )
             call system_clock( t1, rate )
