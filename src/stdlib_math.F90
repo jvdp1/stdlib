@@ -1,10 +1,10 @@
-
-
-
+#include "macros.inc"
 module stdlib_math
     use stdlib_kinds, only: int8, int16, int32, int64, sp, dp, xdp, qp
     use stdlib_optval, only: optval
+#ifdef STDLIB_BITSET
     use stdlib_bitsets, only: bitset_64, bitset_large
+#endif
 
     implicit none
     private
@@ -49,8 +49,12 @@ module stdlib_math
       module procedure :: swap_int64
       module procedure :: swap_sp
       module procedure :: swap_dp
+#ifdef STDLIB_BITSET
       module procedure :: swap_bitset_64
+#endif
+#ifdef STDLIB_BITSET
       module procedure :: swap_bitset_large
+#endif
       module procedure :: swap_csp
       module procedure :: swap_cdp
       module procedure :: swap_bool
@@ -1262,18 +1266,22 @@ contains
         temp = lhs; lhs = rhs; rhs = temp
     end subroutine
 
+#ifdef STDLIB_BITSET
     elemental subroutine swap_bitset_64(lhs, rhs)
         type(bitset_64), intent(inout) :: lhs, rhs
         type(bitset_64) :: temp
         temp = lhs; lhs = rhs; rhs = temp
     end subroutine
 
+#endif
+#ifdef STDLIB_BITSET
     elemental subroutine swap_bitset_large(lhs, rhs)
         type(bitset_large), intent(inout) :: lhs, rhs
         type(bitset_large) :: temp
         temp = lhs; lhs = rhs; rhs = temp
     end subroutine
 
+#endif
 
     elemental subroutine swap_csp(lhs, rhs)
         complex(sp), intent(inout) :: lhs, rhs

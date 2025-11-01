@@ -1,4 +1,4 @@
-
+#include "macros.inc"
 
 
 
@@ -122,8 +122,10 @@ module stdlib_sorting
     use stdlib_string_type, only: string_type, assignment(=), operator(>), &
         operator(>=), operator(<), operator(<=)
 
+#ifdef STDLIB_BITSET
     use stdlib_bitsets, only: bitset_64, bitset_large, &
         assignment(=), operator(>), operator(>=), operator(<), operator(<=)
+#endif
 
     implicit none
     private
@@ -561,6 +563,7 @@ module stdlib_sorting
             logical, intent(in), optional :: reverse
         end subroutine char_ord_sort
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_ord_sort( array, work, reverse )
 !! Version: experimental
 !!
@@ -571,6 +574,8 @@ module stdlib_sorting
             logical, intent(in), optional :: reverse
         end subroutine bitset_64_ord_sort
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_ord_sort( array, work, reverse )
 !! Version: experimental
 !!
@@ -581,6 +586,7 @@ module stdlib_sorting
             logical, intent(in), optional :: reverse
         end subroutine bitset_large_ord_sort
 
+#endif
 
     end interface ord_sort
     interface radix_sort
@@ -731,6 +737,7 @@ module stdlib_sorting
             logical, intent(in), optional :: reverse
         end subroutine char_sort
 
+#ifdef STDLIB_BITSET
         pure module subroutine bitset_64_sort( array, reverse )
 !! Version: experimental
 !!
@@ -743,6 +750,8 @@ module stdlib_sorting
             logical, intent(in), optional :: reverse
         end subroutine bitset_64_sort
 
+#endif
+#ifdef STDLIB_BITSET
         pure module subroutine bitset_large_sort( array, reverse )
 !! Version: experimental
 !!
@@ -755,6 +764,7 @@ module stdlib_sorting
             logical, intent(in), optional :: reverse
         end subroutine bitset_large_sort
 
+#endif
 
     end interface sort
 
@@ -900,6 +910,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine char_int8_sort_adjoint
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_int8_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -916,6 +927,8 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_64_int8_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_int8_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -932,6 +945,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_large_int8_sort_adjoint
 
+#endif
         module subroutine int8_int16_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1060,6 +1074,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine char_int16_sort_adjoint
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_int16_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1076,6 +1091,8 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_64_int16_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_int16_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1092,6 +1109,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_large_int16_sort_adjoint
 
+#endif
         module subroutine int8_int32_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1220,6 +1238,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine char_int32_sort_adjoint
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_int32_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1236,6 +1255,8 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_64_int32_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_int32_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1252,6 +1273,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_large_int32_sort_adjoint
 
+#endif
         module subroutine int8_int64_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1380,6 +1402,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine char_int64_sort_adjoint
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_int64_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1396,6 +1419,8 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_64_int64_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_int64_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1412,6 +1437,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_large_int64_sort_adjoint
 
+#endif
         module subroutine int8_sp_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1540,6 +1566,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine char_sp_sort_adjoint
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_sp_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1556,6 +1583,8 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_64_sp_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_sp_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1572,6 +1601,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_large_sp_sort_adjoint
 
+#endif
         module subroutine int8_dp_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1700,6 +1730,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine char_dp_sort_adjoint
 
+#ifdef STDLIB_BITSET
         module subroutine bitset_64_dp_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1716,6 +1747,8 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_64_dp_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
         module subroutine bitset_large_dp_sort_adjoint( array, adjoint_array, work, iwork, &
             reverse )
 !! Version: experimental
@@ -1732,6 +1765,7 @@ module stdlib_sorting
             logical, intent(in), optional             :: reverse
         end subroutine bitset_large_dp_sort_adjoint
 
+#endif
 
     end interface sort_adjoint
 
@@ -1813,6 +1847,7 @@ module stdlib_sorting
 !> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
 !> order that would sort the input `ARRAY` in the desired direction.
         module procedure char_sort_index_default
+#ifdef STDLIB_BITSET
 !> Version: experimental
 !>
 !> `bitset_64_sort_index_default( array, index[, work, iwork, reverse] )` sorts
@@ -1821,6 +1856,8 @@ module stdlib_sorting
 !> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
 !> order that would sort the input `ARRAY` in the desired direction.
         module procedure bitset_64_sort_index_default
+#endif
+#ifdef STDLIB_BITSET
 !> Version: experimental
 !>
 !> `bitset_large_sort_index_default( array, index[, work, iwork, reverse] )` sorts
@@ -1829,6 +1866,7 @@ module stdlib_sorting
 !> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
 !> order that would sort the input `ARRAY` in the desired direction.
         module procedure bitset_large_sort_index_default
+#endif
 !> Version: experimental
 !>
 !> `int8_sort_index_low( array, index[, work, iwork, reverse] )` sorts
@@ -1893,6 +1931,7 @@ module stdlib_sorting
 !> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
 !> order that would sort the input `ARRAY` in the desired direction.
         module procedure char_sort_index_low
+#ifdef STDLIB_BITSET
 !> Version: experimental
 !>
 !> `bitset_64_sort_index_low( array, index[, work, iwork, reverse] )` sorts
@@ -1901,6 +1940,8 @@ module stdlib_sorting
 !> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
 !> order that would sort the input `ARRAY` in the desired direction.
         module procedure bitset_64_sort_index_low
+#endif
+#ifdef STDLIB_BITSET
 !> Version: experimental
 !>
 !> `bitset_large_sort_index_low( array, index[, work, iwork, reverse] )` sorts
@@ -1909,6 +1950,7 @@ module stdlib_sorting
 !> and returns the sorted `ARRAY` and an array `INDEX` of indices in the
 !> order that would sort the input `ARRAY` in the desired direction.
         module procedure bitset_large_sort_index_low
+#endif
 
     end interface sort_index
 
@@ -2194,6 +2236,7 @@ contains
 
         end subroutine char_sort_index_default
 
+#ifdef STDLIB_BITSET
         subroutine bitset_64_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
@@ -2229,6 +2272,8 @@ contains
 
         end subroutine bitset_64_sort_index_default
 
+#endif
+#ifdef STDLIB_BITSET
         subroutine bitset_large_sort_index_default( array, index, work, iwork, &
             reverse )
 !! Version: experimental
@@ -2264,6 +2309,7 @@ contains
 
         end subroutine bitset_large_sort_index_default
 
+#endif
         subroutine int8_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
@@ -2544,6 +2590,7 @@ contains
 
         end subroutine char_sort_index_low
 
+#ifdef STDLIB_BITSET
         subroutine bitset_64_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
@@ -2579,6 +2626,8 @@ contains
 
         end subroutine bitset_64_sort_index_low
 
+#endif
+#ifdef STDLIB_BITSET
         subroutine bitset_large_sort_index_low( array, index, work, iwork, &
             reverse )
 !! Version: experimental
@@ -2614,6 +2663,7 @@ contains
 
         end subroutine bitset_large_sort_index_low
 
+#endif
 
 
 end module stdlib_sorting

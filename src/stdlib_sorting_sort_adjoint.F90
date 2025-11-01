@@ -1,4 +1,4 @@
-
+#include "macros.inc"
 
 
 !! Licensing:
@@ -55,6 +55,7 @@ submodule(stdlib_sorting) stdlib_sorting_sort_adjoint
     implicit none
 
 contains
+
 
 
     module subroutine int8_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -467,6 +468,7 @@ contains
     end subroutine int8_int8_sort_adjoint
 
 
+
     module subroutine int16_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int16_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -875,6 +877,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int16_int8_sort_adjoint
+
 
 
     module subroutine int32_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -1287,6 +1290,7 @@ contains
     end subroutine int32_int8_sort_adjoint
 
 
+
     module subroutine int64_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int64_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -1695,6 +1699,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int64_int8_sort_adjoint
+
 
 
     module subroutine sp_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -2107,6 +2112,7 @@ contains
     end subroutine sp_int8_sort_adjoint
 
 
+
     module subroutine dp_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `dp_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -2515,6 +2521,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine dp_int8_sort_adjoint
+
 
 
     module subroutine string_type_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -2927,6 +2934,7 @@ contains
     end subroutine string_type_int8_sort_adjoint
 
 
+
     module subroutine char_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `char_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -3336,6 +3344,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine char_int8_sort_adjoint
+
+#ifdef STDLIB_BITSET
 
 
     module subroutine bitset_64_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -3747,6 +3757,9 @@ contains
 
     end subroutine bitset_64_int8_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
+
 
     module subroutine bitset_large_int8_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `bitset_large_ord_sort` to return an array of indices that
@@ -4156,6 +4169,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine bitset_large_int8_sort_adjoint
+
+#endif
 
 
     module subroutine int8_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -4568,6 +4583,7 @@ contains
     end subroutine int8_int16_sort_adjoint
 
 
+
     module subroutine int16_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int16_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -4976,6 +4992,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int16_int16_sort_adjoint
+
 
 
     module subroutine int32_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -5388,6 +5405,7 @@ contains
     end subroutine int32_int16_sort_adjoint
 
 
+
     module subroutine int64_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int64_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -5796,6 +5814,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int64_int16_sort_adjoint
+
 
 
     module subroutine sp_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -6208,6 +6227,7 @@ contains
     end subroutine sp_int16_sort_adjoint
 
 
+
     module subroutine dp_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `dp_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -6616,6 +6636,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine dp_int16_sort_adjoint
+
 
 
     module subroutine string_type_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -7028,6 +7049,7 @@ contains
     end subroutine string_type_int16_sort_adjoint
 
 
+
     module subroutine char_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `char_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -7437,6 +7459,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine char_int16_sort_adjoint
+
+#ifdef STDLIB_BITSET
 
 
     module subroutine bitset_64_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -7848,6 +7872,9 @@ contains
 
     end subroutine bitset_64_int16_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
+
 
     module subroutine bitset_large_int16_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `bitset_large_ord_sort` to return an array of indices that
@@ -8257,6 +8284,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine bitset_large_int16_sort_adjoint
+
+#endif
 
 
     module subroutine int8_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -8669,6 +8698,7 @@ contains
     end subroutine int8_int32_sort_adjoint
 
 
+
     module subroutine int16_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int16_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -9077,6 +9107,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int16_int32_sort_adjoint
+
 
 
     module subroutine int32_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -9489,6 +9520,7 @@ contains
     end subroutine int32_int32_sort_adjoint
 
 
+
     module subroutine int64_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int64_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -9897,6 +9929,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int64_int32_sort_adjoint
+
 
 
     module subroutine sp_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -10309,6 +10342,7 @@ contains
     end subroutine sp_int32_sort_adjoint
 
 
+
     module subroutine dp_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `dp_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -10717,6 +10751,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine dp_int32_sort_adjoint
+
 
 
     module subroutine string_type_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -11129,6 +11164,7 @@ contains
     end subroutine string_type_int32_sort_adjoint
 
 
+
     module subroutine char_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `char_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -11538,6 +11574,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine char_int32_sort_adjoint
+
+#ifdef STDLIB_BITSET
 
 
     module subroutine bitset_64_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -11949,6 +11987,9 @@ contains
 
     end subroutine bitset_64_int32_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
+
 
     module subroutine bitset_large_int32_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `bitset_large_ord_sort` to return an array of indices that
@@ -12358,6 +12399,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine bitset_large_int32_sort_adjoint
+
+#endif
 
 
     module subroutine int8_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -12770,6 +12813,7 @@ contains
     end subroutine int8_int64_sort_adjoint
 
 
+
     module subroutine int16_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int16_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -13178,6 +13222,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int16_int64_sort_adjoint
+
 
 
     module subroutine int32_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -13590,6 +13635,7 @@ contains
     end subroutine int32_int64_sort_adjoint
 
 
+
     module subroutine int64_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int64_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -13998,6 +14044,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int64_int64_sort_adjoint
+
 
 
     module subroutine sp_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -14410,6 +14457,7 @@ contains
     end subroutine sp_int64_sort_adjoint
 
 
+
     module subroutine dp_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `dp_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -14818,6 +14866,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine dp_int64_sort_adjoint
+
 
 
     module subroutine string_type_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -15230,6 +15279,7 @@ contains
     end subroutine string_type_int64_sort_adjoint
 
 
+
     module subroutine char_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `char_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -15639,6 +15689,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine char_int64_sort_adjoint
+
+#ifdef STDLIB_BITSET
 
 
     module subroutine bitset_64_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -16050,6 +16102,9 @@ contains
 
     end subroutine bitset_64_int64_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
+
 
     module subroutine bitset_large_int64_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `bitset_large_ord_sort` to return an array of indices that
@@ -16459,6 +16514,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine bitset_large_int64_sort_adjoint
+
+#endif
 
 
     module subroutine int8_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -16871,6 +16928,7 @@ contains
     end subroutine int8_sp_sort_adjoint
 
 
+
     module subroutine int16_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int16_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -17279,6 +17337,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int16_sp_sort_adjoint
+
 
 
     module subroutine int32_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -17691,6 +17750,7 @@ contains
     end subroutine int32_sp_sort_adjoint
 
 
+
     module subroutine int64_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int64_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -18099,6 +18159,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int64_sp_sort_adjoint
+
 
 
     module subroutine sp_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -18511,6 +18572,7 @@ contains
     end subroutine sp_sp_sort_adjoint
 
 
+
     module subroutine dp_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `dp_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -18919,6 +18981,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine dp_sp_sort_adjoint
+
 
 
     module subroutine string_type_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -19331,6 +19394,7 @@ contains
     end subroutine string_type_sp_sort_adjoint
 
 
+
     module subroutine char_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `char_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -19740,6 +19804,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine char_sp_sort_adjoint
+
+#ifdef STDLIB_BITSET
 
 
     module subroutine bitset_64_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -20151,6 +20217,9 @@ contains
 
     end subroutine bitset_64_sp_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
+
 
     module subroutine bitset_large_sp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `bitset_large_ord_sort` to return an array of indices that
@@ -20560,6 +20629,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine bitset_large_sp_sort_adjoint
+
+#endif
 
 
     module subroutine int8_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -20972,6 +21043,7 @@ contains
     end subroutine int8_dp_sort_adjoint
 
 
+
     module subroutine int16_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int16_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -21380,6 +21452,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int16_dp_sort_adjoint
+
 
 
     module subroutine int32_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -21792,6 +21865,7 @@ contains
     end subroutine int32_dp_sort_adjoint
 
 
+
     module subroutine int64_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `int64_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -22200,6 +22274,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine int64_dp_sort_adjoint
+
 
 
     module subroutine sp_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -22612,6 +22687,7 @@ contains
     end subroutine sp_dp_sort_adjoint
 
 
+
     module subroutine dp_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `dp_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -23020,6 +23096,7 @@ contains
         end subroutine reverse_segment
 
     end subroutine dp_dp_sort_adjoint
+
 
 
     module subroutine string_type_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -23432,6 +23509,7 @@ contains
     end subroutine string_type_dp_sort_adjoint
 
 
+
     module subroutine char_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `char_ord_sort` to return an array of indices that
 ! would perform a stable sort of the `ARRAY` as input, and also sort `ARRAY`
@@ -23841,6 +23919,8 @@ contains
         end subroutine reverse_segment
 
     end subroutine char_dp_sort_adjoint
+
+#ifdef STDLIB_BITSET
 
 
     module subroutine bitset_64_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
@@ -24252,6 +24332,9 @@ contains
 
     end subroutine bitset_64_dp_sort_adjoint
 
+#endif
+#ifdef STDLIB_BITSET
+
 
     module subroutine bitset_large_dp_sort_adjoint( array, adjoint_array, work, iwork, reverse )
 ! A modification of `bitset_large_ord_sort` to return an array of indices that
@@ -24662,6 +24745,7 @@ contains
 
     end subroutine bitset_large_dp_sort_adjoint
 
+#endif
 
 end submodule stdlib_sorting_sort_adjoint
 
