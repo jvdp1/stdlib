@@ -1,3 +1,4 @@
+#include "macros.inc"
 program example_math_swap
     use stdlib_math, only: swap
     implicit none
@@ -42,5 +43,15 @@ program example_math_swap
         y = 'fghij'
         call swap(x,y)
     end block
+
+#ifdef STDLIB_BITSET
+    block
+        use stdlib_bitsets
+        type(bitset_64) :: x, y
+        call x%from_string('0000')
+        call y%from_string('1111')
+        call swap(x,y)
+    end block
+#endif
 
 end program example_math_swap  
