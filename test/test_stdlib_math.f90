@@ -472,7 +472,6 @@ contains
         if (allocated(error)) return
     end subroutine test_swap_stt
 
-#ifdef STDLIB_BITSET
     subroutine test_swap_bitset_64(error)
         use stdlib_bitsets
         type(error_type), allocatable, intent(out) :: error
@@ -518,7 +517,6 @@ contains
         call check(error, x == v )
         if (allocated(error)) return
     end subroutine test_swap_bitset_large
-#endif
 
     subroutine test_arg_sp(error)
         type(error_type), allocatable, intent(out) :: error
