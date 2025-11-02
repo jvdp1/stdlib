@@ -56,6 +56,14 @@ if(STDLIB_NO_BITSET)
   add_compile_definitions(STDLIB_NO_BITSET)
 endif() 
 
+option(STDLIB_NO_HASHMAP "Does not compile STDLIB HASHMAP" OFF)
+
+if(STDLIB_NO_HASHMAP)
+  message(STATUS "Disable stdlib hashmap module")
+  add_compile_definitions(STDLIB_NO_HASHMAP)
+endif() 
+
+
 option(FIND_BLAS "Find external BLAS and LAPACK" ON)
 
 # --- find external BLAS and LAPACK
