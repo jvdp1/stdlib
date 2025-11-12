@@ -49,10 +49,10 @@ module stdlib_math
       module procedure :: swap_int64
       module procedure :: swap_sp
       module procedure :: swap_dp
-#ifdef STDLIB_BITSET
+#if STDLIB_BITSET == 1
       module procedure :: swap_bitset_64
 #endif
-#ifdef STDLIB_BITSET
+#if STDLIB_BITSET == 1
       module procedure :: swap_bitset_large
 #endif
       module procedure :: swap_csp
@@ -1266,7 +1266,7 @@ contains
         temp = lhs; lhs = rhs; rhs = temp
     end subroutine
 
-#ifdef STDLIB_BITSET
+#if STDLIB_BITSET == 1
     elemental subroutine swap_bitset_64(lhs, rhs)
         type(bitset_64), intent(inout) :: lhs, rhs
         type(bitset_64) :: temp
@@ -1274,7 +1274,7 @@ contains
     end subroutine
 
 #endif
-#ifdef STDLIB_BITSET
+#if STDLIB_BITSET == 1
     elemental subroutine swap_bitset_large(lhs, rhs)
         type(bitset_large), intent(inout) :: lhs, rhs
         type(bitset_large) :: temp
