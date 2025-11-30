@@ -1,7 +1,7 @@
-if (NOT STDLIB_NO_BITSET)
+if (STDLIB_BITSET)
   add_subdirectory(bitsets)
 endif()
-if (NOT STDLIB_NO_HASHMAP)
+if (STDLIB_HASHMAP)
   add_subdirectory(hashmaps)
 endif()
 
@@ -123,9 +123,6 @@ set(f90Files
 configure_stdlib_target(${PROJECT_NAME} f90Files fppFiles cppFiles)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-  $<$<NOT:$<BOOL:${STDLIB_NO_BITSET}>>:bitsets>
-<<<<<<< HEAD
-  $<$<NOT:$<BOOL:${STDLIB_NO_HASHMAP}>>:hashmaps>
-=======
->>>>>>> upstream/master
+  $<$<BOOL:${STDLIB_BITSET}>:bitsets>
+  $<$<BOOL:${STDLIB_HASHMAP}>:hashmaps>
   blas lapack)
