@@ -49,19 +49,24 @@ if(NOT DEFINED CMAKE_MAXIMUM_RANK)
   set(CMAKE_MAXIMUM_RANK 4 CACHE STRING "Maximum array rank for generated procedures")
 endif()
 
-option(STDLIB_NO_BITSET "Does not compile STDLIB BITSET" OFF)
-
-if(STDLIB_NO_BITSET)
-  message(STATUS "Disable stdlib bitset module")
-  add_compile_definitions(STDLIB_NO_BITSET)
-endif() 
-
-option(STDLIB_NO_HASHMAP "Does not compile STDLIB HASHMAP" OFF)
-
-if(STDLIB_NO_HASHMAP)
-  message(STATUS "Disable stdlib hashmap module")
-  add_compile_definitions(STDLIB_NO_HASHMAP)
-endif() 
+include(config/modules.cmake)
+#option(STDLIB_BITSET "Does compile STDLIB BITSET" ON)
+#
+#if(STDLIB_BITSET)
+#  message(STATUS "Enable stdlib bitset module")
+#else()
+#  message(STATUS "Disable stdlib bitset module")
+#  add_compile_definitions(STDLIB_NO_BITSET)
+#endif() 
+#
+#option(STDLIB_HASHMAP "Does compile STDLIB HASHMAP" ON)
+#
+#if(STDLIB_HASHMAP)
+#  message(STATUS "Enable stdlib hashmap module")
+#else()
+#  message(STATUS "Disable stdlib hashmap module")
+#  add_compile_definitions(STDLIB_NO_HASHMAP)
+#endif() 
 
 option(FIND_BLAS "Find external BLAS and LAPACK" ON)
 
