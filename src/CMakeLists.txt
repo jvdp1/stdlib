@@ -124,5 +124,8 @@ configure_stdlib_target(${PROJECT_NAME} f90Files fppFiles cppFiles)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
   $<$<NOT:$<BOOL:${STDLIB_NO_BITSET}>>:bitsets>
+<<<<<<< HEAD
   $<$<NOT:$<BOOL:${STDLIB_NO_HASHMAP}>>:hashmaps>
+=======
+>>>>>>> upstream/master
   blas lapack)

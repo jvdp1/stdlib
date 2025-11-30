@@ -57,7 +57,10 @@ jobs:
         -DCMAKE_INSTALL_PREFIX=$PWD/_dist
         -DFIND_BLAS:STRING=FALSE
         -DSTDLIB_NO_BITSET:STRING=${{ matrix.with_bitset }}
+<<<<<<< HEAD
         -DSTDLIB_NO_HASHMAP:STRING=${{ matrix.with_hashmap }}
+=======
+>>>>>>> upstream/master
         -S . -B ${{ env.BUILD_DIR }}
 
     - name: Build and compile
