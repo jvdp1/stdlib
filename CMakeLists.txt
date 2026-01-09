@@ -66,11 +66,14 @@ else()
   add_compile_definitions(STDLIB_BITSET=0)
 endif() 
 
-option(STDLIB_NO_HASHMAPS "Does not compile STDLIB HASHMAPS" OFF)
+option(STDLIB_HASHMAPS "Compile STDLIB HASHMAPS" ON)
 
-if(STDLIB_NO_HASHMAPS)
+if(STDLIB_HASHMAPS)
+  message(STATUS "Enable stdlib hashmaps module")
+  add_compile_definitions(STDLIB_HASHMAPS=1)
+else()
   message(STATUS "Disable stdlib hashmaps module")
-  add_compile_definitions(STDLIB_NO_HASHMAPS)
+  add_compile_definitions(STDLIB_HASHMAPS=0)
 endif()
 
 option(STDLIB_STATS "Compile STDLIB STATS" ON)
