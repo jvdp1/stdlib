@@ -33,6 +33,21 @@
 #define STDLIB_QUADRATURE 1
 #endif
 
+!Default: compile the specialmatrices module
+#if !defined STDLIB_SPECIALMATRICES
+#define STDLIB_SPECIALMATRICES 1
+#endif
+
+!Default: compile the stringlist module
+#if !defined STDLIB_STRINGLIST
+#define STDLIB_STRINGLIST 1
+#endif
+
+!Default: compile the system module
+#if !defined STDLIB_SYSTEM
+#define STDLIB_SYSTEM 1
+#endif
+
 !Default: compile the stats module
 #if !defined STDLIB_STATS
 #define STDLIB_STATS 1
