@@ -5,7 +5,6 @@ set(lapack_fppFiles
     stdlib_lapack_others.fypp
     stdlib_lapack_orthogonal_factors.fypp
     stdlib_lapack_eig_svd_lsq.fypp
-    stdlib_linalg_lapack_aux.fypp
     stdlib_lapack_auxiliary.fypp
     stdlib_lapack_blas_like_base.fypp
     stdlib_lapack_blas_like_l1.fypp
@@ -56,6 +55,7 @@ set(lapack_fppFiles
 )
 set(lapack_cppFiles
     stdlib_linalg_lapack.fypp
+    stdlib_linalg_lapack_aux.fypp
 )
 set(lapack_f90Files
 )
