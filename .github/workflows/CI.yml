@@ -28,6 +28,7 @@ jobs:
           - {compiler: gcc, version: 14}
           - {compiler: gcc, version: 15}
           - {compiler: intel, version: '2024.1'}          
+          - {compiler: intel, version: '2025.3'}          
         build: [cmake]        
         include:
           - os: ubuntu-22.04

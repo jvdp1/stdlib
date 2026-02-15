@@ -76,6 +76,7 @@ jobs:
       matrix:
         toolchain:
           - { compiler: intel, version: "2024.1" }
+          - { compiler: intel, version: "2025.3" }
         build: [cmake]
     env:
       BUILD_DIR: ${{ matrix.build == 'cmake' && 'build' || '.' }}
