@@ -148,8 +148,6 @@ module stdlib_linalg_lapack_aux
         ! =====================================================================
            ! Executable Statements
            stdlib_ieeeck = 1
-
-#if __INTEL_COMPILER_BUILD_DATE >= 20230101
            
            ! Test support for infinity values
            if (.not.ieee_support_inf(one)) then 
@@ -164,8 +162,7 @@ module stdlib_linalg_lapack_aux
               stdlib_ieeeck = 0
               return
            end if
-#endif
-
+           
            return
      end function stdlib_ieeeck
 
