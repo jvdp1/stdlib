@@ -10,15 +10,16 @@ contains
         real(sp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_1d_sp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_1d_sp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_1d_sp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        real(sp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_1d_sp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        real(sp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         real(sp), intent(in)    :: vec_x(:)
         real(sp), intent(inout) :: vec_y(:)
         real(sp), intent(in), optional :: alpha
@@ -85,15 +86,16 @@ contains
         real(sp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_2d_sp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_2d_sp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_2d_sp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        real(sp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_2d_sp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        real(sp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         real(sp), intent(in)    :: vec_x(:,:)
         real(sp), intent(inout) :: vec_y(:,:)
         real(sp), intent(in), optional :: alpha
@@ -160,15 +162,16 @@ contains
         real(dp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_1d_dp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_1d_dp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_1d_dp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        real(dp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_1d_dp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        real(dp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         real(dp), intent(in)    :: vec_x(:)
         real(dp), intent(inout) :: vec_y(:)
         real(dp), intent(in), optional :: alpha
@@ -235,15 +238,16 @@ contains
         real(dp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_2d_dp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_2d_dp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_2d_dp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        real(dp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_2d_dp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        real(dp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         real(dp), intent(in)    :: vec_x(:,:)
         real(dp), intent(inout) :: vec_y(:,:)
         real(dp), intent(in), optional :: alpha
@@ -310,15 +314,16 @@ contains
         complex(sp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_1d_csp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_1d_csp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_1d_csp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        complex(sp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_1d_csp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        complex(sp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         complex(sp), intent(in)    :: vec_x(:)
         complex(sp), intent(inout) :: vec_y(:)
         complex(sp), intent(in), optional :: alpha
@@ -403,15 +408,16 @@ contains
         complex(sp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_2d_csp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_2d_csp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_2d_csp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        complex(sp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_2d_csp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        complex(sp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         complex(sp), intent(in)    :: vec_x(:,:)
         complex(sp), intent(inout) :: vec_y(:,:)
         complex(sp), intent(in), optional :: alpha
@@ -496,15 +502,16 @@ contains
         complex(dp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_1d_cdp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_1d_cdp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_1d_cdp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        complex(dp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_1d_cdp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        complex(dp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         complex(dp), intent(in)    :: vec_x(:)
         complex(dp), intent(inout) :: vec_y(:)
         complex(dp), intent(in), optional :: alpha
@@ -589,15 +596,16 @@ contains
         complex(dp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
 
-        call spmv_coo_sub_2d_cdp(matrix%data, matrix%index, matrix%storage, matrix%nnz, vec_x,vec_y,alpha,beta,op)
+        call spmv_coo_sub_2d_cdp(matrix%data, matrix%index, matrix%nnz, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
 
     end subroutine
 
-    module subroutine spmv_coo_sub_2d_cdp(data, index, storage, nnz, vec_x,vec_y,alpha,beta,op)
-        complex(dp), intent(in) :: data(:) 
+    module subroutine spmv_coo_sub_2d_cdp(data,index,nnz,storage,vec_x,vec_y,alpha,beta,op)
+        complex(dp), intent(in) :: data(:)
         integer(ilp), intent(in) :: index(:,:) !! Matrix coordinates index(2,nnz)
-        integer, intent(in) :: storage !! storage
         integer(ilp), intent(in) :: nnz !! number of non-zero values
+        integer, intent(in) :: storage !! storage
         complex(dp), intent(in)    :: vec_x(:,:)
         complex(dp), intent(inout) :: vec_y(:,:)
         complex(dp), intent(in), optional :: alpha
