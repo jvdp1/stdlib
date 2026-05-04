@@ -10,6 +10,28 @@ contains
         real(sp), intent(in), optional :: alpha
         real(sp), intent(in), optional :: beta
         character(1), intent(in), optional :: op
+
+        call spmv_sellc_sub_sp(matrix%data, matrix%rowptr, matrix%col, matrix%chunk_size, &
+            matrix%nnz, matrix%nrows, matrix%ncols, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
+
+    end subroutine
+
+    module subroutine spmv_sellc_sub_sp(data,ia,ja,cs,nnz,nrows,ncols,storage,vec_x,vec_y,alpha,beta,op)
+        !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
+        real(sp), intent(in) :: data(:,:)
+        integer(ilp), intent(in) :: ia(:)
+        integer(ilp), intent(in) :: ja(:,:)
+        integer, intent(in) :: cs
+        integer(ilp), intent(in) :: nnz
+        integer(ilp), intent(in) :: nrows
+        integer(ilp), intent(in) :: ncols
+        integer, intent(in) :: storage
+        real(sp), intent(in)    :: vec_x(:)
+        real(sp), intent(inout) :: vec_y(:)
+        real(sp), intent(in), optional :: alpha
+        real(sp), intent(in), optional :: beta
+        character(1), intent(in), optional :: op
         real(sp) :: alpha_
         character(1) :: op_
         integer(ilp) :: i, nz, rowidx, num_chunks, rm
@@ -22,9 +44,6 @@ contains
         else 
             vec_y = zero_sp
         endif
-
-        associate( data => matrix%data, ia => matrix%rowptr , ja => matrix%col, cs => matrix%chunk_size, &
-        &   nnz => matrix%nnz, nrows => matrix%nrows, ncols => matrix%ncols, storage => matrix%storage  )
 
         if( .not.any( [4, 8, 16] == cs ) ) then
             print *, "error: sellc chunk size not supported."
@@ -99,7 +118,6 @@ contains
             print *, "error: sellc format for spmv operation not yet supported."
             return
         end if
-        end associate
 
     contains
         pure subroutine chunk_kernel_4(n,a,col,x,y)
@@ -193,10 +211,31 @@ contains
         end subroutine
 
     end subroutine
-    
     module subroutine spmv_sellc_dp(matrix,vec_x,vec_y,alpha,beta,op)
         !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
         type(SELLC_dp_type), intent(in) :: matrix
+        real(dp), intent(in)    :: vec_x(:)
+        real(dp), intent(inout) :: vec_y(:)
+        real(dp), intent(in), optional :: alpha
+        real(dp), intent(in), optional :: beta
+        character(1), intent(in), optional :: op
+
+        call spmv_sellc_sub_dp(matrix%data, matrix%rowptr, matrix%col, matrix%chunk_size, &
+            matrix%nnz, matrix%nrows, matrix%ncols, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
+
+    end subroutine
+
+    module subroutine spmv_sellc_sub_dp(data,ia,ja,cs,nnz,nrows,ncols,storage,vec_x,vec_y,alpha,beta,op)
+        !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
+        real(dp), intent(in) :: data(:,:)
+        integer(ilp), intent(in) :: ia(:)
+        integer(ilp), intent(in) :: ja(:,:)
+        integer, intent(in) :: cs
+        integer(ilp), intent(in) :: nnz
+        integer(ilp), intent(in) :: nrows
+        integer(ilp), intent(in) :: ncols
+        integer, intent(in) :: storage
         real(dp), intent(in)    :: vec_x(:)
         real(dp), intent(inout) :: vec_y(:)
         real(dp), intent(in), optional :: alpha
@@ -214,9 +253,6 @@ contains
         else 
             vec_y = zero_dp
         endif
-
-        associate( data => matrix%data, ia => matrix%rowptr , ja => matrix%col, cs => matrix%chunk_size, &
-        &   nnz => matrix%nnz, nrows => matrix%nrows, ncols => matrix%ncols, storage => matrix%storage  )
 
         if( .not.any( [4, 8, 16] == cs ) ) then
             print *, "error: sellc chunk size not supported."
@@ -291,7 +327,6 @@ contains
             print *, "error: sellc format for spmv operation not yet supported."
             return
         end if
-        end associate
 
     contains
         pure subroutine chunk_kernel_4(n,a,col,x,y)
@@ -385,10 +420,31 @@ contains
         end subroutine
 
     end subroutine
-    
     module subroutine spmv_sellc_csp(matrix,vec_x,vec_y,alpha,beta,op)
         !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
         type(SELLC_csp_type), intent(in) :: matrix
+        complex(sp), intent(in)    :: vec_x(:)
+        complex(sp), intent(inout) :: vec_y(:)
+        complex(sp), intent(in), optional :: alpha
+        complex(sp), intent(in), optional :: beta
+        character(1), intent(in), optional :: op
+
+        call spmv_sellc_sub_csp(matrix%data, matrix%rowptr, matrix%col, matrix%chunk_size, &
+            matrix%nnz, matrix%nrows, matrix%ncols, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
+
+    end subroutine
+
+    module subroutine spmv_sellc_sub_csp(data,ia,ja,cs,nnz,nrows,ncols,storage,vec_x,vec_y,alpha,beta,op)
+        !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
+        complex(sp), intent(in) :: data(:,:)
+        integer(ilp), intent(in) :: ia(:)
+        integer(ilp), intent(in) :: ja(:,:)
+        integer, intent(in) :: cs
+        integer(ilp), intent(in) :: nnz
+        integer(ilp), intent(in) :: nrows
+        integer(ilp), intent(in) :: ncols
+        integer, intent(in) :: storage
         complex(sp), intent(in)    :: vec_x(:)
         complex(sp), intent(inout) :: vec_y(:)
         complex(sp), intent(in), optional :: alpha
@@ -406,9 +462,6 @@ contains
         else 
             vec_y = zero_csp
         endif
-
-        associate( data => matrix%data, ia => matrix%rowptr , ja => matrix%col, cs => matrix%chunk_size, &
-        &   nnz => matrix%nnz, nrows => matrix%nrows, ncols => matrix%ncols, storage => matrix%storage  )
 
         if( .not.any( [4, 8, 16] == cs ) ) then
             print *, "error: sellc chunk size not supported."
@@ -513,7 +566,6 @@ contains
             print *, "error: sellc format for spmv operation not yet supported."
             return
         end if
-        end associate
 
     contains
         pure subroutine chunk_kernel_4(n,a,col,x,y)
@@ -655,10 +707,31 @@ contains
         end subroutine
 
     end subroutine
-    
     module subroutine spmv_sellc_cdp(matrix,vec_x,vec_y,alpha,beta,op)
         !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
         type(SELLC_cdp_type), intent(in) :: matrix
+        complex(dp), intent(in)    :: vec_x(:)
+        complex(dp), intent(inout) :: vec_y(:)
+        complex(dp), intent(in), optional :: alpha
+        complex(dp), intent(in), optional :: beta
+        character(1), intent(in), optional :: op
+
+        call spmv_sellc_sub_cdp(matrix%data, matrix%rowptr, matrix%col, matrix%chunk_size, &
+            matrix%nnz, matrix%nrows, matrix%ncols, matrix%storage, &
+            vec_x,vec_y,alpha,beta,op)
+
+    end subroutine
+
+    module subroutine spmv_sellc_sub_cdp(data,ia,ja,cs,nnz,nrows,ncols,storage,vec_x,vec_y,alpha,beta,op)
+        !! This algorithm was gracefully provided by Ivan Privec and adapted by Jose Alves
+        complex(dp), intent(in) :: data(:,:)
+        integer(ilp), intent(in) :: ia(:)
+        integer(ilp), intent(in) :: ja(:,:)
+        integer, intent(in) :: cs
+        integer(ilp), intent(in) :: nnz
+        integer(ilp), intent(in) :: nrows
+        integer(ilp), intent(in) :: ncols
+        integer, intent(in) :: storage
         complex(dp), intent(in)    :: vec_x(:)
         complex(dp), intent(inout) :: vec_y(:)
         complex(dp), intent(in), optional :: alpha
@@ -676,9 +749,6 @@ contains
         else 
             vec_y = zero_cdp
         endif
-
-        associate( data => matrix%data, ia => matrix%rowptr , ja => matrix%col, cs => matrix%chunk_size, &
-        &   nnz => matrix%nnz, nrows => matrix%nrows, ncols => matrix%ncols, storage => matrix%storage  )
 
         if( .not.any( [4, 8, 16] == cs ) ) then
             print *, "error: sellc chunk size not supported."
@@ -783,7 +853,6 @@ contains
             print *, "error: sellc format for spmv operation not yet supported."
             return
         end if
-        end associate
 
     contains
         pure subroutine chunk_kernel_4(n,a,col,x,y)
@@ -925,6 +994,5 @@ contains
         end subroutine
 
     end subroutine
-    
 
 end submodule stdlib_sparse_spmv_sellc

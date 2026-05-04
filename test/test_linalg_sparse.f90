@@ -56,15 +56,28 @@ contains
             call check(error, all(vec_y1 == real([6,11,15,15],kind=wp)) )
             if (allocated(error)) return
 
+            ! High-level API
             call spmv( COO, vec_x, vec_y2 )
             call check(error, all(vec_y1 == vec_y2) )
             if (allocated(error)) return
 
+            ! Low-level API
+            call spmv_coo( COO%data ,COO%index, COO%nnz, COO%storage, vec_x, vec_y2 )
+            call check(error, all(vec_y1 == vec_y2), 'COO - low level API: wrong output' )
+            if (allocated(error)) return
+
             ! Test in-place transpose
             vec_y1 = 1._wp
+            ! High-level API
             call spmv( COO, vec_y1, vec_x, op=sparse_op_transpose )
             call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
             if (allocated(error)) return
+
+            ! Low-level API
+            call spmv_coo( COO%data ,COO%index, COO%nnz, COO%storage, vec_y1, vec_x, op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)), 'COO - transpose - low level API: wrong output' )
+            if (allocated(error)) return
+ 
         end block
         block
             integer, parameter :: wp = dp
@@ -91,15 +104,28 @@ contains
             call check(error, all(vec_y1 == real([6,11,15,15],kind=wp)) )
             if (allocated(error)) return
 
+            ! High-level API
             call spmv( COO, vec_x, vec_y2 )
             call check(error, all(vec_y1 == vec_y2) )
             if (allocated(error)) return
 
+            ! Low-level API
+            call spmv_coo( COO%data ,COO%index, COO%nnz, COO%storage, vec_x, vec_y2 )
+            call check(error, all(vec_y1 == vec_y2), 'COO - low level API: wrong output' )
+            if (allocated(error)) return
+
             ! Test in-place transpose
             vec_y1 = 1._wp
+            ! High-level API
             call spmv( COO, vec_y1, vec_x, op=sparse_op_transpose )
             call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
             if (allocated(error)) return
+
+            ! Low-level API
+            call spmv_coo( COO%data ,COO%index, COO%nnz, COO%storage, vec_y1, vec_x, op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)), 'COO - transpose - low level API: wrong output' )
+            if (allocated(error)) return
+ 
         end block
     end subroutine
 
@@ -147,15 +173,29 @@ contains
             
             allocate( vec_x(5) , source = 1._wp )
             allocate( vec_y(4) , source = 0._wp )
+            ! High-level API
             call spmv( CSR, vec_x, vec_y )
             
-            call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)), 'CSR - high-level API - wrong output' )
+            if (allocated(error)) return
+
+            ! Low-level API
+            call spmv_csr( CSR%data, CSR%col, CSR%rowptr, CSR%nnz, CSR%nrows, CSR%ncols, CSR%storage, &
+                vec_x, vec_y )
+            
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)), 'CSR - low-level API - wrong output' )
             if (allocated(error)) return
 
             ! Test in-place transpose
             vec_y = 1._wp
+            ! High-level API
             call spmv( CSR, vec_y, vec_x, op=sparse_op_transpose )
-            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)), 'CSR transpose - high-level API - wrong output' )
+            if (allocated(error)) return
+
+            call spmv_csr( CSR%data, CSR%col, CSR%rowptr, CSR%nnz, CSR%nrows, CSR%ncols, CSR%storage, &
+                vec_y, vec_x, op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)), 'CSR transpose - low-level API - wrong output' )
             if (allocated(error)) return
         end block
         block
@@ -171,15 +211,29 @@ contains
             
             allocate( vec_x(5) , source = 1._wp )
             allocate( vec_y(4) , source = 0._wp )
+            ! High-level API
             call spmv( CSR, vec_x, vec_y )
             
-            call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)), 'CSR - high-level API - wrong output' )
+            if (allocated(error)) return
+
+            ! Low-level API
+            call spmv_csr( CSR%data, CSR%col, CSR%rowptr, CSR%nnz, CSR%nrows, CSR%ncols, CSR%storage, &
+                vec_x, vec_y )
+            
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)), 'CSR - low-level API - wrong output' )
             if (allocated(error)) return
 
             ! Test in-place transpose
             vec_y = 1._wp
+            ! High-level API
             call spmv( CSR, vec_y, vec_x, op=sparse_op_transpose )
-            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)), 'CSR transpose - high-level API - wrong output' )
+            if (allocated(error)) return
+
+            call spmv_csr( CSR%data, CSR%col, CSR%rowptr, CSR%nnz, CSR%nrows, CSR%ncols, CSR%storage, &
+                vec_y, vec_x, op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)), 'CSR transpose - low-level API - wrong output' )
             if (allocated(error)) return
         end block
     end subroutine
@@ -200,16 +254,31 @@ contains
             
             allocate( vec_x(5) , source = 1._wp )
             allocate( vec_y(4) , source = 0._wp )
+            !High-level API
             call spmv( CSC, vec_x, vec_y )
+            
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
+            if (allocated(error)) return
+
+            !High-level API
+            call spmv_csc( CSC%data, CSC%colptr, CSC%row, CSC%nnz, CSC%nrows, CSC%ncols, CSC%storage, vec_x, vec_y )
             
             call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
             if (allocated(error)) return
 
             ! Test in-place transpose
             vec_y = 1._wp
+            !High-level API
             call spmv( CSC, vec_y, vec_x, op=sparse_op_transpose )
             call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
             if (allocated(error)) return
+
+            !Low-level API
+            call spmv_csc( CSC%data, CSC%colptr, CSC%row, CSC%nnz, CSC%nrows, CSC%ncols, CSC%storage, vec_y, vec_x, &
+                op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
+            if (allocated(error)) return
+
         end block
         block
             integer, parameter :: wp = dp
@@ -224,16 +293,31 @@ contains
             
             allocate( vec_x(5) , source = 1._wp )
             allocate( vec_y(4) , source = 0._wp )
+            !High-level API
             call spmv( CSC, vec_x, vec_y )
+            
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
+            if (allocated(error)) return
+
+            !High-level API
+            call spmv_csc( CSC%data, CSC%colptr, CSC%row, CSC%nnz, CSC%nrows, CSC%ncols, CSC%storage, vec_x, vec_y )
             
             call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
             if (allocated(error)) return
 
             ! Test in-place transpose
             vec_y = 1._wp
+            !High-level API
             call spmv( CSC, vec_y, vec_x, op=sparse_op_transpose )
             call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
             if (allocated(error)) return
+
+            !Low-level API
+            call spmv_csc( CSC%data, CSC%colptr, CSC%row, CSC%nnz, CSC%nrows, CSC%ncols, CSC%storage, vec_y, vec_x, &
+                op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
+            if (allocated(error)) return
+
         end block
     end subroutine
 
@@ -259,14 +343,29 @@ contains
             
             allocate( vec_x(5) , source = 1._wp )
             allocate( vec_y(4) , source = 0._wp )
+            !High-level API
             call spmv( ELL, vec_x, vec_y )
             
             call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
             if (allocated(error)) return
 
+            !Low-level API
+            call spmv_ell( ELL%data, ELL%index, ELL%K, &
+                ELL%nnz, ELL%nrows, ELL%ncols, ELL%storage, vec_x, vec_y )
+
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
+            if (allocated(error)) return
+
             ! Test in-place transpose
             vec_y = 1._wp
+            !High-level API
             call spmv( ELL, vec_y, vec_x, op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
+            if (allocated(error)) return
+
+            !Low-level API
+            call spmv_ell( ELL%data, ELL%index, ELL%K, &
+                ELL%nnz, ELL%nrows, ELL%ncols, ELL%storage, vec_y, vec_x, op=sparse_op_transpose )
             call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
             if (allocated(error)) return
         end block
@@ -289,14 +388,29 @@ contains
             
             allocate( vec_x(5) , source = 1._wp )
             allocate( vec_y(4) , source = 0._wp )
+            !High-level API
             call spmv( ELL, vec_x, vec_y )
             
             call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
             if (allocated(error)) return
 
+            !Low-level API
+            call spmv_ell( ELL%data, ELL%index, ELL%K, &
+                ELL%nnz, ELL%nrows, ELL%ncols, ELL%storage, vec_x, vec_y )
+
+            call check(error, all(vec_y == real([6,11,15,15],kind=wp)) )
+            if (allocated(error)) return
+
             ! Test in-place transpose
             vec_y = 1._wp
+            !High-level API
             call spmv( ELL, vec_y, vec_x, op=sparse_op_transpose )
+            call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
+            if (allocated(error)) return
+
+            !Low-level API
+            call spmv_ell( ELL%data, ELL%index, ELL%K, &
+                ELL%nnz, ELL%nrows, ELL%ncols, ELL%storage, vec_y, vec_x, op=sparse_op_transpose )
             call check(error, all(vec_x == real([17,15,4,14,-3],kind=wp)) )
             if (allocated(error)) return
         end block
@@ -330,8 +444,16 @@ contains
             allocate( vec_x(6) , source = 1._wp )
             allocate( vec_y(6) , source = 0._wp )
             
+            !High-level API
             call spmv( SELLC, vec_x, vec_y )
             
+            call check(error, all(vec_y == real([6,22,27,23,27,48],kind=wp)) )
+            if (allocated(error)) return
+
+            !Low-level API
+            call spmv_sellc( SELLC%data, SELLC%rowptr, SELLC%col, SELLC%chunk_size, &
+                SELLC%nnz, SELLC%nrows, SELLC%ncols, SELLC%storage, vec_x, vec_y )
+
             call check(error, all(vec_y == real([6,22,27,23,27,48],kind=wp)) )
             if (allocated(error)) return
 
@@ -339,8 +461,16 @@ contains
             vec_x = real( [1,2,3,4,5,6] , kind=wp )
             call spmv( CSR, vec_x, vec_y , op = sparse_op_transpose )
             allocate( vec_y2(6) , source = 0._wp )
+            !High-level API
             call spmv( SELLC, vec_x, vec_y2 , op = sparse_op_transpose )
-            
+
+            call check(error, all(vec_y == vec_y2))
+            if (allocated(error)) return
+
+            !Low-level API
+            call spmv_sellc( SELLC%data, SELLC%rowptr, SELLC%col, SELLC%chunk_size, &
+                SELLC%nnz, SELLC%nrows, SELLC%ncols, SELLC%storage, vec_x, vec_y2 , op = sparse_op_transpose )
+
             call check(error, all(vec_y == vec_y2))
             if (allocated(error)) return
 
@@ -369,8 +499,16 @@ contains
             allocate( vec_x(6) , source = 1._wp )
             allocate( vec_y(6) , source = 0._wp )
             
+            !High-level API
             call spmv( SELLC, vec_x, vec_y )
             
+            call check(error, all(vec_y == real([6,22,27,23,27,48],kind=wp)) )
+            if (allocated(error)) return
+
+            !Low-level API
+            call spmv_sellc( SELLC%data, SELLC%rowptr, SELLC%col, SELLC%chunk_size, &
+                SELLC%nnz, SELLC%nrows, SELLC%ncols, SELLC%storage, vec_x, vec_y )
+
             call check(error, all(vec_y == real([6,22,27,23,27,48],kind=wp)) )
             if (allocated(error)) return
 
@@ -378,8 +516,16 @@ contains
             vec_x = real( [1,2,3,4,5,6] , kind=wp )
             call spmv( CSR, vec_x, vec_y , op = sparse_op_transpose )
             allocate( vec_y2(6) , source = 0._wp )
+            !High-level API
             call spmv( SELLC, vec_x, vec_y2 , op = sparse_op_transpose )
-            
+
+            call check(error, all(vec_y == vec_y2))
+            if (allocated(error)) return
+
+            !Low-level API
+            call spmv_sellc( SELLC%data, SELLC%rowptr, SELLC%col, SELLC%chunk_size, &
+                SELLC%nnz, SELLC%nrows, SELLC%ncols, SELLC%storage, vec_x, vec_y2 , op = sparse_op_transpose )
+
             call check(error, all(vec_y == vec_y2))
             if (allocated(error)) return
 
