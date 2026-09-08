@@ -218,6 +218,42 @@ $$y=\alpha*op(M)*x+\beta*y$$
 `op`, `optional`: In-place operator identifier. Shall be a `character(1)` argument. It can have any of the following values: `N`: no transpose, `T`: transpose, `H`: hermitian or complex transpose. These values are provided as constants by the `stdlib_sparse` module: `sparse_op_none`, `sparse_op_transpose`, `sparse_op_hermitian`
 
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
+## `sptrv` - Sparse Triangular solve
+
+### Status
+
+Experimental
+
+### Description
+
+Provide sparse triangular solve kernels for the upper-triangular CSR format. Solves
+
+$$op(M)\, y = x$$
+
+in place, returning the solution in `vec_y`. Supported operators: `N` (no transpose, backward
+substitution on `M`) and `T` (transpose, forward substitution on `M^T`). The matrix must be
+upper-triangular and stored in sorted (compressed) form with the diagonal element as the first
+entry of each row.
+
+### Syntax
+
+`call ` [[stdlib_sparse_sptrv(module):sptrv(interface)]] `(matrix,vec_x,vec_y [,op])`
+
+### Arguments
+
+`matrix`: Shall be an upper-triangular `CSR` matrix (`type(CSR_real32_type)` or
+`type(CSR_real64_type)`). It is an `intent(in)` argument.
+
+`vec_x`: Shall be a rank-1 array of same type as `matrix`. It is an `intent(in)` argument.
+
+`vec_y`: Shall be a rank-1 array of same type as `matrix`. It is an `intent(inout)` argument;
+returns the solution $y$.
+
+`op`, `optional`: Operator identifier. Shall be a `character(1)` argument. Supported values:
+`N` (no transpose) and `T` (transpose). Defaults to `N`. Constants: `sparse_op_none`,
+`sparse_op_transpose`.
+
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
 ## Sparse matrix to matrix conversions
 
 ### Status

@@ -1,0 +1,40 @@
+#:include "common.fypp"
+#:set RANKS = range(1, 2+1)
+#:set R_KINDS_TYPES = list(zip(REAL_KINDS, REAL_TYPES, REAL_SUFFIX))
+#:set C_KINDS_TYPES = list(zip(CMPLX_KINDS, CMPLX_TYPES, CMPLX_SUFFIX))
+#:set KINDS_TYPES = R_KINDS_TYPES+C_KINDS_TYPES
+#! define ranks without parentheses
+#:def rksfx2(rank)
+#{if rank > 0}#${":," + ":," * (rank - 1)}$#{endif}#
+#:enddef
+!! The `stdlib_sparse_sptrv` submodule provides sparse triangular solve kernels.
+!!
+module stdlib_sparse_sptrv
+    use stdlib_sparse_constants
+    use stdlib_sparse_kinds
+    implicit none
+    private
+
+    !! version: experimental
+    !!
+    !! Solve the triangular system $$op(M) \, y = x$$ in place, returning the
+    !! solution in `vec_y`. The CSR matrix is expected in upper-triangular
+    !! (standard sorted) form, with the diagonal element as the first entry
+    !! of each row.
+    !! [Specifications](../page/specs/stdlib_sparse.html#sptrv)
+    interface sptrv
+        #:for k1, t1, s1 in (KINDS_TYPES)
+        #:for rank in RANKS
+        module subroutine sptrv_csr_${rank}$d_${s1}$(matrix,vec_x,vec_y,op)
+            type(CSR_${s1}$_type), intent(in) :: matrix
+            ${t1}$, intent(in)    :: vec_x${ranksuffix(rank)}$
+            ${t1}$, intent(inout) :: vec_y${ranksuffix(rank)}$
+            character(1), intent(in), optional :: op
+        end subroutine
+        #:endfor
+        #:endfor
+    end interface
+
+    public :: sptrv
+
+end module stdlib_sparse_sptrv

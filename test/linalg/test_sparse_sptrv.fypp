@@ -1,0 +1,141 @@
+#:include "common.fypp"
+#:set RANKS = range(1, 2+1)
+#:set R_KINDS_TYPES = list(zip(REAL_KINDS, REAL_TYPES, REAL_SUFFIX))
+#:set C_KINDS_TYPES = list(zip(CMPLX_KINDS, CMPLX_TYPES, CMPLX_SUFFIX))
+#:set KINDS_TYPES = R_KINDS_TYPES+C_KINDS_TYPES
+module test_sparse_sptrv
+    use testdrive, only : new_unittest, unittest_type, error_type, check, skip_test
+    use stdlib_kinds, only: sp, dp, xdp, qp, int8, int16, int32, int64
+    use stdlib_sparse
+
+    implicit none
+
+contains
+
+    !> Collect all unit tests
+    subroutine collect_suite(testsuite)
+        type(unittest_type), allocatable, intent(out) :: testsuite(:)
+
+        testsuite = [ &
+            new_unittest('csr_none', test_csr_none), &
+            new_unittest('csr_transpose', test_csr_transpose) &
+        ]
+    end subroutine
+
+    !> Solve `U*y = x` (sparse_op_none), compare to a dense back-substitution reference.
+    subroutine test_csr_none(error)
+        type(error_type), allocatable, intent(out) :: error
+
+        #:for k1, t1, s1 in (KINDS_TYPES)
+        block
+            integer, parameter :: wp = ${k1}$
+            integer, parameter :: n = 5
+            integer :: i, j
+            type(CSR_${s1}$_type) :: CSR
+            ${t1}$ :: U(n,n), rhs(n), sol(n), ref(n)
+            real(kind=wp) :: errmag
+
+            U(1,:) = (/ 2._wp, 0._wp, 0._wp, 0._wp, 0._wp /)
+            U(2,:) = (/  0._wp, 3._wp, 5._wp, 0._wp, 0._wp /)
+            U(3,:) = (/  0._wp, 0._wp, 4._wp, 6._wp, 0._wp /)
+            U(4,:) = (/  0._wp, 0._wp, 0._wp, 5._wp, 7._wp /)
+            U(5,:) = (/  0._wp, 0._wp, 0._wp, 0._wp, 9._wp /)
+
+            call CSR%malloc(5,5,8)
+            CSR%data(:)   = real([2,3,5,4,6,5,7,9],kind=wp)
+            CSR%col(:)    = [1,2,3,3,4,4,5,5]
+            CSR%rowptr(:) = [1,2,4,6,8,9]
+            CSR%storage   = sparse_upper
+
+            rhs = real([2,3,4,5,6],kind=wp)
+
+            do i = n, 1, -1
+                ref(i) = rhs(i)
+                do j = i+1, n
+                    ref(i) = ref(i) - U(i,j) * ref(j)
+                end do
+                ref(i) = ref(i) / U(i,i)
+            end do
+
+            call sptrv( CSR, rhs, vec_y=sol, op=sparse_op_none )
+
+            errmag = real(maxval(abs(sol - ref)))
+            call check(error, errmag <= 4.0_wp * epsilon(0._wp), &
+                       & "sptrv op=N kind ${s1}$ mismatch")
+        end block
+        #:endfor
+    end subroutine
+
+    !> Solve `U^T*y = x` (sparse_op_transpose), compare to a dense forward-substitution
+    !> reference on `U^T`.
+    subroutine test_csr_transpose(error)
+        type(error_type), allocatable, intent(out) :: error
+
+        #:for k1, t1, s1 in (KINDS_TYPES)
+        block
+            integer, parameter :: wp = ${k1}$
+            integer, parameter :: n = 5
+            integer :: i, j
+            type(CSR_${s1}$_type) :: CSR
+            ${t1}$ :: U(n,n), rhs(n), sol(n), ref(n)
+            real(kind=wp) :: errmag
+
+            U(1,:) = (/ 2._wp, 0._wp, 0._wp, 0._wp, 0._wp /)
+            U(2,:) = (/  0._wp, 3._wp, 5._wp, 0._wp, 0._wp /)
+            U(3,:) = (/  0._wp, 0._wp, 4._wp, 6._wp, 0._wp /)
+            U(4,:) = (/  0._wp, 0._wp, 0._wp, 5._wp, 7._wp /)
+            U(5,:) = (/  0._wp, 0._wp, 0._wp, 0._wp, 9._wp /)
+
+            call CSR%malloc(5,5,8)
+            CSR%data(:)   = real([2,3,5,4,6,5,7,9],kind=wp)
+            CSR%col(:)    = [1,2,3,3,4,4,5,5]
+            CSR%rowptr(:) = [1,2,4,6,8,9]
+            CSR%storage   = sparse_upper
+
+            rhs = real([2,3,4,5,6],kind=wp)
+
+            do i = 1, n
+                ref(i) = rhs(i)
+                do j = 1, i-1
+                    ref(i) = ref(i) - U(j,i) * ref(j)
+                end do
+                ref(i) = ref(i) / U(i,i)
+            end do
+
+            call sptrv( CSR, rhs, vec_y=sol, op=sparse_op_transpose )
+
+            errmag = real(maxval(abs(sol - ref)))
+            call check(error, errmag <= 4.0_wp * epsilon(0._wp), &
+                       & "sptrv op=T kind ${s1}$ mismatch")
+        end block
+        #:endfor
+    end subroutine
+
+end module
+
+program tester
+    use, intrinsic :: iso_fortran_env, only : error_unit
+    use testdrive, only : run_testsuite, new_testsuite, testsuite_type
+    use test_sparse_sptrv, only : collect_suite
+    implicit none
+
+    integer :: stat, i
+    type(testsuite_type), allocatable :: testsuites(:)
+    character(len=*), parameter :: fmt = '("#", *(1x, a))'
+
+    stat = 0
+
+    testsuites = [ &
+        new_testsuite("sparse_sptrv", collect_suite) &
+        ]
+
+    do i = 1, size(testsuites)
+        write(error_unit, fmt) "Testing:", testsuites(i)%name
+        call run_testsuite(testsuites(i)%collect, error_unit, stat)
+    end do
+
+    if (stat > 0) then
+        write(error_unit, '(i0, 1x, a)') stat, "test(s) failed!"
+        error stop
+    end if
+end program

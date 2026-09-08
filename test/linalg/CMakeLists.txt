@@ -17,6 +17,7 @@ set(
   "test_linalg_svd.fypp"
   "test_linalg_matrix_property_checks.fypp"
   "test_linalg_sparse.fypp"
+  "test_sparse_sptrv.fypp"
   "test_linalg_specialmatrices.fypp"
   "test_linalg_cholesky.fypp"
   "test_linalg_solve_chol.fypp"
@@ -54,6 +55,7 @@ if (STDLIB_LINALG_ITERATIVE)
 endif()
 ADDTEST(linalg_svd)
 ADDTEST(linalg_sparse)
+ADDTEST(sparse_sptrv)
 if (STDLIB_SPECIALMATRICES)
   ADDTEST(linalg_specialmatrices)
 endif()
