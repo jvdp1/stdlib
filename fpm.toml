@@ -16,3 +16,13 @@ test-drive.tag = "v0.4.0"
 [preprocess.cpp]
 suffixes = [".F90", ".f90"]
 macros = ["MAXRANK=7"]
+
+[preprocess.fypp]
+suffixes = ["fypp"]
+macros = [
+  "MAXRANK=7",
+  "PROJECT_VERSION_MAJOR=0",
+  "PROJECT_VERSION_MINOR=8",
+  "PROJECT_VERSION_PATCH=1"
+]
+args = ["-I", "src", "-I", "test", "-I", "include"]
