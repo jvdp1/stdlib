@@ -46,7 +46,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="stdlib_stats_distribution_beta" href="stdlib_stats_distribution_beta.html" />
+    <link rel="next" title="stdlib_str2num" href="stdlib_str2num.html" />
     <link rel="prev" title="stdlib_specialmatrices" href="stdlib_specialmatrices.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
@@ -342,7 +342,6 @@
 <li class="toctree-l1"><a class="reference internal" href="stdlib_linalg.html">stdlib_linalg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_linalg_iterative_solvers.html">stdlib_linalg_iterative_solvers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_linalg_state.html">stdlib_linalg_state</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stdlib_load_library.html">stdlib_load_library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_logger.html">stdlib_logger</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_math.html">stdlib_math</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_optval.html">stdlib_optval</a></li>
@@ -355,10 +354,6 @@
 <li class="toctree-l1"><a class="reference internal" href="stdlib_specialfunctions_gamma.html">stdlib_specialfunctions_gamma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_specialmatrices.html">stdlib_specialmatrices</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">stdlib_stats</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stdlib_stats_distribution_beta.html">stdlib_stats_distribution_beta</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stdlib_stats_distribution_exponential.html">stdlib_stats_distribution_exponential</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stdlib_stats_distribution_normal.html">stdlib_stats_distribution_normal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stdlib_stats_distribution_uniform.html">stdlib_stats_distribution_uniform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_str2num.html">stdlib_str2num</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_string_type.html">stdlib_string_type</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stdlib_stringlist_type.html">stdlib_stringlist_type</a></li>
@@ -427,13 +422,21 @@
                   
   <section id="stdlib-stats">
 <h1>stdlib_stats<a class="headerlink" href="#stdlib-stats" title="Link to this heading">#</a></h1>
-<p>See also the specification page: <a class="reference internal" href="../specs/stdlib_stats.html"><span class="doc">stdlib_stats</span></a>.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#f-module-stdlib-stats" id="id1">stdlib_stats (module)</a></p></li>
+<li><p><a class="reference internal" href="#f-module-stdlib-stats-distribution-beta" id="id2">stdlib_stats_distribution_beta (module)</a></p></li>
+<li><p><a class="reference internal" href="#f-module-stdlib-stats-distribution-exponential" id="id3">stdlib_stats_distribution_exponential (module)</a></p></li>
+<li><p><a class="reference internal" href="#f-module-stdlib-stats-distribution-normal" id="id4">stdlib_stats_distribution_normal (module)</a></p></li>
+<li><p><a class="reference internal" href="#f-module-stdlib-stats-distribution-uniform" id="id5">stdlib_stats_distribution_uniform (module)</a></p></li>
+</ul>
+</nav>
 <section id="f-module-stdlib-stats">
-<h2>stdlib_stats (module)<a class="headerlink" href="#f-module-stdlib-stats" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">stdlib_stats (module)</a><a class="headerlink" href="#f-module-stdlib-stats" title="Link to this heading">#</a></h2>
 <div class="docutils container">
 <p>Provides support for various statistical methods. This includes currently
 descriptive statistics
-(Specification: <a class="reference internal" href="../specs/stdlib_stats.html"><span class="doc">stdlib_stats</span></a>))</p>
+([Specification](../page/specs/stdlib_stats.html))</p>
 </div>
 <p class="section-subtitle">Interfaces</p>
 <section id="f-interface-stdlib-stats-corr">
@@ -464,6 +467,66 @@ descriptive statistics
 <h3>pca_inverse_transform (interface)<a class="headerlink" href="#f-interface-stdlib-stats-pca-inverse-transform" title="Link to this heading">#</a></h3>
 </section>
 </section>
+<p>See also the specification page: <a class="reference internal" href="../specs/stdlib_stats.html"><span class="doc">stdlib_stats</span></a>.</p>
+<section id="f-module-stdlib-stats-distribution-beta">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">stdlib_stats_distribution_beta (module)</a><a class="headerlink" href="#f-module-stdlib-stats-distribution-beta" title="Link to this heading">#</a></h2>
+<p class="section-subtitle">Interfaces</p>
+<section id="f-interface-stdlib-stats-distribution-beta-rvs-beta">
+<h3>rvs_beta (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-beta-rvs-beta" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-beta-pdf-beta">
+<h3>pdf_beta (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-beta-pdf-beta" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-beta-cdf-beta">
+<h3>cdf_beta (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-beta-cdf-beta" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<p>See also the specification page: <a class="reference internal" href="../specs/stdlib_stats_distribution_beta.html"><span class="doc">stdlib_stats_distribution_beta</span></a>.</p>
+<section id="f-module-stdlib-stats-distribution-exponential">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">stdlib_stats_distribution_exponential (module)</a><a class="headerlink" href="#f-module-stdlib-stats-distribution-exponential" title="Link to this heading">#</a></h2>
+<p class="section-subtitle">Interfaces</p>
+<section id="f-interface-stdlib-stats-distribution-exponential-rvs-exp">
+<h3>rvs_exp (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-exponential-rvs-exp" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-exponential-pdf-exp">
+<h3>pdf_exp (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-exponential-pdf-exp" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-exponential-cdf-exp">
+<h3>cdf_exp (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-exponential-cdf-exp" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<p>See also the specification page: <a class="reference internal" href="../specs/stdlib_stats_distribution_exponential.html"><span class="doc">stdlib_stats_distribution_exponential</span></a>.</p>
+<section id="f-module-stdlib-stats-distribution-normal">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">stdlib_stats_distribution_normal (module)</a><a class="headerlink" href="#f-module-stdlib-stats-distribution-normal" title="Link to this heading">#</a></h2>
+<p class="section-subtitle">Interfaces</p>
+<section id="f-interface-stdlib-stats-distribution-normal-rvs-normal">
+<h3>rvs_normal (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-normal-rvs-normal" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-normal-pdf-normal">
+<h3>pdf_normal (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-normal-pdf-normal" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-normal-cdf-normal">
+<h3>cdf_normal (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-normal-cdf-normal" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<p>See also the specification page: <a class="reference internal" href="../specs/stdlib_stats_distribution_normal.html"><span class="doc">stdlib_stats_distribution_normal</span></a>.</p>
+<section id="f-module-stdlib-stats-distribution-uniform">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">stdlib_stats_distribution_uniform (module)</a><a class="headerlink" href="#f-module-stdlib-stats-distribution-uniform" title="Link to this heading">#</a></h2>
+<p class="section-subtitle">Interfaces</p>
+<section id="f-interface-stdlib-stats-distribution-uniform-rvs-uniform">
+<h3>rvs_uniform (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-uniform-rvs-uniform" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-uniform-pdf-uniform">
+<h3>pdf_uniform (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-uniform-pdf-uniform" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-uniform-cdf-uniform">
+<h3>cdf_uniform (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-uniform-cdf-uniform" title="Link to this heading">#</a></h3>
+</section>
+<section id="f-interface-stdlib-stats-distribution-uniform-shuffle">
+<h3>shuffle (interface)<a class="headerlink" href="#f-interface-stdlib-stats-distribution-uniform-shuffle" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<p>See also the specification page: <a class="reference internal" href="../specs/stdlib_stats_distribution_uniform.html"><span class="doc">stdlib_stats_distribution_uniform</span></a>.</p>
 </section>
 
 
@@ -486,11 +549,11 @@ descriptive statistics
       </div>
     </a>
     <a class="right-next"
-       href="stdlib_stats_distribution_beta.html"
+       href="stdlib_str2num.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">stdlib_stats_distribution_beta</p>
+        <p class="prev-next-title">stdlib_str2num</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -523,6 +586,31 @@ descriptive statistics
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-pca">pca (interface)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-pca-transform">pca_transform (interface)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-pca-inverse-transform">pca_inverse_transform (interface)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-module-stdlib-stats-distribution-beta">stdlib_stats_distribution_beta (module)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-beta-rvs-beta">rvs_beta (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-beta-pdf-beta">pdf_beta (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-beta-cdf-beta">cdf_beta (interface)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-module-stdlib-stats-distribution-exponential">stdlib_stats_distribution_exponential (module)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-exponential-rvs-exp">rvs_exp (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-exponential-pdf-exp">pdf_exp (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-exponential-cdf-exp">cdf_exp (interface)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-module-stdlib-stats-distribution-normal">stdlib_stats_distribution_normal (module)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-normal-rvs-normal">rvs_normal (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-normal-pdf-normal">pdf_normal (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-normal-cdf-normal">cdf_normal (interface)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-module-stdlib-stats-distribution-uniform">stdlib_stats_distribution_uniform (module)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-uniform-rvs-uniform">rvs_uniform (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-uniform-pdf-uniform">pdf_uniform (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-uniform-cdf-uniform">cdf_uniform (interface)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-interface-stdlib-stats-distribution-uniform-shuffle">shuffle (interface)</a></li>
 </ul>
 </li>
 </ul>

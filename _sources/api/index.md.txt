@@ -28,7 +28,6 @@ stdlib_kinds
 stdlib_linalg
 stdlib_linalg_iterative_solvers
 stdlib_linalg_state
-stdlib_load_library
 stdlib_logger
 stdlib_math
 stdlib_optval
@@ -41,10 +40,6 @@ stdlib_specialfunctions
 stdlib_specialfunctions_gamma
 stdlib_specialmatrices
 stdlib_stats
-stdlib_stats_distribution_beta
-stdlib_stats_distribution_exponential
-stdlib_stats_distribution_normal
-stdlib_stats_distribution_uniform
 stdlib_str2num
 stdlib_string_type
 stdlib_stringlist_type
