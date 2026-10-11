@@ -1,5 +1,5 @@
-stdlib_system
-=============
+System modules
+==============
 
 .. contents::
         :depth: 1
