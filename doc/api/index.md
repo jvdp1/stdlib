@@ -39,11 +39,11 @@ stdlib_sparse
 stdlib_specialfunctions
 stdlib_specialfunctions_gamma
 stdlib_specialmatrices
-stdlib_stats
+stdlib_stats <stdlib_stats>
 stdlib_str2num
 stdlib_string_type
 stdlib_stringlist_type
 stdlib_strings
-stdlib_system
+stdlib_system <stdlib_system>
 stdlib_version
 ```

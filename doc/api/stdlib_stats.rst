@@ -1,5 +1,5 @@
-stdlib_stats
-============
+Statistical procedures
+======================
 
 .. contents::
         :depth: 1
